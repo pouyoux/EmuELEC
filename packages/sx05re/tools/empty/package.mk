@@ -16,13 +16,24 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-PKG_NAME="oem"
-PKG_VERSION=""
+PKG_NAME="empty"
+PKG_VERSION="0.6.20b"
 PKG_ARCH="any"
-PKG_LICENSE="various"
-PKG_SITE="http://www.libreelec.tv"
-PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain sx05re"
-PKG_SECTION="virtual"
-PKG_SHORTDESC="OEM: Metapackage for various OEM packages"
-PKG_LONGDESC="OEM: Metapackage for various OEM packages"
+PKG_LICENSE="GPL"
+PKG_SITE="http://empty.sourceforge.net/"
+PKG_URL="http://downloads.sourceforge.net/sourceforge/$PKG_NAME/$PKG_NAME-$PKG_VERSION.tgz"
+PKG_SECTION="sysutils"
+PKG_SHORTDESC="Run applications under pseudo-terminal sessions"
+PKG_LONGDESC="Run applications under pseudo-terminal sessions"
+
+PKG_IS_ADDON="no"
+PKG_AUTORECONF="no"
+
+make_target() {
+  make CC=$CC
+}
+
+makeinstall_target() {
+  mkdir -p $INSTALL/usr/bin
+  cp empty $INSTALL/usr/bin/
+}
