@@ -1,0 +1,122 @@
+--- a/menu/menu_displaylist.c	2017-08-18 06:30:31.000000000 -0500
++++ b/menu/menu_displaylist.c	2017-08-20 01:54:59.625855817 -0500
+@@ -3010,11 +3010,6 @@
+ {
+ #ifdef HAVE_LAKKA
+    menu_entries_append_enum(info->list,
+-         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UPDATE_LAKKA),
+-         msg_hash_to_str(MENU_ENUM_LABEL_UPDATE_LAKKA),
+-         MENU_ENUM_LABEL_UPDATE_LAKKA,
+-         MENU_SETTING_ACTION, 0, 0);
+-   menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST),
+          msg_hash_to_str(MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST),
+          MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST,
+@@ -3024,8 +3019,7 @@
+          msg_hash_to_str(MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT_DIRS),
+          MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT_DIRS,
+          MENU_SETTING_ACTION, 0, 0);
+-#else
+-#ifdef HAVE_NETWORKING
++
+    settings_t *settings         = config_get_ptr();
+ 
+    if (settings->bools.menu_show_core_updater)
+@@ -3041,13 +3035,13 @@
+          MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST,
+          MENU_SETTING_ACTION, 0, 0);
+ 
+-#ifdef HAVE_NETWORKING
++
+    menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_CONTENT),
+          msg_hash_to_str(MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT_DIRS),
+          MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT_DIRS,
+          MENU_SETTING_ACTION, 0, 0);
+-#endif
++
+ 
+    if (settings->bools.menu_show_core_updater)
+       menu_entries_append_enum(info->list,
+@@ -3056,13 +3050,13 @@
+             MENU_ENUM_LABEL_UPDATE_CORE_INFO_FILES,
+             MENU_SETTING_ACTION, 0, 0);
+ 
+-#ifdef HAVE_UPDATE_ASSETS
++
+    menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UPDATE_ASSETS),
+          msg_hash_to_str(MENU_ENUM_LABEL_UPDATE_ASSETS),
+          MENU_ENUM_LABEL_UPDATE_ASSETS,
+          MENU_SETTING_ACTION, 0, 0);
+-#endif
++
+ 
+    menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UPDATE_AUTOCONFIG_PROFILES),
+@@ -3076,15 +3070,11 @@
+          MENU_ENUM_LABEL_UPDATE_CHEATS,
+          MENU_SETTING_ACTION, 0, 0);
+ 
+-#ifdef HAVE_LIBRETRODB
+-#if !defined(VITA)
+    menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UPDATE_DATABASES),
+          msg_hash_to_str(MENU_ENUM_LABEL_UPDATE_DATABASES),
+          MENU_ENUM_LABEL_UPDATE_DATABASES,
+          MENU_SETTING_ACTION, 0, 0);
+-#endif
+-#endif
+ 
+    menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UPDATE_OVERLAYS),
+@@ -3113,13 +3103,6 @@
+             MENU_ENUM_LABEL_UPDATE_SLANG_SHADERS,
+             MENU_SETTING_ACTION, 0, 0);
+ 
+-#else
+-   menu_entries_append_enum(info->list,
+-         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NO_ITEMS),
+-         msg_hash_to_str(MENU_ENUM_LABEL_NO_ITEMS),
+-         MENU_ENUM_LABEL_NO_ITEMS,
+-         MENU_SETTING_NO_ITEM, 0, 0);
+-#endif
+ #endif
+ 
+    return 0;
+@@ -5151,13 +5134,13 @@
+                PARSE_ONLY_BOOL, false);
+ 
+ #if defined(HAVE_LAKKA)
+-         menu_displaylist_parse_settings_enum(menu, info,
++ /*        menu_displaylist_parse_settings_enum(menu, info,
+                MENU_ENUM_LABEL_MENU_SHOW_QUIT_RETROARCH,
+                PARSE_ONLY_BOOL, false);
+ 
+          menu_displaylist_parse_settings_enum(menu, info,
+                MENU_ENUM_LABEL_MENU_SHOW_REBOOT,
+-               PARSE_ONLY_BOOL, false);
++               PARSE_ONLY_BOOL, false);*/
+ #endif
+ 
+          menu_displaylist_parse_settings_enum(menu, info,
+--- a/menu/menu_setting.c	2017-03-12 17:52:42.000000000 -0600
++++ b/menu/menu_setting.c	2017-03-13 19:05:16.526319525 -0600
+@@ -2459,7 +2459,7 @@
+ #endif
+ 
+ #if defined(HAVE_LAKKA)
+-         CONFIG_ACTION(
++    /*     CONFIG_ACTION(
+                list, list_info,
+                MENU_ENUM_LABEL_REBOOT,
+                MENU_ENUM_LABEL_VALUE_REBOOT,
+@@ -2475,7 +2475,7 @@
+                &group_info,
+                &subgroup_info,
+                parent_group);
+-         menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_SHUTDOWN);
++         menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_SHUTDOWN);*/
+ #endif
+ 
+          CONFIG_ACTION(

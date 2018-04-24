@@ -1,6 +1,6 @@
 ################################################################################
-#      This file is part of LibreELEC - https://libreelec.tv
-#      Copyright (C) 2016-present Team LibreELEC
+#      This file is part of LibreELEC - http://www.libreelec.tv
+#      Copyright (C) 2016 Team LibreELEC
 #
 #  LibreELEC is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -17,28 +17,26 @@
 ################################################################################
 
 PKG_NAME="libretro-beetle-pce-fast"
-PKG_VERSION="20105f7"
-PKG_SHA256="044e629c56c8f8320ca61ee6e4bc7cc980590f68e3a8f1896ab6a2c17235cd66"
+PKG_VERSION="39185a6"
+PKG_REV="1"
 PKG_ARCH="any"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="MAME"
 PKG_SITE="https://github.com/libretro/beetle-pce-fast-libretro"
 PKG_URL="https://github.com/libretro/beetle-pce-fast-libretro/archive/$PKG_VERSION.tar.gz"
 PKG_SOURCE_DIR="beetle-pce-fast-libretro-$PKG_VERSION*"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_SECTION="emulation"
-PKG_SHORTDESC="game.libretro.beetle-pce-fast: Beetle PCE Fast for Kodi"
-PKG_LONGDESC="game.libretro.beetle-pce-fast: Beetle PCE Fast for Kodi"
-
-PKG_LIBNAME="mednafen_pce_fast_libretro.so"
-PKG_LIBPATH="$PKG_LIBNAME"
-PKG_LIBVAR="BEETLE-PCE-FAST_LIB"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_SECTION="xmedia/games"
+PKG_SHORTDESC="libretro-beetle-pce-fast"
+PKG_LONGDESC="libretro-beetle-pce-fast"
+PKG_IS_ADDON="no"
+PKG_AUTORECONF="no"
 
 make_target() {
-  make
+  make ARCH="" CC="$CC" NATIVE_CC="$CC" LD="$CC" -j 1
 }
 
 makeinstall_target() {
-  mkdir -p $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME
-  cp $PKG_LIBPATH $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME
-  echo "set($PKG_LIBVAR $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME)" > $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME/$PKG_NAME-config.cmake
+  mkdir -p $INSTALL/usr/lib/libretro
+    cp `find . -name "*.so" | xargs echo` $INSTALL/usr/lib/libretro/
 }
+

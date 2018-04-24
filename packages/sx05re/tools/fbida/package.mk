@@ -16,13 +16,31 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-PKG_NAME="oem"
-PKG_VERSION=""
+PKG_NAME="fbida"
+PKG_VERSION="2.13"
 PKG_ARCH="any"
-PKG_LICENSE="various"
-PKG_SITE="http://www.libreelec.tv"
+PKG_LICENSE="GPL"
+PKG_SITE=""
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain sx05re"
-PKG_SECTION="virtual"
-PKG_SHORTDESC="OEM: Metapackage for various OEM packages"
-PKG_LONGDESC="OEM: Metapackage for various OEM packages"
+PKG_DEPENDS_TARGET=""
+PKG_SECTION="tools"
+PKG_SHORTDESC="The fbida project contains a few applications for viewing and editing images, with the main focus being photos."
+PKG_LONGDESC="The fbida project contains a few applications for viewing and editing images, with the main focus being photos."
+
+PKG_IS_ADDON="no"
+PKG_AUTORECONF="no"
+PKG_TOOLCHAIN="make"
+
+make_target() {
+  : not
+}
+
+makeinstall_target() {
+
+  mkdir -p $INSTALL/usr/lib/
+    cp -rf $PKG_DIR/lib/* $INSTALL/usr/lib/
+   
+  mkdir -p $INSTALL/usr/bin/
+    cp -rf $PKG_DIR/bin/* $INSTALL/usr/bin/
+    chmod +x $INSTALL/usr/bin/fbi
+}
