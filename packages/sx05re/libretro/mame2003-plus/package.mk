@@ -18,29 +18,28 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="dosbox"
-PKG_VERSION="dff2757"
+PKG_NAME="mame2003-plus"
+PKG_VERSION="270c968"
 PKG_REV="1"
 PKG_ARCH="any"
-PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/dosbox-libretro"
+PKG_LICENSE="MAME"
+PKG_SITE="https://github.com/libretro/mame2003-plus-libretro"
 PKG_GIT_URL="$PKG_SITE"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="libretro wrapper for the DOSBox emulator"
-PKG_LONGDESC="An open source DOS emulator for BeOS, Linux, Mac OS X, OS/2, and Windows. Primarily focuses on running DOS Games."
+PKG_SHORTDESC="MAME - Multiple Arcade Machine Emulator"
+PKG_LONGDESC="MAME - Multiple Arcade Machine Emulator"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
-PKG_BUILD_FLAGS="-lto"
 
 make_target() {
-  make -f Makefile.libretro
+  make ARCH="" CC="$CC" NATIVE_CC="$CC" LD="$CC"
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp dosbox_libretro.so $INSTALL/usr/lib/libretro/
+  cp mame2003_plus_libretro.so $INSTALL/usr/lib/libretro/
 }
