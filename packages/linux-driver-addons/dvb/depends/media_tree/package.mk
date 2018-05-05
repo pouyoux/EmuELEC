@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="media_tree"
-PKG_VERSION="2017-12-06-b32a2b42f76c"
-PKG_SHA256="90a6b5b015bbb5583a6c72880f8b89ed8b3671ca64c713a00ec3467fbb84cdc4"
+PKG_VERSION="2018-04-15-60cc43fc8884"
+PKG_SHA256="ed21aadcbba7847af97d53b3093d0f2aef8f356807b0d066956affb422769708"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://git.linuxtv.org/media_tree.git"
@@ -57,6 +57,11 @@ unpack() {
 
       # Copy avl6862 driver
       cp -a $(kernel_path)/drivers/amlogic/dvb-avl "$PKG_BUILD/drivers/media"
+      # fix includes
+      sed -e 's,#include "d,#include "media/d,g' -i $PKG_BUILD/drivers/media/dvb-avl/*.*
+      sed -e 's,"media/dvb_filter.h","dvb_filter.h",g' -i $PKG_BUILD/drivers/media/dvb-avl/*.*
+      sed -e 's,#include "d,#include "media/d,g' -i $PKG_BUILD/drivers/media/amlogic/wetek/*.*
+      sed -e 's,"media/dvb_filter.h","dvb_filter.h",g' -i $PKG_BUILD/drivers/media/amlogic/wetek/*.*
       if listcontains "$ADDITIONAL_DRIVERS" "avl6862-aml"; then
         echo "obj-y += dvb-avl/" >> "$PKG_BUILD/drivers/media/Makefile"
       fi
