@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Kodi seems to set its own FB settings for 720p, so we revert them to one that work on ES, I use all resolutions just in case :) 
 /usr/bin/setres.sh
 SPLASH="/storage/.config/splash/splash-1080.png"
 (
@@ -57,7 +58,6 @@ if [ ! -f /storage/.emulationstation/es_settings.cfg ]; then
 fi
 
 
-
 BIOS_DIR="/storage/roms/bios"
 ROMS_DIR="/storage/roms/nes"
 CONFIG_DIR="/storage/.emulationstation"
@@ -86,14 +86,11 @@ rm -rf $CONFIG_DIR2/*
 touch $CONFIG_DIR2/done
 fi 
 
-
 #set reicast BIOS dir to point to /storage/roms/bios
 if [ ! -L /storage/.local/share/reicast/data ]; then
 	mkdir -p /storage/.local/share/reicast 
 	rm -rf /storage/.local/share/reicast/data
 	ln -s /storage/roms/bios /storage/.local/share/reicast/data
 fi
-
-
 
 exit 0
