@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="retroarch-sx05re"
-PKG_VERSION="05ea2cf"
+PKG_VERSION="b2ceb50"
 PKG_REV="9"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
@@ -86,7 +86,7 @@ pre_configure_target() {
 }
 
 make_target() {
-  make V=1 HAVE_LAKKA=1 HAVE_ZARCH=0 HAVE_NETWORKING=1
+  make V=1 HAVE_LAKKA=1 HAVE_ZARCH=0 HAVE_NETWORKING=1 HAVE_QT=no
   make -C gfx/video_filters compiler=$CC extra_flags="$CFLAGS"
   make -C libretro-common/audio/dsp_filters compiler=$CC extra_flags="$CFLAGS"
 }

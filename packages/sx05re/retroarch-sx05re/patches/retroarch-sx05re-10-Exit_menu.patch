@@ -8,17 +8,6 @@
  
  #include <compat/strl.h>
  #include <compat/posix_string.h>
-@@ -1695,9 +1696,7 @@
-          break;
-       case CMD_EVENT_LOAD_CORE:
-          command_event(CMD_EVENT_LOAD_CORE_PERSIST, NULL);
--#ifndef HAVE_DYNAMIC
--         command_event(CMD_EVENT_QUIT, NULL);
--#endif
-+
-          break;
-       case CMD_EVENT_LOAD_STATE:
-          /* Immutable - disallow savestate load when
 @@ -1809,7 +1808,28 @@
           }
           break;
