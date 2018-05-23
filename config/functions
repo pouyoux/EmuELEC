@@ -4,6 +4,10 @@ setup_toolchain() {
     TARGET_CFLAGS+=" $CFLAGS_OPTIM_LTO"
     TARGET_CXXFLAGS+=" $CXXFLAGS_OPTIM_LTO"
     TARGET_LDFLAGS+=" $LDFLAGS_OPTIM_LTO"
+  else
+    TARGET_CFLAGS+=" $CFLAGS_OPTIM_NOLTO"
+    TARGET_CXXFLAGS+=" $CXXFLAGS_OPTIM_NOLTO"
+    TARGET_LDFLAGS+=" $LDFLAGS_OPTIM_NOLTO"
   fi
 
   # gold flag
@@ -595,7 +599,7 @@ done
     sed -e "s|@PKG_ADDON_NEWS@||g" -i "$addon_xml"
   fi
 
-  provider_name=${PKG_MAINTAINER:-"Team LibreELEC"}
+  provider_name=${PKG_MAINTAINER:-"Team CoreELEC"}
   addon_name=${PKG_ADDON_NAME:-"$PKG_NAME"}
 
   for f in $PKG_DIR/source/resources/screenshot-*.{jpg,png}; do
