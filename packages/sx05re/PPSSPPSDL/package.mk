@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="9a732fe"
+PKG_VERSION="e4aef72"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
@@ -31,10 +31,6 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="cmake"
 
 PKG_CMAKE_OPTS_TARGET="-DUSING_FBDEV=1 -DUSING_GLES2=1 -DUSE_FFMPEG=1 -DARMV7=1 -DSHARED_LIBZIP=1 -DARM_NEON=1"
-
-if [ "$PROJECT" == "S912" ]; then
-PKG_CMAKE_OPTS_TARGET="-DUSING_FBDEV=1 -DUSING_GLES2=1 -DUSE_FFMPEG=1 -DARMV7=1 -DSHARED_LIBZIP=1 -DUSING_EGL=1"
-fi
 
 pre_configure_target() {
 cp $PKG_DIR/zipconf.h $SYSROOT_PREFIX/usr/include/zipconf.h 
