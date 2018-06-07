@@ -16,7 +16,7 @@
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
   GREETING0="##############################################"
   GREETING1="#                  CoreELEC                  #"
-  GREETING2="#             http://coreelec.org            #"
+  GREETING2="#            https://coreelec.org            #"
   GREETING3="##############################################"
   GREETING4=""
 
@@ -211,3 +211,7 @@
 
 # Default supported get handlers (archive, git, file etc.)
   GET_HANDLER_SUPPORT="archive"
+
+# Partition labels for USB/SD installation media
+  DISTRO_BOOTLABEL="COREELEC"
+  DISTRO_DISKLABEL="STORAGE"

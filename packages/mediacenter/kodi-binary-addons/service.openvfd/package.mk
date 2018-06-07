@@ -1,5 +1,6 @@
 ################################################################################
-#      This file is part of CoreELEC - http://coreelec.org
+#      This file is part of CoreELEC - https://coreelec.org
+#      Copyright (C) 2018-present CoreELEC (team (at) coreelec.org)
 #      Copyright (C) 2018 Arthur Liberman (arthur_liberman (at) hotmail.com)
 #
 #  CoreELEC is free software: you can redistribute it and/or modify
@@ -23,7 +24,7 @@ PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/arthur-liberman/service.openvfd"
 PKG_URL="https://github.com/arthur-liberman/service.openvfd/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_SECTION="service"
+PKG_SECTION=""
 PKG_SHORTDESC="service.openvfd"
 PKG_LONGDESC="service.openvfd"
 PKG_TOOLCHAIN="manual"

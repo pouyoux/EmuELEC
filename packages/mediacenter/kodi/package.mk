@@ -1,24 +1,25 @@
 ################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
+#      This file is part of LibreELEC - https://libreelec.tv
+#      Copyright (C) 2017-present Team LibreELEC
 #      Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
 #
-#  OpenELEC is free software: you can redistribute it and/or modify
+#  LibreELEC is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 2 of the License, or
 #  (at your option) any later version.
 #
-#  OpenELEC is distributed in the hope that it will be useful,
+#  LibreELEC is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
+#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
 PKG_NAME="kodi"
-PKG_VERSION="3a989ee"
-PKG_SHA256="deb3526aa28d1b64f8d295f18637c42cb031a476cabdbd9dc15af1e33c5d8965"
+PKG_VERSION="05a868b"
+PKG_SHA256="4d8e59cb7d9f8935909b2a59a4434c22b54987ed52c096138655028808692fc0"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
@@ -32,8 +33,6 @@ PKG_LONGDESC="Kodi Media Center (which was formerly named Xbox Media Center or X
 # Single threaded LTO is very slow so rely on Kodi for parallel LTO support
 if [ "$LTO_SUPPORT" = "yes" ] && ! build_with_debug; then
   PKG_KODI_USE_LTO="-DUSE_LTO=$CONCURRENCY_MAKE_LEVEL"
-else
-  PKG_BUILD_FLAGS="-lto"
 fi
 
 get_graphicdrivers
