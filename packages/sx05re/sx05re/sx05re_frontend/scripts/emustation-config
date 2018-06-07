@@ -12,7 +12,7 @@ SPLASH="/storage/.config/splash/splash-1080.png"
 # The codes for 480I and 576I are adjusted to avoid overscan.
 # Forece 720p50hz to 720p60hz and 1080i/p60hz to 1080i/p60hz since 50hz would make video very choppy.
 
-
+sleep 2
 # Lets try and find some roms
 # Since the ROMS folder is not getting created at boot, we check if it exists, if it doesn't then we create it. 
 if [ ! -d "/storage/roms" ] || [ ! -d "/storage/roms2" ]; then
