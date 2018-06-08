@@ -331,7 +331,8 @@ post_makeinstall_target() {
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "inputstream.adaptive" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "inputstream.rtmp" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "vfs.rar" $ADDON_MANIFEST
-
+  xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.emulationstation.launcher" $ADDON_MANIFEST
+    
   if [ "$DRIVER_ADDONS_SUPPORT" = "yes" ]; then
     xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.program.driverselect" $ADDON_MANIFEST
   fi 
