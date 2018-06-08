@@ -4,7 +4,7 @@
 ################################################################################
 
 PKG_NAME="advancemame"
-PKG_VERSION="a6ec459"
+PKG_VERSION="4101855"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
