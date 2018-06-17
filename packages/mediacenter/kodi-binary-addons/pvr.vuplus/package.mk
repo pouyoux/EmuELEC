@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="pvr.vuplus"
-PKG_VERSION="6c94eec"
-PKG_SHA256="fc645a611a78250299a83edca56dd03686d4ad67900be20fe00f46b2fb6d8e17"
+PKG_VERSION="bcfd34d"
+PKG_SHA256="03e6a7c762d54a97ba57a83d5bb012ee24134991bc42e6101e127b8340d7aa39"
 PKG_REV="2"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
