@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="device-trees-amlogic"
-PKG_VERSION="30c9d42"
-PKG_SHA256="bcbcd81abab242afaf439ff4d3b92039f2dba97ce0986285627e19e58f1c47d4"
+PKG_VERSION="bdd1e7d"
+PKG_SHA256="26fdb5c5346ef7a8ebc34575f0a3b5d6f891b7b78c0f0f8c15cda6f54bfdaecb"
 PKG_LICENSE="GPL"
 PKG_URL="https://github.com/CoreELEC/device-trees-amlogic/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
@@ -30,7 +30,11 @@ make_target() {
   pushd $BUILD/linux-$(kernel_version) > /dev/null
 
   # Device trees already present in kernel tree we want to include
-  EXTRA_TREES=(gxbb_p201 gxl_p212_1g gxl_p212_2g gxm_q200_2g gxm_q201_1g gxm_q201_2g gxl_p281_1g gxbb_p200_1G_wetek_hub gxbb_p200_2G_wetek_play_2)
+  EXTRA_TREES=( \
+                gxbb_p201 gxbb_p200_1G_wetek_hub gxbb_p200_2G_wetek_play_2 \
+                gxl_p212_1g gxl_p212_2g gxl_p281_1g gxl_p212_1g_lepotato gxl_p212_2g_lepotato \
+                gxm_q200_2g gxm_q201_1g gxm_q201_2g \
+	      )
 
   # Add trees to the list
   for f in ${EXTRA_TREES[@]}; do
