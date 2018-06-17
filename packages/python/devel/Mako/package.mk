@@ -1,7 +1,7 @@
 ################################################################################
 #      This file is part of LibreELEC - https://libreelec.tv
 #      Copyright (C) 2018-present Team LibreELEC
-#      Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2014 Stephan Raue (stephan@openelec.tv)
 #
 #  LibreELEC is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -17,16 +17,19 @@
 #  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-PKG_NAME="libxkbfile"
-PKG_VERSION="1.0.9"
-PKG_SHA256="51817e0530961975d9513b773960b4edd275f7d5c72293d5a151ed4f42aeb16a"
+PKG_NAME="Mako"
+PKG_VERSION="1.0.7"
+PKG_SHA256="4e02fde57bd4abb5ec400181e4c314f56ac3e49ba4fb8b0d50bba18cb27d25ae"
 PKG_ARCH="any"
-PKG_LICENSE="OSS"
-PKG_SITE="http://www.X.org"
-PKG_URL="http://xorg.freedesktop.org/archive/individual/lib/$PKG_NAME-$PKG_VERSION.tar.bz2"
-PKG_DEPENDS_TARGET="toolchain util-macros libX11"
-PKG_SECTION="x11/lib"
-PKG_SHORTDESC="libxkbfile: X11 keyboard file manipulation library"
-PKG_LONGDESC="Libxkbfile provides an interface to read and manipulate description files for XKB, the X11 keyboard configuration extension."
+PKG_LICENSE="GPL"
+PKG_SITE="https://pypi.org/project/Mako"
+PKG_URL="https://files.pythonhosted.org/packages/source/${PKG_NAME:0:1}/$PKG_NAME/$PKG_NAME-$PKG_VERSION.tar.gz"
+PKG_DEPENDS_HOST="Python2:host setuptools:host MarkupSafe:host"
+PKG_SECTION="python"
+PKG_SHORTDESC="Mako: A super-fast templating language that borrows the best ideas from the existing templating languages."
+PKG_LONGDESC="Mako is a super-fast templating language that borrows the best ideas from the existing templating languages."
+PKG_TOOLCHAIN="manual"
 
-PKG_CONFIGURE_OPTS_TARGET="--enable-static --disable-shared"
+makeinstall_host() {
+  python setup.py install --prefix=$TOOLCHAIN
+}
