@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="mame2003-plus-libretro"
-PKG_VERSION="236a3c0"
+PKG_VERSION="816423e"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
