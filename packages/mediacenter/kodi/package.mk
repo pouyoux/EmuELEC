@@ -18,8 +18,8 @@
 ################################################################################
 
 PKG_NAME="kodi"
-PKG_VERSION="e14a6f8"
-PKG_SHA256="e3d15373baaa0888f7b37004c45e14dcbe990d7439d03f0fb62bedb3e20518a1"
+PKG_VERSION="eac2111"
+PKG_SHA256="671c9c578fe52e0daf7492f3251cf538ab73c75b4e80c324b2737a047d3093de"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
@@ -327,12 +327,7 @@ post_makeinstall_target() {
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "os.openelec.tv" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "repository.coreelec" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "service.coreelec.settings" $ADDON_MANIFEST
-  xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "imagedecoder.raw" $ADDON_MANIFEST
-  xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "inputstream.adaptive" $ADDON_MANIFEST
-  xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "inputstream.rtmp" $ADDON_MANIFEST
-  xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "vfs.rar" $ADDON_MANIFEST
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.emulationstation.launcher" $ADDON_MANIFEST
-    
   if [ "$DRIVER_ADDONS_SUPPORT" = "yes" ]; then
     xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.program.driverselect" $ADDON_MANIFEST
   fi 

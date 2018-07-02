@@ -49,11 +49,6 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-secure-rpc \
                            --disable-ipv6 \
                            --without-launchd \
                            --without-lint"
-                          
- pre_configure_target() {
-  export CC_FOR_BUILD="$HOST_CC"
-  export CPPFLAGS_FOR_BUILD="$HOST_CPPFLAGS"
-  export CFLAGS_FOR_BUILD="$HOST_CFLAGS"
-  export LDFLAGS_FOR_BUILD="$HOST_LDFLAGS"
+pre_configure_target() {
   unset PKG_CONFIG_ALLOW_SYSTEM_CFLAGS
- }
+}
