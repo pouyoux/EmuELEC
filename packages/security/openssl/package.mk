@@ -1,20 +1,5 @@
-###############################################################################
-#      This file is part of LibreELEC - https://libreelec.tv
-#      Copyright (C) 2016-present Team LibreELEC
-#
-#  LibreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  LibreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="openssl"
 PKG_VERSION="1.0.2o"
@@ -109,13 +94,23 @@ post_makeinstall_target() {
 
   # cert from https://curl.haxx.se/docs/caextract.html
   mkdir -p $INSTALL/etc/ssl
-    cp $PKG_DIR/cert/cacert.pem $INSTALL/etc/ssl/cert.pem
+    cp $PKG_DIR/cert/cacert.pem $INSTALL/etc/ssl/cacert.pem.system
+
+  # give user the chance to include their own CA
+  mkdir -p $INSTALL/usr/bin
+    cp $PKG_DIR/scripts/openssl-config $INSTALL/usr/bin
+    ln -sf /run/libreelec/cacert.pem $INSTALL/etc/ssl/cacert.pem
+    ln -sf /run/libreelec/cacert.pem $INSTALL/etc/ssl/cert.pem
 
   # backwards comatibility
   mkdir -p $INSTALL/etc/pki/tls
-    ln -sf /etc/ssl/cert.pem $INSTALL/etc/pki/tls/cacert.pem
+    ln -sf /run/libreelec/cacert.pem $INSTALL/etc/pki/tls/cacert.pem
   mkdir -p $INSTALL/etc/pki/tls/certs
-    ln -sf /etc/ssl/cert.pem $INSTALL/etc/pki/tls/certs/ca-bundle.crt
+    ln -sf /run/libreelec/cacert.pem $INSTALL/etc/pki/tls/certs/ca-bundle.crt
   mkdir -p $INSTALL/usr/lib/ssl
-    ln -sf /etc/ssl/cert.pem $INSTALL/usr/lib/ssl/cert.pem
+    ln -sf /run/libreelec/cacert.pem $INSTALL/usr/lib/ssl/cert.pem
+}
+
+post_install() {
+  enable_service openssl-config.service
 }

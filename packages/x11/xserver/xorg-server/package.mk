@@ -1,21 +1,6 @@
-################################################################################
-#      This file is part of LibreELEC - https://libreelec.tv
-#      Copyright (C) 2018-present Team LibreELEC
-#      Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
-#
-#  LibreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  LibreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
+# Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="xorg-server"
 PKG_VERSION="1.20.0"
@@ -74,7 +59,6 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-debug \
                            --disable-xace \
                            --disable-xselinux \
                            --disable-xcsecurity \
-                           --disable-tslib \
                            --enable-dbe \
                            --disable-xf86bigfont \
                            --enable-dpms \
@@ -102,11 +86,6 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-debug \
                            --disable-xwin \
                            --disable-kdrive \
                            --disable-xephyr \
-                           --disable-xfake \
-                           --disable-xfbdev \
-                           --disable-kdrive-kbd \
-                           --disable-kdrive-mouse \
-                           --disable-kdrive-evdev \
                            --disable-libunwind \
                            --enable-xshmfence \
                            --disable-install-setuid \

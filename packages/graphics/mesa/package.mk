@@ -1,25 +1,10 @@
-################################################################################
-#      This file is part of LibreELEC - https://libreelec.tv
-#      Copyright (C) 2018-present Team LibreELEC
-#      Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
-#
-#  LibreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  LibreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
+# Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="mesa"
-PKG_VERSION="18.1.1"
-PKG_SHA256="d3312a2ede5aac14a47476b208b8e3a401367838330197c4588ab8ad420d7781"
+PKG_VERSION="18.1.4"
+PKG_SHA256="3061488b5d85504092cf4343816cfb2d96f2ad9bc2edec31fc96933d184cf58b"
 PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.mesa3d.org/"
@@ -82,7 +67,7 @@ else
   PKG_MESON_OPTS_TARGET+=" -Dgallium-vdpau=false"
 fi
 
-if [ "$VAAPI_SUPPORT" = "yes" ]; then
+if [ "$VAAPI_SUPPORT" = "yes" ] && listcontains "$GRAPHIC_DRIVERS" "(r600|radeonsi)"; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libva"
   PKG_MESON_OPTS_TARGET+=" -Dgallium-va=true"
 else

@@ -1,24 +1,9 @@
-################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
-#
-#  OpenELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  OpenELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
 
 PKG_NAME="visualization.projectm"
-PKG_VERSION="a533f9b"
-PKG_SHA256="98cde0715786fb1d23469bccd2a174e06bfc02e9e1e983b3240f1fd3acbe3bf6"
+PKG_VERSION="06d02b5"
+PKG_SHA256="e37b93450b4f33eb6a1b2cfdeeebb182869d61c96f7f15df1cee840a2deb99f8"
 PKG_REV="2"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

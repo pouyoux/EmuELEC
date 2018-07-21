@@ -1,26 +1,10 @@
-################################################################################
-#      This file is part of CoreELEC - https://coreelec.org
-#      Copyright (C) 2018-present CoreELEC (team (at) coreelec.org)
-#      Copyright (C) 2009-2016 Lukas Rusak (lrusak@libreelec.tv)
-#
-#  CoreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  CoreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with CoreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="hyperion.ng"
 PKG_VERSION="e438bc6"
 PKG_SHA256="1bac2401e3c0ee7ff9efa266d87f57512c43b4b3507e563e32c3060a2f2d8fd1"
-PKG_REV="101"
+PKG_REV="100"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/hyperion-project/hyperion.ng"
 PKG_URL="https://github.com/hyperion-project/hyperion.ng/archive/$PKG_VERSION.tar.gz"

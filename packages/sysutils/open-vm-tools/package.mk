@@ -1,32 +1,17 @@
-################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2014 Stephan Raue (stephan@openelec.tv)
-#      Copyright (C) 2011 Anthony Nash (nash.ant@gmail.com)
-#
-#  OpenELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  OpenELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2011 Anthony Nash (nash.ant@gmail.com)
+# Copyright (C) 2009-2014 Stephan Raue (stephan@openelec.tv)
+# Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="open-vm-tools"
-PKG_VERSION="stable-10.1.5"
-PKG_SHA256="53c281119a6ef43022853f858f91aa6985baed2e668c85fdfa0eb39c9c2c24a9"
+PKG_VERSION="stable-10.2.5"
+PKG_SHA256="c0f182c0c422fca8f8b3e5c21802f724256dfe5907383db28ec7e4d5b6d52b0f"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/vmware/open-vm-tools"
 PKG_URL="https://github.com/vmware/open-vm-tools/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain glib:host glib libdnet fuse"
+PKG_DEPENDS_TARGET="toolchain fuse glib:host glib libdnet libtirpc"
 PKG_SECTION="virtualization"
-PKG_SHORTDESC="open-vm-tools: open source implementation of VMware Tools"
 PKG_LONGDESC="open-vm-tools: open source implementation of VMware Tools"
 PKG_TOOLCHAIN="autotools"
 
@@ -53,7 +38,7 @@ post_unpack() {
 }
 
 pre_configure_target() {
-  export LIBS="-ldnet"
+  export LIBS="-ldnet -ltirpc"
 }
 
 post_makeinstall_target() {
