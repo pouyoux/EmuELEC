@@ -180,7 +180,7 @@
   TESTING="no"
 
 # OEM packages for OEM's (yes / no)
-  OEM_SUPPORT="yes"
+  OEM_SUPPORT="no"
 
 # build and install nano text editor (yes / no)
   NANO_EDITOR="yes"
@@ -206,8 +206,9 @@
   SYSTEM_PART_START=8192
 
 # Configure debug groups (space delimited key=value pairs, with each value comma-delimited) and default group when DEBUG=yes
-  DEBUG_GROUPS="kodi=kodi,kodi-platform,p8-platform,!mesa"
-  DEBUG_GROUP_YES="kodi"
+# Use ! or - prefix to prevent a dependent package from being built with debug. Add + suffix to build dependenencies with debug.
+  DEBUG_GROUPS="kodi+=kodi+,kodi-platform+,p8-platform+,!mesa"
+  DEBUG_GROUP_YES="kodi+"
 
 # Default supported get handlers (archive, git, file etc.)
   GET_HANDLER_SUPPORT="archive"
@@ -342,3 +343,6 @@ RA_PLAYLIST_NAMES=""\
 "/tmp/cores/mednafen_ngp_libretro.so;"\
 "/tmp/cores/ppsspp_libretro.so;"\
 "/tmp/cores/pcsx_rearmed_libretro.so"
+
+# Settings package name - blank if not required
+  DISTRO_PKG_SETTINGS="CoreELEC-settings"
