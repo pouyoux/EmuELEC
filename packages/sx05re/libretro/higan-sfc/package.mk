@@ -18,28 +18,30 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="snes9x2010"
-PKG_VERSION="21e176e"
+PKG_NAME="higan-sfc"
+PKG_VERSION="d3f5920"
 PKG_REV="1"
 PKG_ARCH="any"
-PKG_LICENSE="Non-commercial"
-PKG_SITE="https://github.com/libretro/snes9x2010"
+PKG_LICENSE="GPLv3"
+PKG_SITE="https://gitlab.com/higan/higan"
 PKG_GIT_URL="$PKG_SITE"
+PKG_GIT_BRANCH="libretro"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="Snes9x 2010."
-PKG_LONGDESC="Snes9x 2010. Port of Snes9x 1.52+ to Libretro (previously called SNES9x Next). Rewritten in C and several optimizations and speedhacks."
+PKG_SHORTDESC="higan, the multi-system emulator"
+PKG_LONGDESC="higan emulates a number of classic video-game consoles of the 1980s and 1990s, allowing you to play classic games on a modern general-purpose computer"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
 make_target() {
-  make -f Makefile.libretro
+  cd $PKG_BUILD/higan
+  make -f GNUmakefile compiler=$TOOLCHAIN/bin/$TARGET_NAME-g++ target=libretro binary=library
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp snes9x2010_libretro.so $INSTALL/usr/lib/libretro/
+  cp out/higan_sfc_libretro.so $INSTALL/usr/lib/libretro/
 }

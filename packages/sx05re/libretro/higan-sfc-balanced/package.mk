@@ -18,28 +18,29 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="snes9x2010"
-PKG_VERSION="21e176e"
+PKG_NAME="higan-sfc-balanced"
+PKG_VERSION="4892144"
 PKG_REV="1"
 PKG_ARCH="any"
-PKG_LICENSE="Non-commercial"
-PKG_SITE="https://github.com/libretro/snes9x2010"
+PKG_LICENSE="GPLv3"
+PKG_SITE="https://github.com/libretro/nSide"
 PKG_GIT_URL="$PKG_SITE"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="Snes9x 2010."
-PKG_LONGDESC="Snes9x 2010. Port of Snes9x 1.52+ to Libretro (previously called SNES9x Next). Rewritten in C and several optimizations and speedhacks."
+PKG_SHORTDESC="A fork of higan v106 by byuu, which was renamed to exclude \"higan\" at byuu's request."
+PKG_LONGDESC="$PKG_SHORTDESC"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
 make_target() {
-  make -f Makefile.libretro
+  cd $PKG_BUILD/nSide
+  make -f GNUmakefile compiler=$TOOLCHAIN/bin/$TARGET_NAME-g++ target=libretro binary=library
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp snes9x2010_libretro.so $INSTALL/usr/lib/libretro/
+  cp out/higan_sfc_balanced_libretro.so $INSTALL/usr/lib/libretro/
 }

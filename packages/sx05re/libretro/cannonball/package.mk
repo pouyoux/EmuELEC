@@ -1,6 +1,5 @@
 ################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
+#      This file is part of Lakka - http://www.lakka.tv
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,28 +17,23 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="snes9x2010"
-PKG_VERSION="21e176e"
-PKG_REV="1"
+PKG_NAME="cannonball"
+PKG_VERSION="bbc4987"
 PKG_ARCH="any"
-PKG_LICENSE="Non-commercial"
-PKG_SITE="https://github.com/libretro/snes9x2010"
+PKG_LICENSE="GPLv3"
+PKG_SITE="https://github.com/libretro/cannonball"
 PKG_GIT_URL="$PKG_SITE"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="Snes9x 2010."
-PKG_LONGDESC="Snes9x 2010. Port of Snes9x 1.52+ to Libretro (previously called SNES9x Next). Rewritten in C and several optimizations and speedhacks."
+PKG_SHORTDESC="Cannonball: An Enhanced OutRun Engine"
+PKG_LONGDESC="Cannonball: An Enhanced OutRun Engine"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
-make_target() {
-  make -f Makefile.libretro
-}
-
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp snes9x2010_libretro.so $INSTALL/usr/lib/libretro/
+  cp cannonball_libretro.so $INSTALL/usr/lib/libretro/
 }
