@@ -342,3 +342,6 @@ RA_PLAYLIST_NAMES=""\
 "/tmp/cores/mednafen_ngp_libretro.so;"\
 "/tmp/cores/ppsspp_libretro.so;"\
 "/tmp/cores/pcsx_rearmed_libretro.so"
+
+# Settings package name - blank if not required
+  DISTRO_PKG_SETTINGS="CoreELEC-settings"
