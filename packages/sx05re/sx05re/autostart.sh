@@ -15,14 +15,14 @@ case "$DEFE" in
 	touch /var/lock/start.retro
 	systemctl start retroarch
 	;;
+"Kodi")
+	rm -rf /var/lock/start.retro
+	rm -rf /var/lock/start.games
+	touch  /var/lock/start.kodi
+	;;
 "Emulationstation")
 	rm -rf /var/lock/start.kodi
 	rm -rf /var/lock/start.retro
 	/usr/bin/startfe.sh &
-	;;
-*)
-	rm -rf /var/lock/start.retro
-	rm -rf /var/lock/start.games
-	touch  /var/lock/start.kodi
 	;;
 esac
