@@ -1,6 +1,6 @@
 --- ./command.c	2017-07-26 23:59:01.195225618 -0500
 +++ ./command.c	2017-08-14 01:58:07.722644341 -0500
-@@ -17,6 +17,7 @@
+@@ -18,6 +18,7 @@
  #include <stdio.h>
  #include <string.h>
  #include <ctype.h>
@@ -8,12 +8,13 @@
  
  #include <compat/strl.h>
  #include <compat/posix_string.h>
-@@ -1809,7 +1808,28 @@
+@@ -1968,9 +1969,30 @@
           }
           break;
        case CMD_EVENT_QUIT:
-+{
-+    /* Exit Back to Kodi if the option exists on the cfg file*/
+-         if (!retroarch_main_quit())
++ {
++     /* Exit Back to Kodi if the option exists on the cfg file*/
 +      settings_t *settings      = config_get_ptr();
 +      if(settings->bools.sx05re_exit_to_kodi)
 +      {
@@ -32,7 +33,9 @@
 +      } }
 +      /* if it doesn't exist then just exit */
 +
-          return retroarch_main_quit();
++ if (!retroarch_main_quit())
+             return false;
+          break;
 +}
        case CMD_EVENT_CHEEVOS_HARDCORE_MODE_TOGGLE:
  #ifdef HAVE_CHEEVOS
