@@ -52,10 +52,9 @@ if [[ -z "${FULLPATHTOROMS}" ]]; then
 
 
 # is the es_settings file present in the correct path? 
-
-if [ ! -f /storage/.emulationstation/es_settings.cfg ]; then
-   cp /usr/config/emulationstation/es_settings.cfg /storage/.emulationstation/es_settings.cfg
-fi
+# if [ ! -f /storage/.emulationstation/es_settings.cfg ]; then
+#   cp /usr/config/emulationstation/es_settings.cfg /storage/.emulationstation/es_settings.cfg
+# fi
 
 
 BIOS_DIR="/storage/roms/bios"
