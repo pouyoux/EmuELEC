@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="retroarch-sx05re"
-PKG_VERSION="3f95963"
+PKG_VERSION="f37ffb7"
 PKG_REV="9"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
@@ -79,7 +79,8 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            $RETROARCH_GL \
                            $RETROARCH_NEON \
                            --enable-zlib \
-                           --enable-freetype"
+                           --enable-freetype \
+						   --disable-discord"
 
 pre_configure_target() {
   cd $PKG_BUILD
