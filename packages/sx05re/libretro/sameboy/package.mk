@@ -33,6 +33,7 @@ PKG_SHORTDESC="Gameboy and Gameboy Color emulator written in C"
 PKG_LONGDESC="Gameboy and Gameboy Color emulator written in C"
 
 PKG_IS_ADDON="no"
+PKG_TOOLCHAIN="make"
 PKG_TOOLCHAIN="auto"
 PKG_AUTORECONF="no"
 

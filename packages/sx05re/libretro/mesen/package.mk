@@ -18,28 +18,34 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="beetle-psx"
-PKG_VERSION="4abdf04"
+PKG_NAME="mesen"
+PKG_VERSION="1aef0c3"
 PKG_REV="1"
-PKG_ARCH="x86_64 i386"
-PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/beetle-psx-libretro"
-PKG_GIT_URL="$PKG_SITE"
+PKG_ARCH="any"
+PKG_LICENSE="GPLv3"
+PKG_SITE="https://github.com/SourMesen/Mesen"
+PKG_URL="https://github.com/SourMesen/Mesen/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="Standalone port of Mednafen PSX to libretro."
-PKG_LONGDESC="Standalone port of Mednafen PSX to libretro."
+PKG_SHORTDESC="Mesen is a cross-platform (Windows & Linux) NES/Famicom emulator built in C++ and C#"
+PKG_LONGDESC="Mesen is a cross-platform (Windows & Linux) NES/Famicom emulator built in C++ and C#"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
-make_target() {
-  make HAVE_OPENGL=1
+post_unpack() {
+  mv $BUILD/Mesen-$PKG_VERSION* $BUILD/$PKG_NAME-$PKG_VERSION
 }
+
+make_target() {
+  make -C Libretro/
+}
+
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp *.so $INSTALL/usr/lib/libretro/
+  cp Libretro/mesen_libretro.so $INSTALL/usr/lib/libretro/
 }
+
