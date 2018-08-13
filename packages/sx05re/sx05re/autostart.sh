@@ -11,6 +11,13 @@ mkdir -p /storage/.kodi/userdata/addon_data/service.coreelec.settings/
 cp /usr/config/nau/oe_settings.xml /storage/.kodi/userdata/addon_data/service.coreelec.settings/oe_settings.xml
 fi 
 
+# temp I need to find out why the retroarch.cfg is not being copied witouth this line
+if [ ! -f "/storage/.config/retroarch/retroarch.cfg" ]; then
+mkdir -p /storage/.config/retroarch
+cp /etc/retroarch.cfg /storage/.config/retroarch/retroarch.cfg
+fi 
+
+
 
 DEFE=$(sed -n 's|\s*<string name="Sx05RE_BOOT" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
