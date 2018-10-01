@@ -4,9 +4,6 @@
   <section id="games">
     <category id="gamesgeneral">
       <group id="1">
-        <setting id="gamesgeneral.enable">
-          <default>true</default>
-        </setting>
         <setting id="gamesgeneral.enablerewind">
           <default>false</default>
         </setting>
@@ -19,9 +16,6 @@
       <group id="1">
         <setting id="videoscreen.screen">
           <visible>false</visible>
-        </setting>
-        <setting id="videoscreen.limitedrange">
-          <level>1</level>
         </setting>
       </group>
       <group id="3">

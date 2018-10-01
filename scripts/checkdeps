@@ -80,15 +80,15 @@ case "$DISTRO" in
       files_pkg=(glibc-headers ncurses-devel)
       perl_pkg=(perl-JSON perl-XML-parser)
       ;;
-    gentoo)
+    gentoo|sabayon)
       deps+=(g++ mkfontscale mkfontdir bdftopcf xsltproc java python)
       deps_pkg+=("gcc[cxx]" mkfontscale mkfontdir bdftopcf libxslt virtual/jre python)
       files_pkg=(glibc ncurses)
       perl_pkg=(JSON XML-Parser)
       ;;
     arch|manjaro)
-      deps+=(g++ mkfontscale mkfontdir bdftopcf xsltproc java python)
-      deps_pkg+=(g++ xorg-mkfontscale xorg-mkfontdir xorg-bdftopcf libxslt "java-runtime-common jdk8-openjdk" python2)
+      deps+=(g++ mkfontscale mkfontdir bdftopcf xsltproc java python rpcgen)
+      deps_pkg+=(g++ xorg-mkfontscale xorg-mkfontdir xorg-bdftopcf libxslt "java-runtime-common jdk8-openjdk" python2 rpcsvc-proto)
       perl_pkg=(perl-json perl-xml-parser)
       ;;
     opensuse)
@@ -142,6 +142,9 @@ if [ "${#need[@]}" -gt 0 ]; then
       ;;
     gentoo)
       get_yes_no && sudo emerge --ask --deep "${need_pkg[@]}"
+      ;;
+    sabayon)
+      get_yes_no && sudo equo install --ask "${need_pkg[@]}"
       ;;
     mageia)
       get_yes_no && sudo urpmi "${need_pkg[@]}"

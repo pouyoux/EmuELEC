@@ -15,16 +15,16 @@ PKG_PATCH_DIRS="$KODI_VENDOR"
 
 case $KODI_VENDOR in
   raspberrypi)
-    PKG_VERSION="tag" #Leia BetaX
-    PKG_SHA256="sha-for-tag"
+    PKG_VERSION="newclock5_18.0b2-Leia"
+    PKG_SHA256="28ba41ea6a942f4399b98e300596ea4a85ac043c8358c9eae9f2d0e0bee9aa99"
     PKG_URL="https://github.com/popcornmix/xbmc/archive/$PKG_VERSION.tar.gz"
-    PKG_SOURCE_DIR="xbmc-$PKG_VERSION*"
+    PKG_SOURCE_NAME="kodi-$KODI_VENDOR-$PKG_VERSION.tar.gz"
     ;;
   *)
-    PKG_VERSION="f08d8686e96edcfbe065d4e5094ab6221da057b9" #Leia Beta 1
-    PKG_SHA256="eec4e71d836894c39cd722eb3a1b73e2ee678aeadb64abcea2d85227d871bb86"
+    PKG_VERSION="1b4f69caea968bc24fb948ba1140720026d87996"
+    PKG_SHA256="97a22b642ce380808e51db0501d4bcd3e7dc20bed49f4c317c52cef309944080"
     PKG_URL="https://github.com/xbmc/xbmc/archive/$PKG_VERSION.tar.gz"
-    PKG_SOURCE_DIR="xbmc-$PKG_VERSION*"
+    PKG_SOURCE_NAME="kodi-$PKG_VERSION.tar.gz"
     ;;
 esac
 

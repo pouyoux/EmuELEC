@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
+# Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="device-trees-amlogic"
-PKG_VERSION="e6773bd"
-PKG_SHA256="8161b7f8b1e1f41281a56a4a8b6ec4edfd899567bef321390fa21b6f182d9c34"
+PKG_VERSION="e3f2187440c1821ba81a5616b869b9301a9c40fc"
+PKG_SHA256="ca84c35200a54de942bf88902c0aa3913126113e9cdd06df4d5c7a8e8893fdf0"
 PKG_LICENSE="GPL"
+PKG_SITE="https://github.com/CoreELEC/device-trees-amlogic"
 PKG_URL="https://github.com/CoreELEC/device-trees-amlogic/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_IS_KERNEL_PKG="yes"
