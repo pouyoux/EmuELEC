@@ -34,9 +34,9 @@ PKG_LONGDESC="jscal, jstest, and jsattach utilities for the Linux joystick drive
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-post_unpack() {
-  mv $BUILD/joystick-$PKG_VERSION $BUILD/$PKG_NAME-$PKG_VERSION
-}
+# post_unpack() {
+#  mv $BUILD/joystick-$PKG_VERSION $BUILD/$PKG_NAME-$PKG_VERSION
+# }
 
 make_target() {
   $CC -lm -o jscal jscal.c $CFLAGS
