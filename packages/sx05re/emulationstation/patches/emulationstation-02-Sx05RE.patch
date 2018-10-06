@@ -268,31 +268,6 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  void GuiMenu::openScraperSettings()
  {
  	auto s = new GuiSettings(mWindow, "SCRAPER");
-@@ -95,13 +340,15 @@
- 
- 	if (UIModeController::getInstance()->isUIModeFull())
- 	{
--#ifdef _RPI_
-+
- 		// volume control device
- 		auto vol_dev = std::make_shared< OptionListComponent<std::string> >(mWindow, "AUDIO DEVICE", false);
- 		std::vector<std::string> transitions;
- 		transitions.push_back("PCM");
- 		transitions.push_back("Speaker");
- 		transitions.push_back("Master");
-+		transitions.push_back("AMLM8AUDIO");
-+		transitions.push_back("AML-M8AUDIO");
- 		for(auto it = transitions.cbegin(); it != transitions.cend(); it++)
- 			vol_dev->add(*it, *it, Settings::getInstance()->getString("AudioDevice") == *it);
- 		s->addWithLabel("AUDIO DEVICE", vol_dev);
-@@ -110,7 +357,6 @@
- 			VolumeControl::getInstance()->deinit();
- 			VolumeControl::getInstance()->init();
- 		});
--#endif
- 
- 		// disable sounds
- 		auto sounds_enabled = std::make_shared<SwitchComponent>(mWindow);
 @@ -412,57 +658,67 @@
  	auto s = new GuiSettings(mWindow, "QUIT");
  
@@ -403,18 +378,3 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  
  	MenuComponent mMenu;
  	TextComponent mVersion;
---- a/es-app/src/VolumeControl.cpp	2018-03-09 12:11:38.000000000 -0600
-+++ b/es-app/src/VolumeControl.cpp	2018-03-16 17:43:59.431463781 -0600
-@@ -86,9 +86,9 @@
- 	//try to open mixer device
- 	if (mixerHandle == nullptr)
- 	{
--		#ifdef _RPI_
-+	//	
- 		mixerName = Settings::getInstance()->getString("AudioDevice").c_str();
--		#endif
-+	//	
- 
- 		snd_mixer_selem_id_alloca(&mixerSelemId);
- 		//sets simple-mixer index and name
-
