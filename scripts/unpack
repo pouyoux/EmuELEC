@@ -2,22 +2,21 @@
 
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
+# Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 . config/options $1
 
 if [ -z "$1" ]; then
-  echo "usage: $0 package_name"
-  exit 1
+  die "usage: $0 package_name"
 fi
 
 if [ ! -f $PKG_DIR/package.mk ]; then
-  printf "$(print_color CLR_ERROR "$1: no package.mk file found")\n"
-  exit 1
+  die "$(print_color CLR_ERROR "$1: no package.mk file found")"
 fi
 
 $SCRIPTS/get $1
 
-STAMP=$PKG_BUILD/.libreelec-unpack
+STAMP="$PKG_BUILD/.libreelec-unpack"
 
 mkdir -p $BUILD
 
@@ -163,11 +162,11 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
       fi
 
       if [ -f "$i" ]; then
-        printf "%${BUILD_INDENT}c $(print_color CLR_APPLY_PATCH "APPLY PATCH") $(print_color CLR_PATCH_DESC "${PATCH_DESC}")   ${i#$ROOT/}\n" ' '>&$SILENT_OUT
+        build_msg "CLR_APPLY_PATCH" "APPLY PATCH $(print_color "CLR_PATCH_DESC" "${PATCH_DESC}")" "${i#${ROOT}/}"
         if grep -qE '^GIT binary patch$|^rename from|^rename to' $i; then
-          cat $i | git apply --directory=`echo "$PKG_BUILD" | cut -f1 -d\ ` -p1 --verbose --whitespace=nowarn --unsafe-paths >&$VERBOSE_OUT
+          cat $i | git apply --directory=$(echo "$PKG_BUILD" | cut -f1 -d\ ) -p1 --verbose --whitespace=nowarn --unsafe-paths >&$VERBOSE_OUT
         else
-          cat $i | patch -d `echo "$PKG_BUILD" | cut -f1 -d\ ` -p1 >&$VERBOSE_OUT
+          cat $i | patch -d $(echo "$PKG_BUILD" | cut -f1 -d\ ) -p1 >&$VERBOSE_OUT
         fi
       fi
     done
@@ -178,8 +177,8 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
   fi
 
   if [ ! "$PKG_NAME" = "configtools" ] ; then
-    for config in `find $PKG_BUILD -name config.guess | sed 's/config.guess//'`; do
-      printf "%${BUILD_INDENT}c $(print_color CLR_FIXCONFIG "FIXCONFIG")   $config\n" ' '
+    for config in $(find "$PKG_BUILD" -name config.guess | sed 's/config.guess//'); do
+      build_msg "CLR_FIXCONFIG" "FIXCONFIG" "${config}"
 
       [ -f "$config/config.guess" -a -f $TOOLCHAIN/configtools/config.guess ] && \
         cp -f $TOOLCHAIN/configtools/config.guess $config
@@ -190,7 +189,7 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
 fi
 
 if [ "$PKG_SECTION" != "virtual" ]; then
-  mkdir -p $PKG_BUILD
+  mkdir -p "$PKG_BUILD"
 
   rm -f $STAMPS/$1/build_*
 

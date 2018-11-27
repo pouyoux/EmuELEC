@@ -2,13 +2,13 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="ffmpegx"
-PKG_VERSION="4.0.2"
-PKG_SHA256="5ec8d580ef8c357e79f46bf00faaf1c237e1377b1b473a42ea1c3b0fb80b6123"
+PKG_VERSION="4.1"
+PKG_SHA256="7afb163d6974693cdad742aa1224c33683c50845c67ee5ae35506efc631ac121"
 PKG_LICENSE="LGPLv2.1+"
 PKG_SITE="https://ffmpeg.org"
 PKG_URL="https://github.com/FFmpeg/FFmpeg/archive/n${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain aom bzip2 fdk-aac libvorbis openssl opus x264 x265 zlib"
-PKG_LONGDESC="FFmpegx is an complete FFmpeg build to support encoding and decoding"
+PKG_LONGDESC="FFmpegx is an complete FFmpeg build to support encoding and decoding."
 PKG_BUILD_FLAGS="-gold"
 
 # Dependencies

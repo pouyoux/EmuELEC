@@ -3,13 +3,13 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="audiodecoder.usf"
-PKG_VERSION="ccb1edc537435ae4070705d93ca6a3b67ed70785"
-PKG_SHA256="d0dc7bc7ad61bc19ec1297da4b04e2291ad27b68e0dc384d378e5106bba87709"
+PKG_VERSION="37369f4c048e71f1561d77042fbd7dd1e413b1d8"
+PKG_SHA256="a5fbd711bf70b59f85f8b7bd63c4662a3d3a01d4e907e0c53cf0af9ccc02b40a"
 PKG_REV="2"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/notspiff/audiodecoder.usf"
-PKG_URL="https://github.com/notspiff/audiodecoder.usf/archive/$PKG_VERSION.tar.gz"
+PKG_SITE="https://github.com/xbmc/audiodecoder.usf"
+PKG_URL="https://github.com/xbmc/audiodecoder.usf/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
 PKG_SECTION=""
 PKG_SHORTDESC="audiodecoder.usf"

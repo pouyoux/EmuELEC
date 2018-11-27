@@ -2,9 +2,9 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.picodrive"
-PKG_VERSION="48db908"
-PKG_SHA256="edb5d0db5eaddb693a271db99dbe1732083188849b278aabc6ef29d6f1a660c2"
-PKG_REV="106"
+PKG_VERSION="3eea365eaf09e52fc5dbb3a37dea1695deb87e82"
+PKG_SHA256="8413de8099388b0b988cb7a4564e010cb11e05d3616acc772873be0c4edc0125"
+PKG_REV="109"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/kodi-game/game.libretro.picodrive"

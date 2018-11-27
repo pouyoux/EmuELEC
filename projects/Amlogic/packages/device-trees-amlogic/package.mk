@@ -3,12 +3,13 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="device-trees-amlogic"
-PKG_VERSION="e3f2187440c1821ba81a5616b869b9301a9c40fc"
-PKG_SHA256="ca84c35200a54de942bf88902c0aa3913126113e9cdd06df4d5c7a8e8893fdf0"
+PKG_VERSION="a72a4bf02cd6e38afc9fa3b1b4177bc1dbd5ccc1"
+PKG_SHA256="34d18b0e52e2ebe593df73d204bb5a9ce44c8f0cd2345c8848bbab4949c85ac0"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/CoreELEC/device-trees-amlogic"
 PKG_URL="https://github.com/CoreELEC/device-trees-amlogic/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="Device trees for Amlogic devices." 
 PKG_IS_KERNEL_PKG="yes"
 PKG_TOOLCHAIN="manual"
 
@@ -58,7 +59,7 @@ make_target() {
 
   # Compile device trees
   kernel_make $DTB_LIST_FILTERED
-  mv arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic/*.dtb $PKG_BUILD
+  cp arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic/*.dtb $PKG_BUILD
 
   popd > /dev/null
 }

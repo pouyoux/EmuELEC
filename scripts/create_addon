@@ -36,7 +36,7 @@ DESCRIPTION
               - the name of the addon
               - a group name of addons
                   * all - all addons found under packages and project/*/packages
-                  * offical - all addons found under packages/addons
+                  * official - all addons found under packages/addons
                   * binary - all addons found under packages/mediacenter/kodi-binary-addons
               - a regex term (grep styled), the term is automatic sorounded with string begin and end (^[term]$)
 
@@ -62,7 +62,7 @@ function find_addons() {
   local _filter="."
   case $1 in
     binary)      _paths="$ROOT/packages/mediacenter/kodi-binary-addons";;
-    offical)     _paths="$ROOT/packages/addons";;
+    official)    _paths="$ROOT/packages/addons";;
     all)         _paths="$ROOT/packages $ROOT/projects/*/packages";;
     *)           _paths="$ROOT/packages $ROOT/projects/*/packages";
                  _filter="^$1$";;
@@ -93,9 +93,9 @@ function find_addons() {
 
     # abort when nothing found and not embedded
     if [ $? -ne 0 ]; then
-      printf  "$(print_color CLR_ERROR "ERROR: '$1' matches nothing...")\n" ' '>&$SILENT_OUT
-      printf  "for more informations type: ./scripts/create_addon --help\n" ' '>&$SILENT_OUT
-      exit 1
+      echo  "$(print_color CLR_ERROR "ERROR: '$1' matches nothing...")" >&$SILENT_OUT
+      echo  "for more informations type: ./scripts/create_addon --help" >&$SILENT_OUT
+      die
     fi
   fi
 
@@ -113,12 +113,12 @@ pack_addon() {
       if [ "$ADDON_OVERWRITE" = "yes" ]; then
         rm $ADDON_INSTALL_DIR/$PKG_ADDON_ID-$ADDONVER.zip
       else
-        printf  "%${BUILD_INDENT}c $(print_color CLR_WARNING "*** WARNING: $PKG_ADDON_ID-$ADDONVER.zip already exists. not overwriting it ***")\n" ' '>&$SILENT_OUT
+        build_msg "CLR_WARNING" "*** WARNING: ${PKG_ADDON_ID}-${ADDONVER}.zip already exists. Not overwrittng it. ***"
         return 0
       fi
     fi
     cd $ADDON_BUILD
-    printf  "%${BUILD_INDENT}c $(print_color CLR_INFO "*** compressing Addon $PKG_ADDON_ID ... ***")\n" ' '>&$SILENT_OUT
+    build_msg "CLR_INFO" "*** compressing addon ${PKG_ADDON_ID} ... ***"
     $TOOLCHAIN/bin/7za a -l -mx9 -bsp0 -bso0 -tzip $PKG_ADDON_ID-$ADDONVER.zip $PKG_ADDON_ID
     cd - &>/dev/null
 
@@ -158,20 +158,20 @@ pack_addon() {
       ( cd $ADDON_JENKINS_DIR
         sha256sum $ADDON_JENKINS_ADDON_NAME.zip > $ADDON_JENKINS_ADDON_NAME.zip.sha256
       )
-      printf  "%${BUILD_INDENT}c $(print_color CLR_INFO "*** creating $ADDON_JENKINS_ADDON_NAME.zip for Jenkins complete ***")\n" ' '>&$SILENT_OUT
+      build_msg "CLR_INFO" "*** creating ${ADDON_JENKINS_ADDON_NAME}.zip for Jenkins complete ***"
     else
-      printf  "%${BUILD_INDENT}c $(print_color CLR_INFO "*** creating $PKG_ADDON_ID complete ***")\n" ' '>&$SILENT_OUT
+      build_msg "CLR_INFO" "*** creating  ${PKG_ADDON_ID} complete ***"
     fi
   fi
 }
 
 not_supported_arch() {
-  printf  "%${BUILD_INDENT}c $(print_color CLR_WARNING "*** SKIP: $PKG_ADDON_ID: '${DEVICE:-$PROJECT}' not supported ***")\n" ' '>&$SILENT_OUT
+  build_msg "CLR_WARNING" "*** SKIP: ${PKG_ADDON_ID} '${TARGET_ARCH}' not supported ***"
   exit 0
 }
 
 not_supported_device() {
-  printf  "%${BUILD_INDENT}c $(print_color CLR_WARNING "*** SKIP: $PKG_ADDON_ID: '$TARGET_ARCH' not supported ***")\n" ' '>&$SILENT_OUT
+  build_msg "CLR_WARNING" "*** SKIP: ${PKG_ADDON_ID}: '${DEVICE:-${PROJECT}}' not supported ***"
   exit 0
 }
 
@@ -265,7 +265,7 @@ case "$write_logs" in
 esac
 if [ -n "$log_path" ]; then
   mkdir -p "$log_path"
-  summary_file="$log_path/addon-summary.log"  
+  summary_file="$log_path/addon-summary.log"
   rm -f $summary_file
 fi
 
@@ -297,13 +297,13 @@ for addon in $(tr " " "\n" <<< $addons | sort -u); do
   fi
 
   # build package
-  printf "$(print_color CLR_BUILD "CREATE ADDON $addon") (${DEVICE:-$PROJECT}/$TARGET_ARCH)\n" ' '>&$SILENT_OUT
+  echo "$(print_color CLR_BUILD "CREATE ADDON $addon") (${DEVICE:-$PROJECT}/$TARGET_ARCH)" >&$SILENT_OUT
   _count+='x'
   ( build_addon $addon ) \
     2>&1 | tee $log_file
   if [ ${PIPESTATUS[0]} != 0 ]; then
     addons_failed+="$addon "
-    printf "$(print_color CLR_ERROR "ADDON FAILED $addon")\n" ' '>&$SILENT_OUT
+    echo "$(print_color CLR_ERROR "ADDON FAILED $addon")" >&$SILENT_OUT
     echo "failed: ${addon}" >> $summary_file
   else
     if [ "$remove_success_logs" = "true" ]; then
@@ -321,10 +321,9 @@ fi
 # print summary
 if [ "$_count" != 'x' ]; then
   if [ -z "$addons_failed" ]; then
-    printf "$(print_color CLR_INFO "ALL ADDONS BUILDS SUCCESSFUL")\n"
+    echo "$(print_color CLR_INFO "ALL ADDONS BUILDS SUCCESSFUL")"
     exit 0
   else
-    printf "$(print_color CLR_ERROR "FAILED ADDONS: $addons_failed")\n"
-    exit 1
+    die "$(print_color CLR_ERROR "FAILED ADDONS: $addons_failed")"
   fi
 fi

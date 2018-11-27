@@ -2,16 +2,12 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-gw"
-PKG_VERSION="b6bcc81340ba442972e3f19179bf61115105c739"
-PKG_SHA256="03ec51e251bed58ea13981c8346c5fafb32944871e7d7c8815310534bed0ca2b"
-PKG_ARCH="any"
+PKG_VERSION="92717c64928274f12ea8db645f962cd1e4a1bc5b"
+PKG_SHA256="44b49848786bc04e5a3efd7c6a7594741f52040137da2cb7841f16d858158ece"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/gw-libretro"
 PKG_URL="https://github.com/libretro/gw-libretro/archive/$PKG_VERSION.tar.gz"
-PKG_SOURCE_DIR="gw-libretro-$PKG_VERSION*"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_SECTION="emulation"
-PKG_SHORTDESC="game.libretro.gw: gw for Kodi"
 PKG_LONGDESC="game.libretro.gw: gw for Kodi"
 
 PKG_LIBNAME="gw_libretro.so"

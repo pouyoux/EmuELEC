@@ -2,9 +2,9 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.melonds"
-PKG_VERSION="8263fa7"
-PKG_SHA256="15df7d44cc990cbea20e9003338f8621f2961e8c5033acda6346495e5361c299"
-PKG_REV="100"
+PKG_VERSION="f50a583183f59c230bb9daa7067afa35e5b510b1"
+PKG_SHA256="5f494336c6ff8e38cb2ae1c5a82332a67fb63a4a20f813bded8616065ccbe5be"
+PKG_REV="103"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/kodi-game/game.libretro.melonds"

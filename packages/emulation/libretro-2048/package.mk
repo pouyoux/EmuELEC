@@ -2,16 +2,12 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-2048"
-PKG_VERSION="82843002384e8d9b495f80acdee8bdf0e2bde74c"
-PKG_SHA256="1676cdf0479b31b0827ce9eac54630493b7dc76b007716f24b4fb5bde12ec858"
-PKG_ARCH="any"
+PKG_VERSION="8fa47bd4d4bf5808736461c9c33cc32ad872f61b"
+PKG_SHA256="2e11a5f5a2113f655d2c00a62f4f47e4075b540ba7ea8e689c69a4e53f75137c"
 PKG_LICENSE="Public domain"
 PKG_SITE="https://github.com/libretro/libretro-2048"
 PKG_URL="https://github.com/libretro/libretro-2048/archive/$PKG_VERSION.tar.gz"
-PKG_SOURCE_DIR="libretro-2048-$PKG_VERSION*"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_SECTION="emulation"
-PKG_SHORTDESC="game.libretro.2048: 2048 for Kodi"
 PKG_LONGDESC="game.libretro.2048: 2048 for Kodi"
 
 PKG_LIBNAME="2048_libretro.so"

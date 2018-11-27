@@ -2,13 +2,11 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="dvb-latest"
-PKG_VERSION="44385b9"
-#PKG_SHA256="bd42e350cd95b3fcdcb1a138d2445c6de595c0b26851d4bbb50c18118bf8389b"
-PKG_ARCH="any"
+PKG_VERSION="9f419c414672676f63e85a61ea99df0ddcd6e9a7"
+PKG_SHA256="284026f37db8880247f94e8fb763107c47ac44460d1b7819e076c61ccec9b86c"
 PKG_LICENSE="GPL"
 PKG_SITE="http://git.linuxtv.org/media_build.git"
 PKG_URL="https://git.linuxtv.org/media_build.git/snapshot/${PKG_VERSION}.tar.gz"
-PKG_SOURCE_DIR="${PKG_VERSION}"
 PKG_DEPENDS_TARGET="toolchain linux media_tree"
 PKG_NEED_UNPACK="$LINUX_DEPENDS media_tree"
 PKG_SECTION="driver.dvb"
@@ -41,8 +39,8 @@ make_target() {
     echo "obj-y += wetek/" >> "$PKG_BUILD/linux/drivers/media/platform/meson/Makefile"
   fi
 
-  # make staging config (all + experimental)
-  kernel_make VER=$KERNEL_VER SRCDIR=$(kernel_path) stagingconfig
+  # make config all
+  kernel_make VER=$KERNEL_VER SRCDIR=$(kernel_path) allyesconfig
 
   # hack to workaround media_build bug
   if [ "$PROJECT" = "Amlogic" ]; then
@@ -57,6 +55,7 @@ make_target() {
     sed -e 's/CONFIG_VIDEO_TVP7002=m/# CONFIG_VIDEO_TVP7002 is not set/g' -i $PKG_BUILD/v4l/.config
     sed -e 's/CONFIG_VIDEO_CADENCE_CSI2RX=m/# CONFIG_VIDEO_CADENCE_CSI2RX is not set/g' -i $PKG_BUILD/v4l/.config
     sed -e 's/CONFIG_VIDEO_CADENCE_CSI2TX=m/# CONFIG_VIDEO_CADENCE_CSI2TX is not set/g' -i $PKG_BUILD/v4l/.config
+    sed -e 's/# CONFIG_MEDIA_TUNER_TDA18250 is not set/CONFIG_MEDIA_TUNER_TDA18250=m/g' -i $PKG_BUILD/v4l/.config
  fi
 
   kernel_make VER=$KERNEL_VER SRCDIR=$(kernel_path)

@@ -2,9 +2,9 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.beetle-psx"
-PKG_VERSION="ee4270fde54c2207094426ac902eb3352c9b0d6f"
-PKG_SHA256="a74ac441751f027a5460b74dc4bcc8ec093fda4f39cf6bbd03ba529c2c3edb50"
-PKG_REV="107"
+PKG_VERSION="cc3c50ca8b8c595cc85e05ad6fb08642e0c16ba5"
+PKG_SHA256="c9d094682eede970eced2ff1e725703e6d2779749b5be3d07f362959d3733894"
+PKG_REV="110"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/kodi-game/game.libretro.beetle-psx"

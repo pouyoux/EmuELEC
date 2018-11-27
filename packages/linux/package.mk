@@ -3,15 +3,12 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="linux"
-PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kernel.org"
 PKG_DEPENDS_HOST="ccache:host"
 PKG_DEPENDS_TARGET="toolchain cpio:host kmod:host pciutils xz:host wireless-regdb keyutils $KERNEL_EXTRA_DEPENDS_TARGET"
 PKG_DEPENDS_INIT="toolchain"
 PKG_NEED_UNPACK="$LINUX_DEPENDS"
-PKG_SECTION="linux"
-PKG_SHORTDESC="linux26: The Linux kernel 2.6 precompiled kernel binary image and modules"
 PKG_LONGDESC="This package contains a precompiled kernel image and the modules."
 PKG_IS_KERNEL_PKG="yes"
 
@@ -27,8 +24,8 @@ case "$LINUX" in
     PKG_BUILD_PERF="no"
     ;;
   amlogic-3.14)
-    PKG_VERSION="16204871f486aba0ddacd55a935a401526942d2c"
-    PKG_SHA256="78a35787d4c82d09252d97a89acb239823ade4aafd850e66613dfc778188d621"
+    PKG_VERSION="d51bd2066498934fa9884d456e57373203f51068"
+    PKG_SHA256="cdbfd86b6c52173bea428b5e1d72d7a71658e7764e7443ca1e216434ae3b53d8"
     PKG_URL="https://github.com/CoreELEC/linux-amlogic/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="linux-$LINUX-$PKG_VERSION.tar.gz"
     PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET aml-dtbtools:host"
@@ -41,14 +38,14 @@ case "$LINUX" in
     PKG_SOURCE_NAME="linux-$LINUX-$PKG_VERSION.tar.gz"
     ;;
   raspberrypi)
-    PKG_VERSION="d2b2e0421388d5b7acd1cba9bd197ff0ebee95ae" # 4.18.10
-    PKG_SHA256="4013f17aed011b69cac4ca940e0b7a188e701aea8b70ffef14fc3196da091157"
+    PKG_VERSION="44e14b21ac57b47246b903b73fa9b9f2d78ff81e" # 4.19.4
+    PKG_SHA256="4cd3aa5167470dacfe1f6e0bcbf09f4461bcb8db1db06b3405c8fcfc0678218a"
     PKG_URL="https://github.com/raspberrypi/linux/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="linux-$LINUX-$PKG_VERSION.tar.gz"
     ;;
   *)
-    PKG_VERSION="4.18.10"
-    PKG_SHA256="10604f7f8ccab5e7ce71f2e87d1410be679cd11c29c6c608ce35df1db40991de"
+    PKG_VERSION="4.19.4"
+    PKG_SHA256="a38f5606bba1f5611c798541f6c3d43267b8599d9e3167471d4b662e33ff47aa"
     PKG_URL="https://www.kernel.org/pub/linux/kernel/v4.x/$PKG_NAME-$PKG_VERSION.tar.xz"
     PKG_PATCH_DIRS="default"
     ;;
@@ -223,40 +220,16 @@ make_target() {
   kernel_make $KERNEL_TARGET $KERNEL_MAKE_EXTRACMD modules
 
   if [ "$BUILD_ANDROID_BOOTIMG" = "yes" ]; then
-    DTB_BLOBS=($(ls arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic/*.dtb 2>/dev/null || true))
-    DTB_BLOBS_COUNT="${#DTB_BLOBS[@]}"
-    DTB_BLOB_OUTPUT="arch/$TARGET_KERNEL_ARCH/boot/dtb.img"
-    ANDROID_BOOTIMG_SECOND="--second $DTB_BLOB_OUTPUT"
-
-    if [ "$DTB_BLOBS_COUNT" -gt 1 ]; then
-      $TOOLCHAIN/bin/dtbTool -o arch/$TARGET_KERNEL_ARCH/boot/dtb.img -p scripts/dtc/ arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic/
-    elif [ "$DTB_BLOBS_COUNT" -eq 1 ]; then
-      cp -PR $DTB_BLOBS $DTB_BLOB_OUTPUT
-    else
-      ANDROID_BOOTIMG_SECOND=""
-    fi
-
-    LDFLAGS="" mkbootimg --kernel arch/$TARGET_KERNEL_ARCH/boot/$KERNEL_TARGET --ramdisk $BUILD/image/initramfs.cpio \
-      $ANDROID_BOOTIMG_SECOND $ANDROID_BOOTIMG_OPTIONS --output arch/$TARGET_KERNEL_ARCH/boot/boot.img
-
+    find_file_path bootloader/mkbootimg && source ${FOUND_PATH}
     mv -f arch/$TARGET_KERNEL_ARCH/boot/boot.img arch/$TARGET_KERNEL_ARCH/boot/$KERNEL_TARGET
-
   fi
 }
 
 makeinstall_target() {
   if [ "$BOOTLOADER" = "u-boot" ]; then
     mkdir -p $INSTALL/usr/share/bootloader
-    if [ -d arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic -a -f arch/$TARGET_KERNEL_ARCH/boot/dtb.img ]; then
-      if [ "$DEVICE" != "S905" -a "$DEVICE" != "S912" ]; then
-        cp arch/$TARGET_KERNEL_ARCH/boot/dtb.img $INSTALL/usr/share/bootloader/dtb.img 2>/dev/null || :
-      fi
-    else
-      for dtb in arch/$TARGET_KERNEL_ARCH/boot/dts/*.dtb arch/$TARGET_KERNEL_ARCH/boot/dts/*/*.dtb; do
-        if [ -f $dtb ]; then
-          cp -v $dtb $INSTALL/usr/share/bootloader
-        fi
-      done
+    if [ -d arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic ]; then
+      cp arch/$TARGET_KERNEL_ARCH/boot/*dtb.img $INSTALL/usr/share/bootloader/ 2>/dev/null || :
     fi
   elif [ "$BOOTLOADER" = "bcm2835-bootloader" ]; then
     mkdir -p $INSTALL/usr/share/bootloader/overlays

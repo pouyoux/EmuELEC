@@ -2,14 +2,13 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="media_tree"
-PKG_VERSION="2018-09-11-985cdcb08a04"
-PKG_SHA256="309230df9ce4e72f0dcc0e4f63c69bc28c3a622c2e502f7844eaf10d7edd2843"
-PKG_ARCH="any"
+PKG_VERSION="2018-10-09-8caec72e8cbf"
+PKG_SHA256="39f579c936ac78dec82825840142d5f856203e8133aa238aca5fe95c7a70e8ae"
 PKG_LICENSE="GPL"
 PKG_SITE="https://git.linuxtv.org/media_tree.git"
 PKG_URL="http://linuxtv.org/downloads/drivers/linux-media-${PKG_VERSION}.tar.bz2"
 PKG_DEPENDS_TARGET="toolchain"
-PKG_SECTION="driver"
+PKG_NEED_UNPACK="$LINUX_DEPENDS"
 PKG_LONGDESC="Source of Linux Kernel media_tree subsystem to build with media_build."
 PKG_TOOLCHAIN="manual"
 
