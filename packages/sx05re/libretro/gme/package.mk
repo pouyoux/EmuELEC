@@ -19,12 +19,12 @@
 ################################################################################
 
 PKG_NAME="gme"
-PKG_VERSION="61613d1"
+PKG_VERSION="a47f71f"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/libretro-gme"
-PKG_URL="https://github.com/libretro/libretro-gme/archive/$PKG_VERSION.tar.gz"
+PKG_GIT_URL="$PKG_SITE"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
@@ -34,10 +34,6 @@ PKG_LONGDESC="Port of blargg's Game_Music_Emu library."
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
-
-# post_unpack() {
- # mv $BUILD/libretro-gme-$PKG_VERSION* $BUILD/$PKG_NAME-$PKG_VERSION
-# }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro

@@ -19,9 +19,9 @@
 ################################################################################
 
 PKG_NAME="puae"
-PKG_VERSION="ed96bdd"
+PKG_VERSION="a739e45"
 PKG_REV="1"
-PKG_ARCH="any"
+PKG_ARCH="arm i386 x86_64"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/libretro/libretro-uae"
 PKG_GIT_URL="$PKG_SITE"

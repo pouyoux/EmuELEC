@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="sameboy"
-PKG_VERSION="9ae8304"
+PKG_VERSION="e1bdc71"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MIT"
@@ -34,7 +34,6 @@ PKG_LONGDESC="Gameboy and Gameboy Color emulator written in C"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
-PKG_TOOLCHAIN="auto"
 PKG_AUTORECONF="no"
 
 make_target() {

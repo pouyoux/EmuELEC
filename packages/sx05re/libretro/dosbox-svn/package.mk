@@ -18,47 +18,42 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="desmume"
-PKG_VERSION="5f6f1ee"
+PKG_NAME="dosbox-svn"
+PKG_VERSION="b3856be"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/desmume"
-PKG_GIT_URL="$PKG_SITE"
-PKG_DEPENDS_TARGET="toolchain"
+PKG_SITE="https://github.com/fr500/dosbox-svn"
+PKG_URL="https://github.com/fr500/dosbox-svn/archive/$PKG_VERSION.zip"
+PKG_DEPENDS_TARGET="toolchain SDL SDL_net"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
-PKG_SHORTDESC="libretro wrapper for desmume NDS emulator."
-PKG_LONGDESC="libretro wrapper for desmume NDS emulator."
+PKG_SHORTDESC="Upstream port of DOSBox to libretro"
+PKG_LONGDESC="Upstream port of DOSBox to libretro"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
-if [ "$OPENGL" == "no" -o "$OPENGL" == "" ]; then
-  OGL=0
-else
-  OGL=1
-fi
-
-post_patch() {
-  # enable OGL back if present
-  if [ "$OPENGL" != "no" -a "$OPENGL" != "" ]; then
-    patch --reverse -d `echo "$PKG_BUILD" | cut -f1 -d\ ` -p1 < $PKG_DIR/patches/desmume-002-disable-ogl.patch
-  fi
+pre_configure_target() {
+  strip_lto
 }
 
 make_target() {
-  if [ "$ARCH" == "arm" ]; then
-    make -C desmume/src/frontend/libretro platform=armv LDFLAGS="$LDFLAGS -lpthread" HAVE_GL=$OGL DESMUME_OPENGL=$OGL DESMUME_OPENGL_CORE=$OGL # DESMUME_JIT_ARM=1
-  elif [ "$ARCH" == "aarch64" ]; then
-    make -C desmume/src/frontend/libretro platform=arm64-unix LDFLAGS="$LDFLAGS -lpthread" HAVE_GL=$OGL DESMUME_OPENGL=$OGL DESMUME_OPENGL_CORE=$OGL
+  if [ "$ARCH" = "aarch64" ]; then
+    make -C libretro target=arm64 WITH_EMBEDDED_SDL=0
+  elif [ "$ARCH" = "arm" ]; then
+    make -C libretro target=arm WITH_EMBEDDED_SDL=0
+  elif [ "$ARCH" = "x86_64" ]; then
+    make -C libretro target=x86_64 WITH_EMBEDDED_SDL=0
+  elif [ "$ARCH" = "i386" ]; then 
+    make -C libretro target=x86 WITH_EMBEDDED_SDL=0
   else
-    make -C desmume/src/frontend/libretro LDFLAGS="$LDFLAGS -lpthread" HAVE_GL=$OGL DESMUME_OPENGL=$OGL DESMUME_OPENGL_CORE=$OGL
+    make -C libretro WITH_EMBEDDED_SDL=0
   fi
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp desmume/src/frontend/libretro/desmume_libretro.so $INSTALL/usr/lib/libretro/
+  cp $PKG_BUILD/libretro/dosbox_svn_libretro.so $INSTALL/usr/lib/libretro
 }

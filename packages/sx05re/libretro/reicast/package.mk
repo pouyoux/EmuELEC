@@ -19,9 +19,9 @@
 ################################################################################
 
 PKG_NAME="reicast"
-PKG_VERSION="07002f1"
+PKG_VERSION="01ffff9"
 PKG_REV="1"
-PKG_ARCH="any"
+PKG_ARCH="arm i386 x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/reicast-emulator"
 PKG_GIT_URL="$PKG_SITE"
