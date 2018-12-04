@@ -55,10 +55,11 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
 
   . $PKG_DIR/package.mk
 
-  if [ -z "$PKG_GIT_URL" ] ; then
+  pkg_call_optional pre_unpack
 
-    if [ "$(type -t pre_unpack)" = "function" ]; then
-      pre_unpack
+  if ! pkg_call unpack; then
+    if [ -n "$PKG_URL" ]; then
+      $SCRIPTS/extract $1 $BUILD
     fi
 
     if [ "$(type -t unpack)" = "function" ]; then
@@ -95,14 +96,10 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
     mkdir -p "${BUILD}/${PKG_NAME}-${PKG_VERSION}"
   fi
 
-  if [ "$(type -t post_unpack)" = "function" ]; then
-    post_unpack
-  fi
+  pkg_call_optional post_unpack
 
   if [ "${PKG_SKIP_PATCHES}" != "yes" ]; then
-    if [ "$(type -t pre_patch)" = "function" ]; then
-      pre_patch
-    fi
+    pkg_call_optional pre_patch
 
     if [ "$TARGET_ARCH" = "x86_64" ]; then
       PATCH_ARCH="x86"
@@ -171,9 +168,7 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
       fi
     done
 
-    if [ "$(type -t post_patch)" = "function" ]; then
-      post_patch
-    fi
+    pkg_call_optional post_patch
   fi
 
   if [ ! "$PKG_NAME" = "configtools" ] ; then
