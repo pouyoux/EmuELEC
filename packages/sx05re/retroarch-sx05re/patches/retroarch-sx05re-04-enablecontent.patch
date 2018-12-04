@@ -64,23 +64,21 @@
  }
 --- a/menu/menu_setting.c	2017-03-12 17:52:42.000000000 -0600
 +++ b/menu/menu_setting.c	2017-03-13 19:05:16.526319525 -0600
-@@ -3760,6 +3760,7 @@
-               parent_group);
+@@ -2459,7 +2459,7 @@
  #endif
  
-+/* 
  #if defined(HAVE_LAKKA)
- #ifdef HAVE_LAKKA_SWITCH
-         CONFIG_ACTION(
-@@ -3794,9 +3795,9 @@
+-         CONFIG_ACTION(
++    /*     CONFIG_ACTION(
+                list, list_info,
+                MENU_ENUM_LABEL_REBOOT,
+                MENU_ENUM_LABEL_VALUE_REBOOT,
+@@ -2475,7 +2475,7 @@
                 &group_info,
                 &subgroup_info,
                 parent_group);
 -         menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_SHUTDOWN);
-+         menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_SHUTDOWN); 
++         menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_SHUTDOWN);*/
  #endif
--
-+*/
+ 
           CONFIG_ACTION(
-                list, list_info,
-                MENU_ENUM_LABEL_DRIVER_SETTINGS,
