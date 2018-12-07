@@ -52,10 +52,10 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +		fbachoices.push_back("fbalpha");
 +		fbachoices.push_back("mame2003");
 +		fbachoices.push_back("mame2003-midway");
++		fbachoices.push_back("mame2003_plus");
 +		fbachoices.push_back("mame2010");
 +		fbachoices.push_back("mame2014");
-+		/*fbachoices.push_back("mame2000");*/
-+		/*devices.push_back("Other");*/
++		fbachoices.push_back("AdvanceMame");
 +		/*devices.push_back("Options");*/
 +		for (auto it = fbachoices.cbegin(); it != fbachoices.cend(); it++)
 +		sx05re_fba_def->add(*it, *it, Settings::getInstance()->getString("Sx05RE_FBA_CORE") == *it);
