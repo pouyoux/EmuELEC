@@ -18,7 +18,7 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="retroarch-sx05re"
+PKG_NAME="retroarch"
 PKG_VERSION="c9c6c5a"
 PKG_REV="9"
 PKG_ARCH="any"
