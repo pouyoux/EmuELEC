@@ -375,7 +375,7 @@ input_map[service_coin7] auto
 input_map[service_coin8] auto
 input_map[start1] joystick_button[046d_c21d,7] or keyboard[0e8f_2519,1]
 input_map[ui_cancel] joystick_button[046d_c21d,10] or keyboard[0e8f_2519,esc]
-input_map[ui_configure] joystick_button[046d_c21d,8] or keyboard[0e8f_2519,tab]
+input_map[ui_configure] joystick_button[046d_c21d,9] or keyboard[0e8f_2519,tab]
 input_map[ui_toggle_ui] auto
 input_steadykey no
 lcd_server none

@@ -1,0 +1,11 @@
+--- a/advance/linux/joverride.dat	2018-09-25 14:22:28.000000000 -0500
++++ b/advance/linux/joverride.dat	2018-12-10 15:01:05.783686298 -0600
+@@ -700,6 +700,8 @@
+ 		{ 0x046d, 0xc21d, "Logitech Gamepad F310", 5, "tr", JOYB_TR },
+ 		{ 0x046d, 0xc21d, "Logitech Gamepad F310", 6, "select", JOYB_SELECT },
+ 		{ 0x046d, 0xc21d, "Logitech Gamepad F310", 7, "start", JOYB_START },
++		{ 0x046d, 0xc21d, "Logitech Gamepad F310", 9, "thumbl", JOYB_THUMBL },
++		{ 0x046d, 0xc21d, "Logitech Gamepad F310", 10, "thumbr", JOYB_THUMBR },
+ 		/* Logitech Gamepad F510 */
+ 		{ 0x046d, 0xc21e, "Logitech Gamepad F510", 1, "a", JOYB_A },
+ 		{ 0x046d, 0xc21e, "Logitech Gamepad F510", 0, "b", JOYB_B },
