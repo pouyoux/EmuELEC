@@ -27,12 +27,12 @@ RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
 
 # Read the first argument to see if its MAME or PSP
 case $1 in
-"MAME")
-      if [ "$EMU" = "AdvanceMame" ]; then
+"ADVMAME")
+   #  if [ "$EMU" = "AdvanceMame" ]; then
    # advmame runs best at 32bpp   
    /usr/bin/setres.sh 32
    RUNTHIS='/usr/bin/advmame.sh "$2"'
-   fi
+  # fi
        ;;
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
@@ -48,6 +48,8 @@ esac
 )&
 
 # Write the command to the log file.
+echo "First parameter: $1" >> $SX05RELOG 
+echo "Second Parameter: $2" >> $SX05RELOG 
 echo "Run Command is:" >> $SX05RELOG 
 eval echo  ${RUNTHIS} >> $SX05RELOG 
 
