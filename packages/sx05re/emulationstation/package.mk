@@ -52,3 +52,7 @@ post_makeinstall_target() {
    mkdir -p $INSTALL/etc/emulationstation/
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
 }
+
+post_install() {  
+   enable_service emustation.service
+}
