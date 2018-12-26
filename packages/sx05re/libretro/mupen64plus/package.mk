@@ -19,9 +19,9 @@
 ################################################################################
 
 PKG_NAME="mupen64plus"
-PKG_VERSION="b01d1ba"
+PKG_VERSION="0064cb4"
 PKG_REV="1"
-PKG_ARCH="any"
+PKG_ARCH="arm i386 x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/mupen64plus-libretro"
 PKG_GIT_URL="$PKG_SITE"
@@ -41,27 +41,32 @@ make_target() {
     RPi|Gamegirl|Slice)
       CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
 	              -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
-      make platform=rpi
+      make platform=rpi GLES=1 FORCE_GLES=1 WITH_DYNAREC=arm
       ;;
     RPi2|Slice3)
       CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
                       -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
-      make platform=rpi2
+      make platform=rpi2 GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
       ;;
     imx6|Amlogic)
-       make FORCE_GLES=1 WITH_DYNAREC=arm HAVE_NEON=1
+      CFLAGS="$CFLAGS -DLINUX -DEGL_API_FB"
+      CPPFLAGS="$CPPFLAGS -DLINUX -DEGL_API_FB"
+      make platform=unix GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
       ;;
     Generic)
       make
       ;;
     OdroidC1)
-      make platform=odroid BOARD=ODROID-C1
+      make platform=odroid BOARD=ODROID-C1 GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
       ;;
     OdroidXU3)
-      make platform=odroid BOARD=ODROID-XU3
+      make platform=odroid BOARD=ODROID-XU3 GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
+      ;;
+    ROCK960)
+      make platform=unix-gles GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
       ;;
     *)
-      make platform=linux-gles GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
+      make platform=unix-gles GLES=1 FORCE_GLES=1 HAVE_NEON=1 WITH_DYNAREC=arm
       ;;
   esac
 }

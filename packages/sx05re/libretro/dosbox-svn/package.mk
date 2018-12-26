@@ -34,10 +34,7 @@ PKG_LONGDESC="Upstream port of DOSBox to libretro"
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
-
-pre_configure_target() {
-  strip_lto
-}
+PKG_BUILD_FLAGS="-lto"
 
 make_target() {
   if [ "$ARCH" = "aarch64" ]; then
