@@ -24,7 +24,7 @@ PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.videolan.org"
 PKG_URL="https://nightlies.videolan.org/build/source/$PKG_NAME-$PKG_VERSION-$PKG_REV.tar.xz"
-PKG_DEPENDS_TARGET="toolchain dbus libdvbpsi gnutls ffmpeg libmpeg2 zlib" #lua 
+PKG_DEPENDS_TARGET="toolchain dbus libdvbpsi gnutls ffmpeg libmpeg2 zlib"
 PKG_SECTION="xmedia/tools"
 PKG_SHORTDESC="VideoLAN multimedia player and streamer"
 PKG_LONGDESC="VLC is the VideoLAN project's media player. It plays MPEG, MPEG2, MPEG4, DivX, MOV, WMV, QuickTime, mp3, Ogg/Vorbis files, DVDs, VCDs, and multimedia streams from various network sources."
@@ -33,7 +33,7 @@ PKG_AUTORECONF="yes"
 PKG_TOOLCHAIN="configure"
 
  if [ "$TARGET_ARCH" == "arm" ]; then
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET lua" 
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET" 
 fi 
 
 PKG_CONFIGURE_OPTS_TARGET="--enable-silent-rules \
