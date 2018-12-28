@@ -28,12 +28,33 @@ PKG_SHORTDESC="PPSSPPDL"
 PKG_LONGDESC="PPSSPP Standalone"
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
-PKG_TOOLCHAIN="cmake"
+PKG_TOOLCHAIN="cmake-make"
 
-PKG_CMAKE_OPTS_TARGET="-DUSING_FBDEV=1 -DUSING_GLES2=1 -DUSE_FFMPEG=1 -DARMV7=1 -DSHARED_LIBZIP=1 -DARM_NEON=1"
+if [ $ARCH = "arm" ] && [ ! $TARGET_CPU = "arm1176jzf-s" ]; then
+  PPSSPP_ARCH_ARM="-DARMV7=ON"
+elif [ $TARGET_CPU = "arm1176jzf-s" ]; then
+  PPSSPP_ARCH_ARM="-DARM=ON"
+fi
 
-pre_configure_target() {
-cp $PKG_DIR/zipconf.h $SYSROOT_PREFIX/usr/include/zipconf.h 
+if [ $OPENGLES_SUPPORT = "yes" ]; then
+  PPSSPP_OPENGLES_SUPPORT="-DUSING_FBDEV=ON \
+                           -DUSING_EGL=ON \
+                           -DUSING_GLES2=ON"
+fi
+
+if [ $DISPLAYSERVER = "x11" ] && [ $VULKAN_SUPPORT = "yes" ]; then
+  PPSSPP_VULKAN_SUPPORT="-DUSING_X11_VULKAN=ON"
+else
+  PPSSPP_VULKAN_SUPPORT="-DUSING_X11_VULKAN=OFF"
+fi
+
+PKG_CMAKE_OPTS_TARGET="-DUSE_SYSTEM_FFMPEG=ON \
+                       $PPSSPP_ARCH_ARM \
+                       $PPSSPP_OPENGLES_SUPPORT \
+                       $PPSSPP_VULKAN_SUPPORT"
+
+pre_make_target() {
+  find . -name flags.make -exec sed -i "s:isystem :I:g" \{} \;
 }
 
 
