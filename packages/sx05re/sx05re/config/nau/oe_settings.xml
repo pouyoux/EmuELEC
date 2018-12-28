@@ -2,10 +2,10 @@
 <coreelec>
 	<addon_config/>
 	<settings>
-		<system>
-			<UpdateNotify>0</UpdateNotify>
+		<updates>
 			<AutoUpdate>manual</AutoUpdate>
 			<SubmitStats>0</SubmitStats>
-		</system>		
+			<UpdateNotify>0</UpdateNotify>
+		</updates>
 	</settings>
 </coreelec>
