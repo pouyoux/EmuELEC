@@ -2,8 +2,10 @@
 
     rm /var/lock/start.kodi
     systemctl stop kodi
-    killall emulationstation
-
-
-
-
+  
+ if pgrep -x "/usr/bin/emulationstation" > /dev/null
+  then
+    killall -9 emulationstation
+  fi
+  
+ exit 0
