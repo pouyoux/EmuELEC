@@ -1,17 +1,18 @@
 [Unit]
 Description=EmulationStation emulator frontend
 ConditionPathExists=/var/lock/start.games
-After=graphical.target
-Requires=graphical.target
 
 [Service]
+Environment=DISPLAY=:0.0
+Environment=SDL_MOUSE_RELATIVE=0
+Environment=FB_MULTI_BUFFER=2
 Environment=HOME=/storage
 ExecStartPre=/usr/bin/emustation-config
 ExecStartPre=/usr/bin/killkodi.sh
 ExecStart=/usr/bin/startfe.sh
 KillMode=process
-TimeoutStopSec=10
-Restart=always
+TimeoutStopSec=3
+Restart=on-failure
 RestartSec=2
 StartLimitInterval=0
 
