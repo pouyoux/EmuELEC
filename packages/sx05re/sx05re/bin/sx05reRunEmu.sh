@@ -10,9 +10,9 @@ case $hdmimode in
   *)               X=1920 Y=1080 SPLASH="/storage/.config/splash/splash-1080.png" ;;
 esac
 
-# Set BPP to 16,Most RetroArch shaders work best and PPSSPPSDL ONLY runs at 16bpp, we might need to set this in autorun.sh and set it to 32bpp when we run Kodi as it is now it generates an annoying flicker when the switch.
-BPP="16"
-
+# Set BPP to 16, Most RetroArch shaders work best and PPSSPPSDL ONLY runs at 16bpp, we might need to set this in autorun.sh and set it to 32bpp when we run Kodi as it is now it generates an annoying flicker when the switch.
+# BPP="16"
+   
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
 SX05RELOG="/storage/sx05re.log"
@@ -28,14 +28,12 @@ RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
 # Read the first argument to see if its MAME or PSP
 case $1 in
 "ADVMAME")
-   #  if [ "$EMU" = "AdvanceMame" ]; then
-   # advmame runs best at 32bpp   
-   /usr/bin/setres.sh 32
    RUNTHIS='/usr/bin/advmame.sh "$2"'
-  # fi
-       ;;
+         ;;
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
+   #PPSSPP can run at 32BPP but only with buffered rendering, some games need non-buffered and the only way they work is if I set it to 16BPP
+   /usr/bin/setres.sh 16
    RUNTHIS='/usr/bin/ppsspp.sh "$2"'
       fi
         ;;

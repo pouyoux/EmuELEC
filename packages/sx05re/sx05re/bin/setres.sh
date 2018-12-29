@@ -2,11 +2,11 @@
 MODE=`cat /sys/class/display/mode`;
 
 case "$1" in
-"32")
-	BPP=32
+"16")
+	BPP=16
 	;;
 *)
-	BPP=16
+	BPP=32
 	;;
 esac
 
@@ -58,3 +58,8 @@ case "$MODE" in
 	echo 0x10001 > /sys/class/graphics/fb0/free_scale
 	;;
 esac
+
+# End of reading the video output mode and setting it for sx05re to avoid video flicking.
+# The codes can be simplified with "elseif" sentences.
+# The codes for 480I and 576I are adjusted to avoid overscan.
+# Forece 720p50hz to 720p60hz and 1080i/p60hz to 1080i/p60hz since 50hz would make video very choppy.
