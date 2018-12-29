@@ -4,7 +4,7 @@
 
 PKG_NAME="SDL2"
 PKG_VERSION="2.0.8"
-PKG_ARCH="any"
+PKG_SHA256="edc77c57308661d576e843344d8638e025a7818bff73f8fbfab09c3c5fd092ec"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.libsdl.org/"
 PKG_URL="https://www.libsdl.org/release/$PKG_NAME-$PKG_VERSION.tar.gz"
@@ -12,85 +12,96 @@ PKG_DEPENDS_TARGET="toolchain alsa-lib systemd dbus"
 PKG_LONGDESC="A cross-platform multimedia library designed to provide fast access to the graphics framebuffer and audio device. "
 PKG_BUILD_FLAGS="+pic"
 
-PKG_IS_ADDON="no"
-PKG_TOOLCHAIN="configure"
-PKG_BUILD_FLAGS="-parallel +pic"
+if [ "$TARGET_ARCH" = "x86_64" ]; then
+  PKG_DEPENDS_TARGET+=" nasm:host"
+  PKG_SDL2_X86ASM="-DASSEMBLY=ON"
+else
+  # Only x86(-64) and ppc assembly present as of 2.0.8
+  PKG_SDL2_X86ASM="-DASSEMBLY=OFF"
+fi
 
-PKG_CONFIGURE_OPTS_TARGET="SYSROOT_PREFIX=$SYSROOT_PREFIX --enable-shared --enable-static \
-                           --enable-libc \
-                           --enable-gcc-atomics \
-                           --enable-atomic \
-                           --enable-audio \
-                           --enable-render \
-                           --enable-events \
-                           --enable-joystick \
-                           --enable-haptic \
-                           --enable-power \
-                           --enable-filesystem \
-                           --enable-threads \
-                           --enable-timers \
-                           --enable-file \
-                           --enable-loadso \
-                           --enable-cpuinfo \
-                           --enable-assembly \
-                           --disable-altivec \
-                           --disable-oss \
-                           --enable-alsa --disable-alsatest --enable-alsa-shared \
-                           --with-alsa-prefix=$SYSROOT_PREFIX/usr/lib \
-                           --with-alsa-inc-prefix=$SYSROOT_PREFIX/usr/include \
-                           --disable-esd --disable-esdtest --disable-esd-shared \
-                           --disable-arts --disable-arts-shared \
-                           --disable-nas --enable-nas-shared \
-                           --disable-sndio --enable-sndio-shared \
-                           --disable-diskaudio \
-                           --disable-dummyaudio \
-                           --disable-video-wayland --enable-video-wayland-qt-touch --disable-wayland-shared \
-                           --disable-video-mir --disable-mir-shared \
-                           --disable-video-cocoa \
-                           --enable-video-directfb --enable-directfb-shared \
-                           --disable-fusionsound --disable-fusionsound-shared \
-                           --disable-video-dummy \
-                           --enable-libudev \
-                           --enable-dbus \
-                           --disable-input-tslib \
-                           --enable-pthreads --enable-pthread-sem \
-                           --disable-directx \
-                           --enable-sdl-dlopen \
-                           --disable-clock_gettime \
-                           --disable-rpath \
-                           --disable-render-d3d \
-                           --enable-video-mali"
+PKG_CMAKE_OPTS_TARGET="-DSDL_STATIC=ON \
+                       -DSDL_SHARED=OFF \
+                       -DLIBC=ON \
+                       -DGCC_ATOMICS=ON \
+                       $PKG_SDL2_X86ASM \
+                       -DALTIVEC=OFF \
+                       -DOSS=OFF \
+                       -DALSA=ON \
+                       -DALSA_SHARED=ON \
+                       -DESD=OFF \
+                       -DESD_SHARED=OFF \
+                       -DARTS=OFF \
+                       -DARTS_SHARED=OFF \
+                       -DNAS=OFF \
+                       -DNAS_SHARED=ON \
+                       -DSNDIO=OFF \
+                       -DDISKAUDIO=OFF \
+                       -DDUMMYAUDIO=OFF \
+                       -DVIDEO_WAYLAND=OFF \
+                       -DVIDEO_WAYLAND_QT_TOUCH=ON \
+                       -DWAYLAND_SHARED=OFF \
+                       -DVIDEO_MIR=OFF \
+                       -DMIR_SHARED=OFF \
+                       -DVIDEO_COCOA=OFF \
+                       -DVIDEO_DIRECTFB=OFF \
+                       -DDIRECTFB_SHARED=OFF \
+                       -DFUSIONSOUND=OFF \
+                       -DFUSIONSOUND_SHARED=OFF \
+                       -DVIDEO_DUMMY=OFF \
+                       -DINPUT_TSLIB=OFF \
+                       -DPTHREADS=ON \
+                       -DPTHREADS_SEM=ON \
+                       -DDIRECTX=OFF \
+                       -DSDL_DLOPEN=ON \
+                       -DCLOCK_GETTIME=OFF \
+                       -DRPATH=OFF \
+                       -DRENDER_D3D=OFF"
 
+if [ "$DISPLAYSERVER" = "x11" ]; then
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libX11 libXrandr"
 
-
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --enable-video --disable-video-x11 --disable-x11-shared"
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --disable-video-x11-xcursor --disable-video-x11-xinerama"
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --disable-video-x11-xinput --disable-video-x11-xrandr"
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --disable-video-x11-scrnsaver --disable-video-x11-xshape"
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --disable-video-x11-vm --without-x"
+  PKG_CMAKE_OPTS_TARGET="$PKG_CMAKE_OPTS_TARGET \
+                         -DVIDEO_X11=ON \
+                         -DX11_SHARED=ON \
+                         -DVIDEO_X11_XCURSOR=OFF \
+                         -DVIDEO_X11_XINERAMA=OFF \
+                         -DVIDEO_X11_XINPUT=OFF \
+                         -DVIDEO_X11_XRANDR=ON \
+                         -DVIDEO_X11_XSCRNSAVER=OFF \
+                         -DVIDEO_X11_XSHAPE=OFF \
+                         -DVIDEO_X11_XVM=OFF"
+else
+  PKG_CMAKE_OPTS_TARGET="$PKG_CMAKE_OPTS_TARGET \
+                         -DVIDEO_X11=OFF"
+fi
 
 if [ ! "$OPENGL" = "no" ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGL glu"
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGL"
 
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --enable-video-opengl --disable-video-opengles"
+  PKG_CMAKE_OPTS_TARGET="$PKG_CMAKE_OPTS_TARGET \
+                         -DVIDEO_OPENGL=ON \
+                         -DVIDEO_OPENGLES=OFF"
+else
+  PKG_CMAKE_OPTS_TARGET="$PKG_CMAKE_OPTS_TARGET \
+                         -DVIDEO_OPENGL=OFF \
+                         -DVIDEO_OPENGLES=ON"
 fi
 
 if [ "$PULSEAUDIO_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET pulseaudio"
 
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --enable-pulseaudio --enable-pulseaudio-shared"
+  PKG_CMAKE_OPTS_TARGET="$PKG_CMAKE_OPTS_TARGET \
+                         -DPULSEAUDIO=ON \
+                         -DPULSEAUDIO_SHARED=ON"
 else
-  PKG_CONFIGURE_OPTS_TARGET="$PKG_CONFIGURE_OPTS_TARGET --disable-pulseaudio --disable-pulseaudio-shared"
+  PKG_CMAKE_OPTS_TARGET="$PKG_CMAKE_OPTS_TARGET \
+                         -DPULSEAUDIO=OFF \
+                         -DPULSEAUDIO_SHARED=OFF"
 fi
-
-pre_make_target() {
-# dont build parallel
-  MAKEFLAGS=-j1
-}
 
 post_makeinstall_target() {
   sed -e "s:\(['=\" ]\)/usr:\\1$SYSROOT_PREFIX/usr:g" -i $SYSROOT_PREFIX/usr/bin/sdl2-config
 
   rm -rf $INSTALL/usr/bin
 }
-
