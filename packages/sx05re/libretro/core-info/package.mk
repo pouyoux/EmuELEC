@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="core-info"
-PKG_VERSION="2cf546c"
+PKG_VERSION="e24d873"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

@@ -1,33 +1,18 @@
 --- a/menu/menu_displaylist.c	2017-08-18 06:30:31.000000000 -0500
 +++ b/menu/menu_displaylist.c	2017-08-20 01:54:59.625855817 -0500
-@@ -3027,26 +3027,7 @@
-    settings_t *settings         = config_get_ptr();
- #endif
+@@ -3086,12 +3086,6 @@
  
--#ifdef HAVE_LAKKA
--   menu_entries_append_enum(info->list,
+ #ifdef HAVE_LAKKA
+    menu_entries_append_enum(info->list,
 -         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UPDATE_LAKKA),
 -         msg_hash_to_str(MENU_ENUM_LABEL_UPDATE_LAKKA),
 -         MENU_ENUM_LABEL_UPDATE_LAKKA,
 -         MENU_SETTING_ACTION, 0, 0);
 -   count++;
 -   menu_entries_append_enum(info->list,
--         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST),
--         msg_hash_to_str(MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST),
--         MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST,
--         MENU_SETTING_ACTION, 0, 0);
--   count++;
--   menu_entries_append_enum(info->list,
--         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_CONTENT),
--         msg_hash_to_str(MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT_DIRS),
--         MENU_ENUM_LABEL_DOWNLOAD_CORE_CONTENT_DIRS,
--         MENU_SETTING_ACTION, 0, 0);
--   count++;
--#elif defined(HAVE_NETWORKING)
-+#ifdef HAVE_NETWORKING
-    if (settings->bools.menu_show_core_updater)
-    {
-       menu_entries_append_enum(info->list,
+          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST),
+          msg_hash_to_str(MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST),
+          MENU_ENUM_LABEL_THUMBNAILS_UPDATER_LIST,
 @@ -3081,7 +3062,6 @@
        count++;
     }
