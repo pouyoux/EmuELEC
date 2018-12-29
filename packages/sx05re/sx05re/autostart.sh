@@ -1,6 +1,4 @@
 #!/bin/sh
-# USB roms 
-# sleep 2
 
 # Clean cache garbage when boot up.
 rm -rf /storage/.cache/cores/*

@@ -7,13 +7,8 @@ SPLASH="/storage/.config/splash/splash-1080.png"
   fbi $SPLASH -noverbose > /dev/null 2>&1
 )&
 
-# End of reading the video output mode and setting it for sx05re to avoid video flicking.
-# The codes can be simplified with "elseif" sentences.
-# The codes for 480I and 576I are adjusted to avoid overscan.
-# Forece 720p50hz to 720p60hz and 1080i/p60hz to 1080i/p60hz since 50hz would make video very choppy.
-
 sleep 2
-# Lets try and find some roms
+# Lets try and find some roms on a mounted USB drive
 # Since the ROMS folder is not getting created at boot, we check if it exists, if it doesn't then we create it. 
 if [ ! -d "/storage/roms" ] && [ ! -d "/storage/roms2" ]; then
   mkdir /storage/roms
