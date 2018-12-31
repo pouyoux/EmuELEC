@@ -4,14 +4,14 @@
 # Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
-. config/options $1
+. config/options "$1"
 
 if [ -z "$1" ]; then
   die "usage: $0 package_name"
 fi
 
-if [ ! -f $PKG_DIR/package.mk ]; then
-  die "$(print_color CLR_ERROR "$1: no package.mk file found")"
+if [ -z "${PKG_NAME}" ]; then
+  die "$(print_color CLR_ERROR "${1}: no package.mk file found")"
 fi
 
 $SCRIPTS/get $1
@@ -45,15 +45,6 @@ fi
 if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
   printf "%${BUILD_INDENT}c $(print_color CLR_UNPACK "UNPACK")   $1\n" ' '>&$SILENT_OUT
   export BUILD_INDENT=$((${BUILD_INDENT:-1}+$BUILD_INDENT_SIZE))
-
-  # unset functions
-  unset -f pre_unpack
-  unset -f unpack
-  unset -f post_unpack
-  unset -f pre_patch
-  unset -f post_patch
-
-  . $PKG_DIR/package.mk
 
   pkg_call_optional pre_unpack
 
