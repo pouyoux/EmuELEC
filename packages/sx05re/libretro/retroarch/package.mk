@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="retroarch"
-PKG_VERSION="50fcf4c"
+PKG_VERSION="99e5791"
 PKG_REV="11"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
@@ -73,6 +73,7 @@ if [[ "$TARGET_FPU" =~ "neon" ]]; then
   RETROARCH_NEON="--enable-neon"
 fi
 
+pre_configure_target() {
 TARGET_CONFIGURE_OPTS=""
 PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            --disable-sdl \
@@ -81,9 +82,9 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            $RETROARCH_NEON \
                            --enable-zlib \
                            --enable-freetype \
-			   --disable-discord"
+			               --disable-discord"
 
-pre_configure_target() {
+  TARGET_CONFIGURE_OPTS=""
   cd $PKG_BUILD
 }
 
