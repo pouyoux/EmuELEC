@@ -28,14 +28,14 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	auto s = new GuiSettings(mWindow, "Sx05RE Settings");
 +	
 +	
-+	auto sx05re_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "MAME EMULATOR", false);
++	auto sx05re_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "ARCADE EMULATOR", false);
 +		std::vector<std::string> mamechoices;
 +		mamechoices.push_back("mame2003_plus");
-+		mamechoices.push_back("mame2003");
-+		mamechoices.push_back("mame2003-midway");
++		/*mamechoices.push_back("mame2003");*/
++		/*mamechoices.push_back("mame2003-midway");*/
 +	  /*mamechoices.push_back("AdvanceMame");*/
-+		mamechoices.push_back("mame2010");
-+		mamechoices.push_back("mame2014");
++		/*mamechoices.push_back("mame2010");*/
++		/*mamechoices.push_back("mame2014");*/
 +		/*devices.push_back("Other");*/
 +		/*devices.push_back("Options");*/
 +		for (auto it = mamechoices.cbegin(); it != mamechoices.cend(); it++)
@@ -50,11 +50,11 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	auto sx05re_fba_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "FBA/NEO-GEO CORE", false);
 +		std::vector<std::string> fbachoices;
 +		fbachoices.push_back("fbalpha");
-+		fbachoices.push_back("mame2003");
-+		fbachoices.push_back("mame2003-midway");
++		/*fbachoices.push_back("mame2003");*/
++		/*fbachoices.push_back("mame2003-midway");*/
 +		fbachoices.push_back("mame2003_plus");
-+		fbachoices.push_back("mame2010");
-+		fbachoices.push_back("mame2014");
++		/*fbachoices.push_back("mame2010");*/
++		/*fbachoices.push_back("mame2014");*/
 +		/*fbachoices.push_back("AdvanceMame");*/
 +		/*devices.push_back("Options");*/
 +		for (auto it = fbachoices.cbegin(); it != fbachoices.cend(); it++)
