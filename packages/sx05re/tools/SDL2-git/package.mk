@@ -10,11 +10,6 @@ PKG_URL="https://github.com/spurious/SDL-mirror/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain nasm:host alsa-lib systemd dbus"
 PKG_LONGDESC="SDL2: A cross-platform Graphic API"
 
-# Set up egl-interface
-if [ $PROJECT = "Amlogic" ]; then
-  PKG_PATCH_DIRS="Amlogic"
-fi
-
 # X11 Support
 if [ "$DISPLAYSERVER" = "x11" ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libX11 libXrandr"
