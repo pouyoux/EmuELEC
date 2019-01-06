@@ -17,7 +17,7 @@ index 906140e..bb1f145 100644
  if HAS_ANDROID_5_0_0
  SUBDIRS += libsync
  endif
--SUBDIRS += egl glesv1 glesv2 glesv3 ui sf input camera vibrator media wifi
+-SUBDIRS += egl glesv1 glesv2 ui sf input camera vibrator media wifi opencl
 +SUBDIRS += egl glesv1 glesv2 glesv3
  
 -if HAS_LIBNFC_NXP_HEADERS
@@ -30,7 +30,7 @@ diff --git a/configure.ac b/configure.ac
 index 7b111f3..95fa606 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -239,8 +239,6 @@ AC_CONFIG_FILES([
+@@ -239,8 +239,6 @@
  	Makefile
  	properties/Makefile
  	properties/libandroid-properties.pc
@@ -39,8 +39,8 @@ index 7b111f3..95fa606 100644
  	common/Makefile
  	common/jb/Makefile
  	common/stub/Makefile
-@@ -262,25 +260,10 @@ AC_CONFIG_FILES([
- 	glesv2/Makefile
+@@ -264,25 +262,10 @@
+ 	glesv3/Makefile
  	hardware/Makefile
  	hardware/libhardware.pc
 -	libnfc_nxp/Makefile
@@ -62,14 +62,15 @@ index 7b111f3..95fa606 100644
  	utils/Makefile
 -	sf/Makefile
 -	sf/libsf.pc
+ 	opencl/Makefile
+ 	opencl/OpenCL.pc
  	tests/Makefile
- ])
- 
+
 diff --git a/tests/Makefile.am b/tests/Makefile.am
 index 43fb93c..8bb13a9 100644
 --- a/tests/Makefile.am
 +++ b/tests/Makefile.am
-@@ -1,52 +1,7 @@
+@@ -1,53 +1,7 @@
  bin_PROGRAMS = \
 -	test_audio \
  	test_egl \
@@ -84,6 +85,7 @@ index 43fb93c..8bb13a9 100644
 -	test_media \
 -	test_recorder \
 -	test_gps \
+-	test_opencl \
 -	test_wifi
 -
 -if HAS_ANDROID_4_2_0
@@ -123,7 +125,7 @@ index 43fb93c..8bb13a9 100644
  
  test_egl_SOURCES = test_egl.c
  test_egl_CFLAGS = \
-@@ -81,139 +36,3 @@ test_glesv2_LDADD = \
+@@ -82,147 +36,3 @@
  	$(top_builddir)/common/libhybris-common.la \
  	$(top_builddir)/egl/libEGL.la \
  	$(top_builddir)/glesv2/libGLESv2.la
@@ -262,4 +264,12 @@ index 43fb93c..8bb13a9 100644
 -	$(ANDROID_HEADERS_CFLAGS)
 -test_wifi_LDADD = \
 -	$(top_builddir)/wifi/libwifi.la
+-
+-test_opencl_SOURCES = test_opencl.c
+-test_opencl_CFLAGS = \
+-	-I$(top_srcdir)/include \
+-	$(ANDROID_HEADERS_CFLAGS)
+-test_opencl_LDADD = \
+-	$(top_builddir)/common/libhybris-common.la \
+-	$(top_builddir)/opencl/libOpenCL.la
 -

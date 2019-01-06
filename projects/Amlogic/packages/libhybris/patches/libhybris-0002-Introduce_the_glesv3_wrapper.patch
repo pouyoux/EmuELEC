@@ -1,41 +1,28 @@
-From 60cf69302e2e575c1180252f982d80e87ab6a120 Mon Sep 17 00:00:00 2001
+From 04c21e2e919bede9bc3f88094b3b5523396db37c Mon Sep 17 00:00:00 2001
 From: Bhushan Shah <bhush94@gmail.com>
 Date: Tue, 24 Oct 2017 11:39:34 +0530
 Subject: [PATCH 1/4] Introduce the glesv3 wrapper
 
 ---
- Makefile.am                 |    2 +-
- glesv3/Makefile.am          |   21 +
- glesv3/glesv3.c             |  278 ++++++
- glesv3/glesv3.pc.in         |   10 +
- include/GLES3/gl3.h         | 1205 ++++++++++++++++++++++++
- include/GLES3/gl31.h        | 1518 ++++++++++++++++++++++++++++++
- include/GLES3/gl32.h        | 1817 ++++++++++++++++++++++++++++++++++++
- include/GLES3/gl3ext.h      |   24 +
- include/GLES3/gl3platform.h |   30 +
+ hybris/Makefile.am                 |    2 +-
+ hybris/glesv3/Makefile.am          |   21 +
+ hybris/glesv3/glesv3.c             |  278 +++++
+ hybris/glesv3/glesv3.pc.in         |   10 +
+ hybris/include/GLES3/gl3.h         | 1205 ++++++++++++++++++
+ hybris/include/GLES3/gl31.h        | 1518 +++++++++++++++++++++++
+ hybris/include/GLES3/gl32.h        | 1817 ++++++++++++++++++++++++++++
+ hybris/include/GLES3/gl3ext.h      |   24 +
+ hybris/include/GLES3/gl3platform.h |   30 +
  9 files changed, 4904 insertions(+), 1 deletion(-)
- create mode 100644 glesv3/Makefile.am
- create mode 100644 glesv3/glesv3.c
- create mode 100644 glesv3/glesv3.pc.in
- create mode 100644 include/GLES3/gl3.h
- create mode 100644 include/GLES3/gl31.h
- create mode 100644 include/GLES3/gl32.h
- create mode 100644 include/GLES3/gl3ext.h
- create mode 100644 include/GLES3/gl3platform.h
+ create mode 100644 hybris/glesv3/Makefile.am
+ create mode 100644 hybris/glesv3/glesv3.c
+ create mode 100644 hybris/glesv3/glesv3.pc.in
+ create mode 100644 hybris/include/GLES3/gl3.h
+ create mode 100644 hybris/include/GLES3/gl31.h
+ create mode 100644 hybris/include/GLES3/gl32.h
+ create mode 100644 hybris/include/GLES3/gl3ext.h
+ create mode 100644 hybris/include/GLES3/gl3platform.h
 
-diff --git a/Makefile.am b/Makefile.am
-index 906140e4..b2771857 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -6,7 +6,7 @@ endif
- if HAS_ANDROID_5_0_0
- SUBDIRS += libsync
- endif
--SUBDIRS += egl glesv1 glesv2 ui sf input camera vibrator media wifi
-+SUBDIRS += egl glesv1 glesv2 glesv3 ui sf input camera vibrator media wifi
- 
- if HAS_LIBNFC_NXP_HEADERS
- SUBDIRS += libnfc_nxp libnfc_ndef_nxp
 diff --git a/glesv3/Makefile.am b/glesv3/Makefile.am
 new file mode 100644
 index 00000000..5b632454
@@ -4988,7 +4975,7 @@ index 00000000..b1e869dd
 +
 +#endif /* __gl3platform_h_ */
 
-From ee2620e9e74656f1debb3568e0f567efbda5263b Mon Sep 17 00:00:00 2001
+From eca0d9bb16ddb625eb706185d83f57e8eab65f3d Mon Sep 17 00:00:00 2001
 From: Bhushan Shah <bhush94@gmail.com>
 Date: Tue, 24 Oct 2017 11:50:55 +0530
 Subject: [PATCH 2/4] Also configure glesv3
@@ -4998,10 +4985,10 @@ Subject: [PATCH 2/4] Also configure glesv3
  1 file changed, 2 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 8015754b..7fcfd9c2 100644
+index dac8bc91..f330daa7 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -257,6 +257,8 @@ AC_CONFIG_FILES([
+@@ -260,6 +260,8 @@ AC_CONFIG_FILES([
  	glesv1/Makefile
  	glesv2/glesv2.pc
  	glesv2/Makefile
@@ -5011,13 +4998,13 @@ index 8015754b..7fcfd9c2 100644
  	hardware/libhardware.pc
  	libnfc_nxp/Makefile
 
-From 9bdd0fede6ddbe973e4f7f7a86dfdd0d569f2786 Mon Sep 17 00:00:00 2001
+From e819880a99b28b27899ec04ae5a7f5ea76801479 Mon Sep 17 00:00:00 2001
 From: Bhushan Shah <bhush94@gmail.com>
 Date: Tue, 24 Oct 2017 12:35:25 +0530
 Subject: [PATCH 3/4] Fix the some functions properly
 
 ---
- hybris/glesv3/glesv3.c | 142 ++++++++++++++++++++++++-------------------------
+ hybris/glesv3/glesv3.c | 142 ++++++++++++++++++++---------------------
  1 file changed, 71 insertions(+), 71 deletions(-)
 
 diff --git a/glesv3/glesv3.c b/glesv3/glesv3.c
@@ -5307,7 +5294,7 @@ index d0c03bce..188fe861 100644
  HYBRIS_IMPLEMENT_VOID_FUNCTION6(glesv3, glTexStorage3D, GLenum, GLsizei, GLenum, GLsizei, GLsizei, GLsizei);
  HYBRIS_IMPLEMENT_VOID_FUNCTION5(glesv3, glGetInternalformativ, GLenum, GLenum, GLenum, GLsizei, GLint *);
 
-From 99dacc958dad5bcb4ffb2289714719aa4679a9b9 Mon Sep 17 00:00:00 2001
+From c8863a63a0d1803d19373708bf41ac45f578a55c Mon Sep 17 00:00:00 2001
 From: Bhushan Shah <bhush94@gmail.com>
 Date: Thu, 2 Nov 2017 11:29:55 +0530
 Subject: [PATCH 4/4] [libEGL] hook the libGLESv3 as well
