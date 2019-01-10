@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="retroarch-assets"
-PKG_VERSION="fddceeb"
+PKG_VERSION="fa9416e"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
