@@ -157,11 +157,6 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-silent-rules \
 
 pre_configure_target() {
   export LDFLAGS="$LDFLAGS -lresolv"
- 
-if [ "$TARGET_ARCH" == "arm" ]; then
-  export LUA_LIBS="-L$SYSROOT_PREFIX/usr/lib -llua -lm"
-fi
-
 }
 
 post_makeinstall_target() {
