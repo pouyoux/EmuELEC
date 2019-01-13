@@ -32,4 +32,7 @@ mkpkg-temp
 .DS_Store
 .directory
 
-home/
+repo/
+repo
+local.conf
+sx05re-kodi*.log
