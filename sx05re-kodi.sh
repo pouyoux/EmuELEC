@@ -5982,6 +5982,9 @@ sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
 
 echo "Making modifications to retroarch.cfg..."
 CFG="config/retroarch.cfg"
+echo -ne "\toverlays "
+sed -i "s/\/tmp\/overlays/${RA_RES_DIR}\/overlays/g" $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsavefiles "
 sed -i "s/\/storage\/savefiles/${RA_CFG_DIR}\/savefiles/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
