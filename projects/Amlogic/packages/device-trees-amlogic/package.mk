@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="device-trees-amlogic"
-PKG_VERSION="146ec3fef5c08784e1da090366caa67a99017e98"
-PKG_SHA256="728fc67d6366dc5adac2affee8d627dfa0881faca29c756424b7a89f480fdc4d"
+PKG_VERSION="0f02782b7f8eba79c9e72ea80cd4c1ccaa5f2fa8"
+PKG_SHA256="a63ac8c1267bff094fb4813a14bbb2c9b3ce80e2ac6531bac3a7216cbf10e8b6"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/CoreELEC/device-trees-amlogic"
 PKG_URL="https://github.com/CoreELEC/device-trees-amlogic/archive/$PKG_VERSION.tar.gz"
