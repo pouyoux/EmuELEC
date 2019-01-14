@@ -26,12 +26,12 @@ BASE_NAME="$PROVIDER.$DISTRO"
 PKG_TYPES="Sx05RE"
 PKG_SUBDIR_Sx05RE=""
 
-LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays libretro-database core-info glsl-shaders"
+LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
 LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mesen mgba mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg prboom prosystem puae px68k reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vbam vecx vice virtualjaguar xrick yabause"
 PACKAGES_LIBRETRO="$LIBRETRO_BASE $LIBRETRO_CORES"
 PACKAGES_Sx05RE="$PACKAGES_LIBRETRO sx05re openal-soft libvdpau libxkbcommon empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
 
-DISABLED_CORES="ppsspp uae4arm reicast"
+DISABLED_CORES="ppsspp uae4arm reicast libretro-database "
 
 PACKAGES_ALL=""
 
@@ -191,21 +191,42 @@ mv -v "${TARGET_DIR}/usr/share/video_filters" "${ADDON_DIR}/resources/" &>>"$LOG
 echo -ne "\tshaders "
 mv -v "${TARGET_DIR}/usr/share/common-shaders" "${ADDON_DIR}/resources/shaders" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tdatabases "
-mv -v "${TARGET_DIR}/usr/share/libretro-database" "${ADDON_DIR}/resources/database" &>>"$LOG"
+# echo -ne "\tdatabases "
+# rm -rf "${TARGET_DIR}/usr/share/libretro-database/rdb"
+# mv -v "${TARGET_DIR}/usr/share/libretro-database" "${ADDON_DIR}/resources/database" &>>"$LOG"
+#[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tremoving unused assets "
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/branding"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/glui"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/nuklear"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/nxrgui"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/ozone"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/pkg"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/switch"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/wallpapers"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/zarch"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tassets "
 mv -v "${TARGET_DIR}/usr/share/retroarch-assets" "${ADDON_DIR}/resources/assets" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\toverlays "
+rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/borders"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/effects"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/gamepads"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/ipad"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/keyboards"
+rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/misc"
 mv -v "${TARGET_DIR}/usr/share/retroarch-overlays" "${ADDON_DIR}/resources/overlays" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tES Config "
+echo -ne "\tVLC Config "
 rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tES Config "
 mv -v "${TARGET_DIR}/usr/config/emulationstation" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tRemoving unneeded binaries "
 rm "${ADDON_DIR}/bin/setres.sh"
 rm "${ADDON_DIR}/bin/startfe.sh"
 rm "${ADDON_DIR}/bin/killkodi.sh"
@@ -213,7 +234,6 @@ rm "${ADDON_DIR}/bin/emulationstation.sh"
 rm "${ADDON_DIR}/bin/emustation-config"
 rm "${ADDON_DIR}/bin/clearconfig.sh"
 rm "${ADDON_DIR}/bin/ip.sh"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
