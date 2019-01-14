@@ -1,91 +1,94 @@
-################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
-#
-#  This Program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2, or (at your option)
-#  any later version.
-#
-#  This Program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
-#  http://www.gnu.org/copyleft/gpl.html
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 0riginally created by Escalade (https://github.com/escalade)
+# Copyright (C) 2018-present 5schatten (https://github.com/5schatten)
 
 PKG_NAME="retroarch"
-PKG_VERSION="f0994a0"
-PKG_REV="11"
-PKG_ARCH="any"
+PKG_VERSION="d3210b87ae8546cc3f438acc58031fc1b878dfd4" #1.7.6-dev 
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
-PKG_GIT_URL="$PKG_SITE"
-PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty openal-soft"
-PKG_PRIORITY="optional"
-PKG_SECTION="libretro"
-PKG_SHORTDESC="Reference frontend for the libretro API."
-PKG_LONGDESC="RetroArch is the reference frontend for the libretro API. Popular examples of implementations for this API includes videogame system emulators and game engines, but also more generalized 3D programs. These programs are instantiated as dynamic libraries. We refer to these as libretro cores."
-
-PKG_IS_ADDON="no"
-PKG_AUTORECONF="no"
-
-
-if [ "$OPENGLES_SUPPORT" = yes ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGLES"
-else
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGL"
-fi
-
-if [ "$SAMBA_SUPPORT" = yes ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET samba"
-fi
-
-if [ "$AVAHI_DAEMON" = yes ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET avahi nss-mdns"
-fi
-
-if [ "$OPENGLES" == "no" ]; then
-  RETROARCH_GL="--enable-kms"
-elif [ "$OPENGLES" == "bcm2835-driver" ]; then
-  RETROARCH_GL="--enable-opengles --disable-kms --disable-x11"
-  CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
-                  -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
-elif [ "$OPENGLES" == "odroidc1-mali" ] || [ "$OPENGLES" == "opengl-meson" ] || [ "$OPENGLES" == "opengl-meson8" ] || [ "$OPENGLES" == "opengl-meson-t82x" ]; then
-  RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-mali_fbdev"
-elif [ "$OPENGLES" == "gpu-viv-bin-mx6q" ] || [ "$OPENGLES" == "imx-gpu-viv" ]; then
-  RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-vivante_fbdev"
-  CFLAGS="$CFLAGS -DLINUX -DEGL_API_FB"
-elif [ "$OPENGLES" == "mali-rockchip" ]; then
-  RETROARCH_GL="--enable-opengles --enable-kms --disable-x11 --disable-wayland"
-elif [ "$OPENGLES" == "allwinner-fb-mali" ]; then
-   RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-mali_fbdev"
-elif [ "$OPENGLES" == "allwinner-mali" ] || [ "$OPENGLES" == "odroidxu3-mali" ]; then
-
-   RETROARCH_GL="--enable-opengles --enable-kms --disable-x11"
-fi
-
-if [[ "$TARGET_FPU" =~ "neon" ]]; then
-  RETROARCH_NEON="--enable-neon"
-fi
+PKG_URL="https://github.com/libretro/RetroArch.git"
+PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig ffmpeg joyutils sixpair empty"
+PKG_LONGDESC="Reference frontend for the libretro API."
+GET_HANDLER_SUPPORT="git"
 
 pre_configure_target() {
-TARGET_CONFIGURE_OPTS=""
-PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
-                           --disable-sdl \
-                           --disable-ssl \
-                           $RETROARCH_GL \
-                           $RETROARCH_NEON \
-                           --enable-zlib \
-                           --enable-freetype \
-			               --disable-discord"
-
   TARGET_CONFIGURE_OPTS=""
-  cd $PKG_BUILD
+  PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
+                             --disable-sdl \
+                             --disable-xvideo \
+                             --disable-al \
+                             --disable-oss \
+                             --enable-zlib \
+                             --host=$TARGET_NAME \
+                             --enable-freetype"
+
+  # SAMBA Support
+  if [ "${SAMBA_SUPPORT}" = "yes" ]; then
+    PKG_DEPENDS_TARGET+=" samba"
+  fi
+
+  # AVAHI Support
+  if [ "${AVAHI_DAEMON}" = "yes" ]; then
+    PKG_DEPENDS_TARGET+=" avahi nss-mdns"
+  fi
+
+  # QT Support for WIMP GUI
+  if [ "${PROJECT}" = "Generic" ]; then
+    PKG_DEPENDS_TARGET+=" qt-everywhere"
+    PKG_CONFIGURE_OPTS_TARGET+=" --enable-qt"
+  else
+    PKG_CONFIGURE_OPTS_TARGET+=" --disable-qt"
+  fi
+
+  # Displayserver Support
+  if [ "${DISPLAYSERVER}" = "x11" ]; then
+    PKG_DEPENDS_TARGET+=" xorg-server"
+    PKG_CONFIGURE_OPTS_TARGET+=" --enable-x11"
+  else
+    PKG_CONFIGURE_OPTS_TARGET+=" --disable-x11"
+  fi
+
+  # OpenGL Support
+  if [ "${OPENGL_SUPPORT}" = "yes" ]; then
+    PKG_DEPENDS_TARGET+=" ${OPENGL}"
+    PKG_CONFIGURE_OPTS_TARGET+=" --enable-opengl \
+                                 --enable-kms"
+  fi
+
+  # Vulkan Support
+  if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+     PKG_CONFIGURE_OPTS_TARGET+=" --enable-vulkan"
+  fi
+
+  # OpenGLES Support
+  if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+    PKG_DEPENDS_TARGET+=" ${OPENGLES}"
+    PKG_CONFIGURE_OPTS_TARGET+=" --enable-opengles \
+                                 --disable-kms"
+
+    # RPi OpenGLES Features Support
+    if [ "${OPENGLES}" = "bcm2835-driver" ]; then
+      PKG_CONFIGURE_OPTS_TARGET+=" --enable-dispmanx"
+
+      CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads \
+                      -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
+
+    # Amlogic OpenGLES Features Support
+    elif [ "${OPENGLES}" = "opengl-meson" ] || [ "${OPENGLES}" = "opengl-meson-t82x" ]; then
+      PKG_CONFIGURE_OPTS_TARGET+=" --enable-mali_fbdev"
+    fi
+  fi
+
+  # NEON Support
+  if target_has_feature neon; then
+    PKG_CONFIGURE_OPTS_TARGET+=" --enable-neon"
+  fi
+  
+  # Clean up & export env/version
+  cd ..
+  rm -rf .${TARGET_NAME}
+  export PKG_CONF_PATH=$TOOLCHAIN/bin/pkg-config
+  echo ${PKG_VERSION:0:7} > .gitversion
 }
 
 make_target() {

@@ -42,9 +42,8 @@ fi
 
 [ -f "$STAMP" ] && exit 0
 
-if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
-  printf "%${BUILD_INDENT}c $(print_color CLR_UNPACK "UNPACK")   $1\n" ' '>&$SILENT_OUT
-  export BUILD_INDENT=$((${BUILD_INDENT:-1}+$BUILD_INDENT_SIZE))
+if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" ]; then
+  build_msg "CLR_UNPACK" "UNPACK" "${1}" "indent"
 
   pkg_call_optional pre_unpack
 
@@ -52,39 +51,23 @@ if [ -d "$SOURCES/$1" -o -d "$PKG_DIR/sources" -o -n "$PKG_GIT_URL" ]; then
     if [ -n "$PKG_URL" ]; then
       $SCRIPTS/extract $1 $BUILD
     fi
-
-    if [ "$(type -t unpack)" = "function" ]; then
-      unpack
-    else
-      if [ -n "$PKG_URL" ]; then
-        $SCRIPTS/extract $1 $BUILD
-      fi
-    fi
-
-    if [ ! -d $BUILD/$PKG_NAME-$PKG_VERSION ]; then
-      if [ -n "$PKG_SOURCE_DIR" ]; then
-        mv $BUILD/$PKG_SOURCE_DIR $BUILD/$PKG_NAME-$PKG_VERSION
-      elif [ -d $BUILD/$PKG_NAME-$PKG_VERSION* ]; then
-        mv $BUILD/$PKG_NAME-$PKG_VERSION* $BUILD/$PKG_NAME-$PKG_VERSION
-      fi
-    fi
-  
-    if [ -d "$PKG_DIR/sources" ]; then
-      [ ! -d "$BUILD/${PKG_NAME}-${PKG_VERSION}" ] && mkdir -p $BUILD/${PKG_NAME}-${PKG_VERSION}
-      cp -PRf $PKG_DIR/sources/* $BUILD/${PKG_NAME}-${PKG_VERSION}
-    fi
-
   fi
 
-  if [ -z "$PKG_URL" -a -n "$PKG_GIT_URL" ]; then
-    rm -rf $BUILD/$PKG_NAME-$PKG_VERSION
-    git clone $PKG_GIT_URL $BUILD/$PKG_NAME-$PKG_VERSION/
-    cd $BUILD/$PKG_NAME-$PKG_VERSION/
-    git checkout $PKG_VERSION
-    git submodule update --init --recursive
-    cd $ROOT
-  elif [ -z "$PKG_URL" ]; then
-    mkdir -p "${BUILD}/${PKG_NAME}-${PKG_VERSION}"
+  if [ ! -d "$PKG_BUILD" ]; then
+    if [ -n "$PKG_SOURCE_DIR" ]; then
+      mv $BUILD/$PKG_SOURCE_DIR "$PKG_BUILD"
+    elif [ -d "$PKG_BUILD"* ]; then
+      mv "$PKG_BUILD"* "$PKG_BUILD"
+    fi
+  fi
+
+  if [ -d "$PKG_DIR/sources" ]; then
+    [ ! -d "$PKG_BUILD" ] && mkdir -p "$PKG_BUILD"
+    cp -PRf "$PKG_DIR/sources/"* "$PKG_BUILD"
+  fi
+
+  if [ -z "$PKG_URL" ]; then
+    mkdir -p "${PKG_BUILD}"
   fi
 
   pkg_call_optional post_unpack

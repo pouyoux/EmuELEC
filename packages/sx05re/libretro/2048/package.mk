@@ -24,20 +24,16 @@ PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/libretro-2048"
-PKG_GIT_URL="$PKG_SITE"
+PKG_URL="https://github.com/libretro/libretro-2048/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
 PKG_SHORTDESC="Port of 2048 puzzle game to the libretro API."
 PKG_LONGDESC="Port of 2048 puzzle game to the libretro API."
-
-PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
-PKG_AUTORECONF="no"
 
-make_target() {
-  make -f Makefile.libretro
-}
+
+PKG_MAKE_OPTS_TARGET="-f Makefile.libretro GIT_VERSION=${PKG_VERSION:0:7}"
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro

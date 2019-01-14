@@ -1,67 +1,43 @@
-################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
-#
-#  This Program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2, or (at your option)
-#  any later version.
-#
-#  This Program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
-#  http://www.gnu.org/copyleft/gpl.html
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2018-present 5schatten (https://github.com/5schatten)
 
 PKG_NAME="ppsspp"
-PKG_VERSION="e3dd153"
-PKG_REV="1"
-PKG_ARCH="any"
+PKG_VERSION="74d87fa2b4a3c943c1df09cc26a8c70b1335fd30" #v1.7.5
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/hrydgard/ppsspp"
-PKG_GIT_URL="$PKG_SITE"
-PKG_DEPENDS_TARGET="toolchain"
-PKG_PRIORITY="optional"
-PKG_SECTION="libretro"
-PKG_SHORTDESC="Libretro port of PPSSPP"
-PKG_LONGDESC="A fast and portable PSP emulator"
+PKG_URL="https://github.com/hrydgard/ppsspp.git"
+PKG_DEPENDS_TARGET="toolchain SDL2-git"
+PKG_LONGDESC="A PSP emulator for Android, Windows, Mac, Linux and Blackberry 10, written in C++."
+GET_HANDLER_SUPPORT="git"
 
-PKG_IS_ADDON="no"
-PKG_TOOLCHAIN="make"
-PKG_AUTORECONF="no"
-PKG_USE_CMAKE="no"
-PKG_BUILD_FLAGS="-lto"
+PKG_LIBNAME="ppsspp_libretro.so"
+PKG_LIBPATH="lib/$PKG_LIBNAME"
 
+pre_configure_target() {
+  PKG_CMAKE_OPTS_TARGET="-DLIBRETRO=ON \
+                         -DUSE_SYSTEM_FFMPEG=ON \
+                         -DUSING_X11_VULKAN=OFF"
 
-make_target() {
-  cd $PKG_BUILD/libretro
-  if [ "$OPENGLES" == "gpu-viv-bin-mx6q" -o "$OPENGLES" == "imx-gpu-viv" ]; then
-    CFLAGS="$CFLAGS -DLINUX -DEGL_API_FB"
-    CXXFLAGS="$CXXFLAGS -DLINUX -DEGL_API_FB"
+  if [ "${ARCH}" = "arm" ] && [ ! "${TARGET_CPU}" = "arm1176jzf-s" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -DARMV7=ON"
+  elif [ "${TARGET_CPU}" = "arm1176jzf-s" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -DARM=ON"
   fi
-  if [ "$OPENGLES" == "bcm2835-driver" ]; then
-    CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads"
-    CXXFLAGS="$CXXFLAGS -I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads"
+
+  if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -DUSING_FBDEV=ON \
+                             -DUSING_EGL=ON \
+                             -DUSING_GLES2=ON"
   fi
-  if [ "$ARCH" == "arm" ]; then
-    SYSROOT_PREFIX=$SYSROOT_PREFIX AS=${CXX} make platform=armv-neon-gles
-  elif [ "$ARCH" == "aarch64" ]; then
-    if [ "$OPENGL" == "no" ]; then 
-      SYSROOT_PREFIX=$SYSROOT_PREFIX AS=${CXX} make platform=arm64-neon-gles
-    else
-      SYSROOT_PREFIX=$SYSROOT_PREFIX AS=${CXX} make platform=arm64-neon
-    fi
-  else
-    make
-  fi
+}
+
+pre_make_target() {
+  # fix cross compiling
+  find $PKG_BUILD -name flags.make -exec sed -i "s:isystem :I:g" \{} \;
+  find $PKG_BUILD -name build.ninja -exec sed -i "s:isystem :I:g" \{} \;
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp ../libretro/ppsspp_libretro.so $INSTALL/usr/lib/libretro/
+  cp $PKG_LIBPATH $INSTALL/usr/lib/libretro/
 }
