@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="mame2003-plus"
-PKG_VERSION="ceee3ae"
+PKG_VERSION="a62908f"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"

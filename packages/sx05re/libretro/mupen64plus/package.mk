@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="mupen64plus"
-PKG_VERSION="d799342"
+PKG_VERSION="501d298"
 PKG_REV="1"
 PKG_ARCH="arm i386 x86_64"
 PKG_LICENSE="GPLv2"

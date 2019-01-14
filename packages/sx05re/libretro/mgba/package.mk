@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="mgba"
-PKG_VERSION="d3a4486"
+PKG_VERSION="6c40367"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MPLv2.0"

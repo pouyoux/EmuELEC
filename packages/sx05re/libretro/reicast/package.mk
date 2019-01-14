@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="reicast"
-PKG_VERSION="e621a47"
+PKG_VERSION="02a774d"
 PKG_REV="1"
 PKG_ARCH="arm i386 x86_64"
 PKG_LICENSE="GPLv2"
