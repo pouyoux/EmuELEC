@@ -18,9 +18,5 @@ pre_configure_target() {
 }
 
 makeinstall_target() {
-  make install DESTDIR=$INSTALL PREFIX=/usr
-}
-
-post_makeinstall_target() {
-  mv $INSTALL/usr/share/libretro $INSTALL/usr/share/retroarch
+  make install INSTALLDIR="$INSTALL/usr/share/retroarch-assets"
 }

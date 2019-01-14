@@ -17,10 +17,10 @@ post_unpack() {
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/share/retroarch/autoconfig
-  cp -r * $INSTALL/usr/share/retroarch/autoconfig
+  mkdir -p $INSTALL/etc/retroarch-joypad-autoconfig
+  cp -r * $INSTALL/etc/retroarch-joypad-autoconfig
 }
 
 post_makeinstall_target () {
-  cp -r $PKG_DIR/config/* $INSTALL/usr/share/retroarch/autoconfig
+  cp -r $PKG_DIR/config/* $INSTALL/etc/retroarch-joypad-autoconfig
 }
