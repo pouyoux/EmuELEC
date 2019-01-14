@@ -29,7 +29,7 @@ PKG_SUBDIR_Sx05RE=""
 LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
 LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mesen mgba mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg prboom prosystem puae px68k reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vbam vecx vice virtualjaguar xrick yabause"
 PACKAGES_LIBRETRO="$LIBRETRO_BASE $LIBRETRO_CORES"
-PACKAGES_Sx05RE="$PACKAGES_LIBRETRO sx05re openal-soft libvdpau libxkbcommon empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
+PACKAGES_Sx05RE="$PACKAGES_LIBRETRO advancemame PPSSPPSDL sx05re openal-soft libvdpau libxkbcommon empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
 
 DISABLED_CORES="ppsspp uae4arm reicast libretro-database "
 
@@ -218,7 +218,13 @@ rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/keyboards"
 rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/misc"
 mv -v "${TARGET_DIR}/usr/share/retroarch-overlays" "${ADDON_DIR}/resources/overlays" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tES Config "
+echo -ne "\tadvacemame Config "
+rm -rf "${TARGET_DIR}/usr/share/advance/advmenu.rc"
+mv -v "${TARGET_DIR}/usr/share/advance" "${ADDON_DIR}/config" &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tPPSSPP Config "
+mv -v "${TARGET_DIR}/usr/config/ppsspp" "${ADDON_DIR}/config" &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tVLC Config "
 rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
@@ -5999,6 +6005,17 @@ sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
+echo -ne "Making modifications to advmame.sh..."
+CFG="bin/advmame.sh"
+sed -i -e "s/\/usr\/share/\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
+sed -i -e "s/\/usr\/bin/\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin/" $CFG
+sed -i -e "s/device_alsa_device default/device_alsa_device sdl/" "config/advance/advmame.rc"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo -ne "Making modifications to ppsspp.sh..."
+CFG="bin/ppsspp.sh"
+sed -i -e "s/\/usr\/bin\/setres.sh/#/" $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
 echo "Making modifications to retroarch.cfg..."
 CFG="config/retroarch.cfg"
