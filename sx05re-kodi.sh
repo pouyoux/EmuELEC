@@ -9,7 +9,7 @@
 [ -z "$DEVICE" ] && DEVICE=S905
 [ -z "$VERSION" ] && VERSION=""
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
-[ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo"
+[ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${DEVICE}"
 [ -z "$PROVIDER" ] && PROVIDER="CoreELEC"
 [ -z "$BUILD_VER" ] && BUILD_VER="2.1"
 
@@ -64,7 +64,7 @@ fi
 
 ADDON_NAME="script.sx05re.launcher"
 ADDON_DIR="${PROJECT_DIR}/${ADDON_NAME}"
-ARCHIVE_NAME="${ADDON_NAME}${VERSION}.zip"
+ARCHIVE_NAME="${ADDON_NAME}${VERSION}-${DEVICE}.zip"
 LOG="${SCRIPT_DIR}/sx05re-kodi_`date +%Y%m%d_%H%M%S`.log"
 
 read -d '' message <<EOF
