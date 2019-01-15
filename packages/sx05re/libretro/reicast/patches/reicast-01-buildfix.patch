@@ -1,14 +1,13 @@
-diff -Naur reicast-a2a14be/Makefile reicast.patch/Makefile
---- reicast-a2a14be/Makefile	2018-08-12 16:28:43.398877322 +0200
-+++ reicast.patch/Makefile	2018-08-12 16:04:39.396217020 +0200
-@@ -21,18 +21,12 @@
+--- a/Makefile	2017-09-30 03:33:24.991589770 -0500
++++ b/Makefile	2017-09-30 03:45:10.575416919 -0500
+@@ -21,18 +21,11 @@
  TARGET_NAME   := reicast
  endif
  
 -CXX      = ${CC_PREFIX}g++
 -CC       = ${CC_PREFIX}gcc
 -CC_AS    = ${CC_PREFIX}as
- 
+-
  MFLAGS   := 
  ASFLAGS  := 
 -LDFLAGS  :=
@@ -20,7 +19,7 @@ diff -Naur reicast-a2a14be/Makefile reicast.patch/Makefile
  
  GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
  ifneq ($(GIT_VERSION)," unknown")
-@@ -604,7 +598,7 @@
+@@ -604,7 +597,7 @@
  PREFIX        ?= /usr/local
  
  ifneq (,$(findstring arm, $(ARCH)))
@@ -28,5 +27,3 @@ diff -Naur reicast-a2a14be/Makefile reicast.patch/Makefile
 +	CC_AS    = ${CC_PREFIX}${CC} #The ngen_arm.S must be compiled with gcc, not as
  	ASFLAGS  += $(CFLAGS)
  endif
- 
-
