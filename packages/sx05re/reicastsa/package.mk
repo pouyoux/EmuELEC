@@ -17,19 +17,16 @@
 ################################################################################
 
 PKG_NAME="reicastsa"
-PKG_VERSION="6936bc2"
+PKG_VERSION="3c57177"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/reicast/reicast-emulator"
 PKG_URL="https://github.com/reicast/reicast-emulator/archive/$PKG_VERSION.tar.gz"
 PKG_SOURCE_DIR="reicast-emulator-$PKG_VERSION*"
-PKG_DEPENDS_TARGET="toolchain alsa-utils libpng libevdev libX11"
-PKG_SECTION="emulation"
+PKG_DEPENDS_TARGET="toolchain alsa-utils libpng libevdev libX11 python-evdev"
 PKG_SHORTDESC="Reicast is a multi-platform Sega Dreamcast emulator"
-
-PKG_IS_ADDON="no"
-PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-gold"
 
 make_target() {
   cd shell/linux
@@ -44,18 +41,12 @@ make_target() {
 }
 
 makeinstall_target() {
-  
   mkdir -p $INSTALL/usr/bin
   cp reicast.elf $INSTALL/usr/bin/reicast
   cp tools/reicast-joyconfig.py $INSTALL/usr/bin/
+  cp -r $PKG_DIR/scripts/* $INSTALL/usr/bin/
 
   mkdir -p $INSTALL/usr/config
   cp -r $PKG_DIR/config/* $INSTALL/usr/config/
-  
- mkdir -p $INSTALL/usr/lib/python2.7/site-packages/evdev
-  cp -r $PKG_DIR/evdev/* $INSTALL/usr/lib/python2.7/site-packages/evdev
+ 
 }
-
-#postinstall_target() {
-#  enable_service reicast-biosdir.service
-#}
