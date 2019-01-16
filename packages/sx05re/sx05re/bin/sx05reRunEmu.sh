@@ -25,8 +25,11 @@ echo "Sx05RE Run Log" > $SX05RELOG
 # Default run command
 RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
 
-# Read the first argument to see if its MAME or PSP
+# Read the first argument to see if its REICAST, MAME or PSP
 case $1 in
+"REICAST")
+   RUNTHIS='/usr/bin/reicast.sh "$2"'
+         ;;
 "ADVMAME")
    RUNTHIS='/usr/bin/advmame.sh "$2"'
          ;;
