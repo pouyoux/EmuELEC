@@ -1,20 +1,5 @@
-################################################################################
-#      This file is part of LibreELEC - http://www.libreelec.tv
-#      Copyright (C) 2016 Team LibreELEC
-#
-#  LibreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  LibreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="emulationstation"
 PKG_VERSION="bf02819"
@@ -22,14 +7,12 @@ PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/RetroPie/EmulationStation"
-PKG_URL="https://github.com/RetroPie/EmulationStation/archive/$PKG_VERSION.tar.gz"
-PKG_SOURCE_DIR="EmulationStation*"
-PKG_DEPENDS_TARGET="toolchain systemd SDL2-git freetype curl cmake:host freeimage vlc libpng"
+PKG_URL="$PKG_SITE.git"
+PKG_DEPENDS_TARGET="toolchain SDL2-git freetype curl freeimage vlc bash"
 PKG_SECTION="sx05re"
 PKG_SHORTDESC="Emulationstation emulator frontend"
-PKG_IS_ADDON="no"
-PKG_TOOLCHAIN="auto"
-PKG_AUTORECONF="no"
+PKG_BUILD_FLAGS="-gold"
+GET_HANDLER_SUPPORT="git"
 
 # theme for Emulationstation
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-simple-dark"
@@ -38,11 +21,6 @@ PKG_AUTORECONF="no"
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-tronkyfran"
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-crt"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-ComicBook"
-
-post_unpack() {
-mkdir -p $PKG_BUILD/external/pugixml 
- git clone https://github.com/zeux/pugixml.git $PKG_BUILD/external/pugixml
-}
 
 post_makeinstall_target() {
 
@@ -54,5 +32,13 @@ post_makeinstall_target() {
 }
 
 post_install() {  
-   enable_service emustation.service
+  
+  # Thanks to vpeter we can now have bash :) 
+  rm -f $INSTALL/usr/bin/{sh,bash}
+  cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
+  ln -sf bash $INSTALL/usr/bin/sh
+ 
+  echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
+  
+  enable_service emustation.service
 }
