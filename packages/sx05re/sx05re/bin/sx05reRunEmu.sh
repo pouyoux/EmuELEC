@@ -54,9 +54,14 @@ echo "Second Parameter: $2" >> $SX05RELOG
 echo "Run Command is:" >> $SX05RELOG 
 eval echo  ${RUNTHIS} >> $SX05RELOG 
 
-# Exceute the command and try to output the results to the log file.
-echo "Emulator Output is:" >> $SX05RELOG
-eval ${RUNTHIS} >> $SX05RELOG 2>&1
+# Exceute the command and try to output the results to the log file if it was not dissabled.
+if [ -z "$3" ]; then
+   echo "Emulator Output is:" >> $SX05RELOG
+   eval ${RUNTHIS} >> $SX05RELOG 2>&1
+ else 
+   echo "Emulator log was dissabled" >> $SX05RELOG
+   eval ${RUNTHIS}
+fi 
 
 # Return to default mode
 /usr/bin/setres.sh
