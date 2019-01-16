@@ -1,18 +1,5 @@
 #!/bin/sh
 
-hdmimode=`cat /sys/class/display/mode`;
-
-# Set framebuffer geometry to match the resolution, splash should change according to the resolution. 
-case $hdmimode in
-  480*)            X=720  Y=480  SPLASH="/storage/.config/splash/splash-1080.png" ;;
-  576*)            X=720  Y=576  SPLASH="/storage/.config/splash/splash-1080.png" ;;
-  720p*)           X=1280 Y=720  SPLASH="/storage/.config/splash/splash-1080.png" ;;
-  *)               X=1920 Y=1080 SPLASH="/storage/.config/splash/splash-1080.png" ;;
-esac
-
-# Set BPP to 16, Most RetroArch shaders work best and PPSSPPSDL ONLY runs at 16bpp, we might need to set this in autorun.sh and set it to 32bpp when we run Kodi as it is now it generates an annoying flicker when the switch.
-# BPP="16"
-   
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
 SX05RELOG="/storage/sx05re.log"
@@ -22,11 +9,14 @@ EMU=$(sed -n "$PAT" "$CFG")
 # Clear the log file
 echo "Sx05RE Run Log" > $SX05RELOG
 
-# Default run command
+# if the emulator is in es_settings this is the line that will run 
 RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
 
-# Read the first argument to see if its REICAST, MAME or PSP
+# Else, read the first argument to see if its LIBRETRO, REICAST, MAME or PSP
 case $1 in
+"LIBRETRO")
+   RUNTHIS='/usr/bin/retroarch -L /tmp/cores/$2_libretro.so "$3"'
+         ;;
 "REICAST")
    RUNTHIS='/usr/bin/reicast.sh "$2"'
          ;;
@@ -49,18 +39,20 @@ esac
 )&
 
 # Write the command to the log file.
-echo "First parameter: $1" >> $SX05RELOG 
-echo "Second Parameter: $2" >> $SX05RELOG 
+echo "1st parameter: $1" >> $SX05RELOG 
+echo "2nd Parameter: $2" >> $SX05RELOG 
+echo "3rd Parameter: $3" >> $SX05RELOG 
+echo "4th Parameter: $4" >> $SX05RELOG 
 echo "Run Command is:" >> $SX05RELOG 
 eval echo  ${RUNTHIS} >> $SX05RELOG 
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
-if [ -z "$3" ]; then
-   echo "Emulator Output is:" >> $SX05RELOG
-   eval ${RUNTHIS} >> $SX05RELOG 2>&1
- else 
+if [ "$3" == "NOLOG" ] || [ "$4" == "NOLOG" ]; then
    echo "Emulator log was dissabled" >> $SX05RELOG
    eval ${RUNTHIS}
+else
+   echo "Emulator Output is:" >> $SX05RELOG
+   eval ${RUNTHIS} >> $SX05RELOG 2>&1
 fi 
 
 # Return to default mode
