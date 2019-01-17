@@ -270,10 +270,10 @@ fi
 y=1
 
 
-for D in `find /dev/input/by-id/ | grep event-joystick`; do
+for D in \`find /dev/input/by-id/ | grep event-joystick\`; do
   str=\$(ls -la \$D)
   i=\$((\${#str}-1))
-  DEVICE=\$(echo "\${str:$i:1}")
+  DEVICE=\$(echo "\${str:\$i:1}")
   CFG="/storage/.config/reicast/emu.cfg"
    sed -i -e "s/^evdev_device_id_\$y =.*\$/evdev_device_id_\$y = \$DEVICE/g" \$CFG
    y=\$((y+1))
@@ -282,7 +282,7 @@ for D in `find /dev/input/by-id/ | grep event-joystick`; do
  fi 
 done
 
-/usr/bin/reicast "\$1"
+/storage/.kodi/addons/${ADDON_NAME}/bin/reicast "\$1"
 EOF
 echo "$content" > bin/reicast.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
