@@ -11,7 +11,7 @@
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
 [ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${DEVICE}"
 [ -z "$PROVIDER" ] && PROVIDER="CoreELEC"
-[ -z "$BUILD_VER" ] && BUILD_VER="2.1"
+[ -z "$BUILD_VER" ] && BUILD_VER=$(cat $SCRIPT_DIR/distributions/$DISTRO/version | grep LIBREELEC_VERSION | grep -oP '"\K[^"\047]+(?=["\047])')
 
 # make sure you change this line to point to your Sx05RE CoreELEC git clone
 LAKKA="${SCRIPT_DIR}"
@@ -64,7 +64,7 @@ fi
 
 ADDON_NAME="script.sx05re.launcher"
 ADDON_DIR="${PROJECT_DIR}/${ADDON_NAME}"
-ARCHIVE_NAME="${ADDON_NAME}${VERSION}-${DEVICE}.zip"
+ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}.zip"
 LOG="${SCRIPT_DIR}/sx05re-kodi_`date +%Y%m%d_%H%M%S`.log"
 
 read -d '' message <<EOF
@@ -75,6 +75,7 @@ PROJECT=${PROJECT}
 DEVICE=${DEVICE}
 ARCH=${ARCH}
 VERSION=${VERSION}
+BUILD_VER=${BUILD_VER}
 
 Working in: ${SCRIPT_DIR}
 Temporary project folder: ${TARGET_DIR}
