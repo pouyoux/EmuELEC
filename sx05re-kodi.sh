@@ -27,11 +27,11 @@ PKG_TYPES="Sx05RE"
 PKG_SUBDIR_Sx05RE=""
 
 LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
-LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mesen mgba mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg ppsspp prboom prosystem puae px68k reicast reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vbam vecx vice virtualjaguar xrick yabause"
+LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mesen mgba mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg ppsspp prboom prosystem puae px68k reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vbam vecx vice virtualjaguar xrick yabause"
 PACKAGES_LIBRETRO="$LIBRETRO_BASE $LIBRETRO_CORES"
-PACKAGES_Sx05RE="$PACKAGES_LIBRETRO advancemame PPSSPPSDL sx05re openal-soft libvdpau libxkbcommon empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
+PACKAGES_Sx05RE="$PACKAGES_LIBRETRO advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
 
-DISABLED_CORES="uae4arm libretro-database "
+DISABLED_CORES="uae4arm libretro-database reicast "
 
 PACKAGES_ALL=""
 
@@ -232,6 +232,9 @@ mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 echo -ne "\tES Config "
 mv -v "${TARGET_DIR}/usr/config/emulationstation" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tReicast Config "
+mv -v "${TARGET_DIR}/usr/config/reicast" "${ADDON_DIR}/config" &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tRemoving unneeded binaries "
 rm "${ADDON_DIR}/bin/setres.sh"
 rm "${ADDON_DIR}/bin/startfe.sh"
@@ -240,10 +243,50 @@ rm "${ADDON_DIR}/bin/emulationstation.sh"
 rm "${ADDON_DIR}/bin/emustation-config"
 rm "${ADDON_DIR}/bin/clearconfig.sh"
 rm "${ADDON_DIR}/bin/ip.sh"
+rm "${ADDON_DIR}/bin/reicast.sh"
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
 echo "Creating files..."
+echo -ne "\treicast.sh "
+read -d '' content <<EOF
+#!/bin/sh
+
+#set reicast BIOS dir to point to /storage/roms/bios/dc
+if [ ! -L /storage/.local/share/reicast/data ]; then
+	mkdir -p /storage/.local/share/reicast 
+	rm -rf /storage/.local/share/reicast/data
+	ln -s /storage/roms/bios/dc /storage/.local/share/reicast/data
+fi
+
+if [ ! -L /storage/.local/share/reicast/mappings ]; then
+mkdir -p /storage/.local/share/reicast/
+ln -sf /storage/.kodi/addons/${ADDON_NAME}/config/reicast/mappings /storage/.local/share/reicast/mappings
+ln -sf /storage/.kodi/addons/${ADDON_NAME}/config/reicast /storage/.config/reicast
+fi
+
+
+# try to automatically set the gamepad in emu.cfg
+y=1
+
+
+for D in `find /dev/input/by-id/ | grep event-joystick`; do
+  str=\$(ls -la \$D)
+  i=\$((\${#str}-1))
+  DEVICE=\$(echo "\${str:$i:1}")
+  CFG="/storage/.config/reicast/emu.cfg"
+   sed -i -e "s/^evdev_device_id_\$y =.*\$/evdev_device_id_\$y = \$DEVICE/g" \$CFG
+   y=\$((y+1))
+ if [\$y -lt 4]; then
+  break
+ fi 
+done
+
+/usr/bin/reicast "\$1"
+EOF
+echo "$content" > bin/reicast.sh
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+chmod +x bin/reicast.sh
 echo -ne "\tretroarch.sh "
 read -d '' content <<EOF
 #!/bin/sh
@@ -285,12 +328,6 @@ if [[ -z "\${FULLPATHTOROMS}" ]]; then
        ln -sf \$PATHTOROMS /storage/roms
  fi
 
-#set reicast BIOS dir to point to /storage/roms/bios
-if [ ! -L /storage/.local/share/reicast/data ]; then
-	mkdir -p /storage/.local/share/reicast 
-	rm -rf /storage/.local/share/reicast/data
-	ln -s /storage/roms/bios /storage/.local/share/reicast/data
-fi
 exit 0
 EOF
 echo "$content" > bin/emustation-config
