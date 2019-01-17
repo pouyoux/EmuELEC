@@ -1,7 +1,7 @@
 debug_crash no
 debug_rawsound no
 debug_speedmark no
-device_alsa_device default
+device_alsa_device sdl
 device_alsa_mixer channel
 device_color_bgr15 no
 device_color_bgr16 yes
