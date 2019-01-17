@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2018-present 5schatten (https://github.com/5schatten)
 
-PKG_NAME="lr-common-overlays"
+PKG_NAME="retroarch-overlays"
 PKG_VERSION="3e9102a"
 PKG_SHA256="619d0900a915cf5c27f600ada7b52066247be2f728a3fba0537e4a57dad24a48"
 PKG_LICENSE="GPL"
@@ -12,8 +12,8 @@ PKG_LONGDESC="Collection of overlay files for use with libretro frontends, such 
 PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/share/retroarch/overlay
-  cp -r $PKG_BUILD/borders $INSTALL/usr/share/retroarch/overlay
+  mkdir -p $INSTALL/usr/share/retroarch-overlays
+  cp -r * $INSTALL/usr/share/retroarch-overlays
 }
 
 post_makeinstall_target() {
