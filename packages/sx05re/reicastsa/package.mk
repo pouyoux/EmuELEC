@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="reicastsa"
-PKG_VERSION="3c57177"
+PKG_VERSION="55a2261"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/reicast/reicast-emulator"
@@ -32,7 +32,7 @@ make_target() {
   cd shell/linux
   case $PROJECT in
     S905|S805|S912|Amlogic)
-      make CC=$CC CXX=$CXX AS=$CC STRIP=$STRIP platform=odroid reicast.elf
+      make CC=$CC CXX=$CXX AS=$CC STRIP=$STRIP platform=odroidc2 reicast.elf
       ;;
     Generic)
       make CC=$CC CXX=$CXX AS=$CC STRIP=$STRIP platform=x64 reicast.elf
