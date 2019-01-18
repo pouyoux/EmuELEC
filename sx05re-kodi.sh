@@ -29,7 +29,7 @@ PKG_SUBDIR_Sx05RE=""
 LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
 LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mesen mgba mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg ppsspp prboom prosystem puae px68k reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vbam vecx vice virtualjaguar xrick yabause"
 PACKAGES_LIBRETRO="$LIBRETRO_BASE $LIBRETRO_CORES"
-PACKAGES_Sx05RE="$PACKAGES_LIBRETRO advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
+PACKAGES_Sx05RE="$PACKAGES_LIBRETRO scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
 
 DISABLED_CORES="uae4arm libretro-database reicast "
 
