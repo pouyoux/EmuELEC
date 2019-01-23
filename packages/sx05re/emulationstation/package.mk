@@ -31,10 +31,12 @@ post_makeinstall_target() {
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
 }
 
-post_install() {  
-  
-  # Thanks to vpeter we can now have bash :) 
+pre_unpack() { 
+ # Thanks to vpeter we can now have bash :) 
   rm -f $INSTALL/usr/bin/{sh,bash}
+}
+
+post_install() {  
   cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
   ln -sf bash $INSTALL/usr/bin/sh
  
