@@ -19,7 +19,7 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET lr-beetle-pce-fast vba-next advancemame PPSSPPSDL reicastsa common-shaders scraper sx05re_frontend fbida"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET advancemame PPSSPPSDL reicastsa common-shaders scraper sx05re_frontend fbida"
 
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
