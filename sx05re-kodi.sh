@@ -27,75 +27,14 @@ PKG_TYPES="Sx05RE"
 PKG_SUBDIR_Sx05RE=""
 
 LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
-LIBRETRO_CORES="2048 \
-				4do \
-				81 \
-				atari800 \
-				beetle-lynx \
-				beetle-ngp \
-				beetle-pce \
-				beetle-pcfx \
-				beetle-supergrafx \
-				beetle-vb \
-				beetle-wswan \
-				bluemsx \
-				cannonball \
-				cap32 \
-				chailove \
-				crocods \
-				dosbox \
-				fbalpha \
-				fceumm \
-				freeintv \
-				fuse-libretro \
-				gambatte \
-				genesis-plus-gx \
-				gearboy \
-				gme \
-				gpsp \
-				gw-libretro \
-				handy \
-				hatari \
-				mame2003-plus \
-				melonds \
-				meowpc98 \
-				mesen \
-				mgba \
-				mupen64plus \
-				nestopia \
-				nxengine \
-				o2em \
-				parallel-n64 \
-				pcsx_rearmed \
-				picodrive \
-				pocketcdg \
-				ppsspp \
-				prboom \
-				prosystem \
-				puae px68k \
-				reminiscence \
-				sameboy \
-				scummvm \
-				snes9x \
-				snes9x2002 \
-				snes9x2005 \
-				snes9x2005_plus \
-				snes9x2010 \
-				stella \
-				tgbdual \
-				tyrquake \
-				uae4arm \
-				uzem \
-				vbam \
-				vecx \
-				vice \
-				virtualjaguar \
-				xrick \
-				yabause"
-PACKAGES_LIBRETRO="$LIBRETRO_BASE $LIBRETRO_CORES"
-PACKAGES_Sx05RE="$PACKAGES_LIBRETRO scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
 
-DISABLED_CORES="uae4arm libretro-database reicast "
+    # Get cores from Sx05RE options file
+    OPTIONS_FILE="${SCRIPT_DIR}/distributions/${DISTRO}/options"
+    [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
+    [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
+    
+PACKAGES_Sx05RE="$LIBRETRO_BASE $LIBRETRO_CORES scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
+DISABLED_CORES="uae4arm libretro-database reicast $LIBRETRO_EXTRA_CORES"
 
 PACKAGES_ALL=""
 
@@ -113,7 +52,6 @@ varname="DISABLED_CORES_${PROJECT}"
 DISABLED_CORES="${!varname}"
 if [ -n "$DISABLED_CORES" ] ; then
 	for core in $DISABLED_CORES ; do
-		PACKAGES_LIBRETRO=$(sed "s/$core//g" <<< $PACKAGES_LIBRETRO)
 		PACKAGES_ALL=$(sed "s/$core//g" <<< $PACKAGES_ALL)
 	done
 fi
