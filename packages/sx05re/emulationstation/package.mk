@@ -31,16 +31,16 @@ post_makeinstall_target() {
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
 }
 
-pre_unpack() { 
- # Thanks to vpeter we can now have bash :) 
-  rm -f $INSTALL/usr/bin/{sh,bash}
-}
 
 post_install() {  
+# Thanks to vpeter we can now have bash :) 
+  rm -f $INSTALL/usr/bin/{sh,bash,busybox}
+  cp $(get_build_dir busybox)/.install_pkg/usr/bin/busybox $INSTALL/usr/bin
   cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
   ln -sf bash $INSTALL/usr/bin/sh
  
   echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
+  echo "chmod 4755 $INSTALL/usr/bin/busybox" >> $FAKEROOT_SCRIPT
   
   enable_service emustation.service
 }
