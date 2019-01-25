@@ -1,3 +1,22 @@
+--- a/Makefile.common	Wed Jan 23 11:55:14 2019
++++ b/Makefile.common	Wed Jan 23 11:59:25 2019
+@@ -3,6 +3,16 @@
+ LIBRETRO_COMM_DIR := $(ROOT_DIR)/libretro-common
+ WANT_WGL           = 0
+ 
++ifeq ($(HAVE_SX05RE), 1)
++   DEFINES += -DHAVE_SX05RE
++   HAVE_UPDATE_ASSETS=1
++   HAVE_LIBRETRODB=1
++   HAVE_NETWORKING=1
++   HAVE_LAKKA=1
++   HAVE_ZARCH=0
++   HAVE_QT=0
++   
++endif
+ ifeq ($(HAVE_STACK_USAGE), 1)
+    DEF_FLAGS += -fstack-usage
+ endif
 --- a/menu/menu_displaylist.c	2017-08-18 06:30:31.000000000 -0500
 +++ b/menu/menu_displaylist.c	2017-08-20 01:54:59.625855817 -0500
 @@ -3086,12 +3086,6 @@
