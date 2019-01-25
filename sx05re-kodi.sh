@@ -2,11 +2,14 @@
 
 # This script is based on https://github.com/ToKe79/retroarch-kodi-addon-LibreELEC/blob/master/retroarch-kodi.sh
 # It has been adapted to Sx05RE and modified to install emulationstation and other emulators.
+for de in S905 S912 ; do 
+DEVICE=""
+REPO_DIR=""
 
 [ -z "$DISTRO" ] && DISTRO=Sx05RE
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
-[ -z "$DEVICE" ] && DEVICE=S905
+[ -z "$DEVICE" ] && DEVICE=$de
 [ -z "$VERSION" ] && VERSION=""
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
 [ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${DEVICE}"
@@ -23,9 +26,6 @@ TARGET_DIR="${PROJECT_DIR}/`date +%Y-%m-%d_%H%M%S`"
 GIT_BRANCH="Sx05RE"
 BASE_NAME="$PROVIDER.$DISTRO"
 
-PKG_TYPES="Sx05RE"
-PKG_SUBDIR_Sx05RE=""
-
 LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
 
     # Get cores from Sx05RE options file
@@ -33,26 +33,12 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
     
-PACKAGES_Sx05RE="$LIBRETRO_BASE $LIBRETRO_CORES scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype sx05re_frontend emulationstation-theme-ComicBook"
-DISABLED_CORES="uae4arm libretro-database reicast $LIBRETRO_EXTRA_CORES"
+PACKAGES_ALL="$LIBRETRO_BASE $LIBRETRO_CORES scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype emulationstation-theme-ComicBook"
+DISABLED_CORES="uae4arm libretro-database reicast $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
 
-PACKAGES_ALL=""
-
-# source local overrides
-if [ -f "${SCRIPT_DIR}/local.conf" ] ; then
-	source "${SCRIPT_DIR}/local.conf"
-fi
-
-for suffix in $PKG_TYPES ; do
-	varname="PACKAGES_$suffix"
-	PACKAGES_ALL="$PACKAGES_ALL ${!varname}"
-done
-
-varname="DISABLED_CORES_${PROJECT}"
-DISABLED_CORES="${!varname}"
 if [ -n "$DISABLED_CORES" ] ; then
 	for core in $DISABLED_CORES ; do
-		PACKAGES_ALL=$(sed "s/$core//g" <<< $PACKAGES_ALL)
+		PACKAGES_ALL=$(sed "s/\b$core\b//g" <<< $PACKAGES_ALL)
 	done
 fi
 
@@ -87,6 +73,11 @@ EOF
 
 echo "$message"
 echo
+# make sure the old add-on is deleted
+if [ -d ${REPO_DIR} ]; then
+echo "Removing old add-on at ${REPO_DIR}"
+rm -rf ${REPO_DIR}
+fi
 
 # Checks folders
 for folder in ${REPO_DIR} ${REPO_DIR}/${ADDON_NAME} ${REPO_DIR}/${ADDON_NAME}/resources ; do
@@ -127,9 +118,7 @@ if [ -d "$LAKKA" ] ; then
 	fi
 	echo
 	echo "Copying packages:"
-	for suffix in $PKG_TYPES ; do
-	    	varname="PACKAGES_${suffix}"
-		for package in ${!varname} ; do
+		for package in $PACKAGES_ALL ; do
 			echo -ne "\t$package "
 			SRC="$(find ${PACKAGES_SUBDIR} -wholename ${PACKAGES_SUBDIR}/*/${package}/package.mk -print -quit)"
 			if [ -f "$SRC" ] ; then
@@ -143,18 +132,18 @@ if [ -d "$LAKKA" ] ; then
 				cp -Rf "${PKG_FOLDER}/"* "${TARGET_DIR}/" &>>"$LOG"
 				[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 			else
-				echo "(skipped - not found)"
+				echo "(skipped - not found or not compatible)"
 				echo "skipped $PKG_FOLDER" &>>"$LOG"
 				continue
 			fi
 		done
-	done
+
 	echo
 else
 	echo "Folder '$LAKKA' does not exist! Aborting!" >&2
 	exit 1
 fi
-if [ -d "$ADDON_DIR" ] ; then
+if [ -f "$ADDON_DIR" ] ; then
 	echo -n "Removing previous addon..."
 	rm -rf "${ADDON_DIR}" &>>"$LOG"
 	[ $? -eq 0 ] && echo "done." || { echo "failed!" ; echo "Error removing folder '${ADDON_DIR}'!" ; exit 1 ; }
@@ -6138,3 +6127,5 @@ rm -rf "$LOG"
 echo
 echo "Finished."
 echo
+
+done 
