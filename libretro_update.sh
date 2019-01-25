@@ -3,7 +3,7 @@
 # This file is part of the Lakka project and was created by ToKe79. It is originally from https://github.com/libretro/Lakka-LibreELEC/blob/master/libretro_update.sh
 # it has been sligtly modified to work with Sx05RE
 
-LR_PKG_PATH="packages/sx05re/libretro"
+[ -z "$LR_PKG_PATH" ] && LR_PKG_PATH="packages/sx05re/libretro"
 usage()
 {
   echo ""
