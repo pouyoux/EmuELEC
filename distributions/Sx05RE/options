@@ -242,8 +242,8 @@
   
 LAKKA_MIRROR="http://sources.lakka.tv"
 
-LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx beetle-psx beetle-saturn beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mesen mgba mupen64plus nestopia nxengine o2em openlara parallel-n64 pcsx_rearmed picodrive pocketcdg ppsspp prboom prosystem puae px68k reicast reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vba-next vbam vecx vice virtualjaguar xrick yabause"
-LIBRETRO_EXTRA_CORES="citra beetle-bsnes bsnes bsnes-mercury dinothawr higan-sfc higan-sfc-balanced lutro mame2003-midway mrboom easyrpg desmume desmume-2015 dolphin dosbox-svn "
+LIBRETRO_CORES="2048 4do 81 atari800 beetle-lynx beetle-ngp beetle-pce beetle-pcfx  beetle-supergrafx beetle-vb beetle-wswan bluemsx cannonball cap32 chailove crocods dosbox fbalpha fceumm freeintv fuse-libretro gambatte genesis-plus-gx gearboy gme gpsp gw-libretro handy hatari mame2003-plus melonds meowpc98 mgba mupen64plus nestopia nxengine o2em parallel-n64 pcsx_rearmed picodrive pocketcdg ppsspp prboom prosystem puae px68k reicast reminiscence sameboy scummvm snes9x snes9x2002 snes9x2005 snes9x2005_plus snes9x2010 stella tgbdual tyrquake uae4arm uzem vba-next vbam vecx vice virtualjaguar xrick yabause"
+LIBRETRO_EXTRA_CORES="citra beetle-psx beetle-saturn beetle-bsnes bsnes bsnes-mercury dinothawr higan-sfc higan-sfc-balanced lutro mame2003-midway mrboom easyrpg desmume desmume-2015 dolphin dosbox-svn mesen openlara "
 
 RA_PLAYLIST_NAMES=""\
 "Atari - 2600.lpl;"\
