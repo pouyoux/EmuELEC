@@ -20,9 +20,7 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 
 pre_configure_target() {
-  OLDCFLAGS=$CFLAGS
-  CFLAGS=(sed -i -e 's/Os/O3/g' $CFLAGS)
-  CFLAGS="$CFLAGS -Wall -pipe"
+export CFLAGS=`echo $CFLAGS | sed -e "s|-O.|-O2|g"`
 }
 
 post_unpack() {
