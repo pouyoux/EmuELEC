@@ -10,17 +10,21 @@ PKG_SITE="https://github.com/RetroPie/EmulationStation"
 PKG_URL="$PKG_SITE.git"
 PKG_DEPENDS_TARGET="toolchain SDL2-git freetype curl freeimage vlc bash"
 PKG_SECTION="sx05re"
+PKG_NEED_UNPACK="busybox"
 PKG_SHORTDESC="Emulationstation emulator frontend"
 PKG_BUILD_FLAGS="-gold"
 GET_HANDLER_SUPPORT="git"
 
-# theme for Emulationstation
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-simple-dark"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-carbon"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-nes-mini"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-tronkyfran"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-crt"
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation-theme-ComicBook"
+# themes for Emulationstation
+#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-simple-dark"
+#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-carbon"
+#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-nes-mini"
+#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-tronkyfran"
+#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-crt"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Chicuelo"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-pixel"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Retrorama"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-ComicBook"
 
 post_makeinstall_target() {
 
