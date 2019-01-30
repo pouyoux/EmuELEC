@@ -2,14 +2,15 @@
 
 # This script is based on https://github.com/ToKe79/retroarch-kodi-addon-LibreELEC/blob/master/retroarch-kodi.sh
 # It has been adapted to Sx05RE and modified to install emulationstation and other emulators.
-for de in S905 S912 ; do 
+
+build_it() {
 DEVICE=""
 REPO_DIR=""
 
 [ -z "$DISTRO" ] && DISTRO=Sx05RE
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
-[ -z "$DEVICE" ] && DEVICE=$de
+[ -z "$DEVICE" ] && DEVICE=$1
 [ -z "$VERSION" ] && VERSION=""
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
 [ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${DEVICE}"
@@ -32,9 +33,17 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-
     OPTIONS_FILE="${SCRIPT_DIR}/distributions/${DISTRO}/options"
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
-    
-PACKAGES_ALL="$LIBRETRO_BASE $LIBRETRO_CORES scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype emulationstation-theme-ComicBook"
-DISABLED_CORES="uae4arm libretro-database reicast $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
+
+PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype emulationstation-theme-ComicBook"
+
+if [ "$2" = "lite" ]; then
+  PACKAGES_ALL="$LIBRETRO_CORES_LITE"
+ else
+  PACKAGES_ALL="$LIBRETRO_CORES"
+ fi 
+
+PACKAGES_ALL="$LIBRETRO_BASE $PACKAGES_ALL $PACKAGES_Sx05RE" 
+DISABLED_CORES="libretro-database reicast $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
 
 if [ -n "$DISABLED_CORES" ] ; then
 	for core in $DISABLED_CORES ; do
@@ -52,7 +61,13 @@ fi
 
 ADDON_NAME="script.sx05re.launcher"
 ADDON_DIR="${PROJECT_DIR}/${ADDON_NAME}"
-ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}.zip"
+
+if [ "$2" = "lite" ] ; then
+  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}-lite.zip"
+else
+  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}.zip"
+fi
+
 LOG="${SCRIPT_DIR}/sx05re-kodi_`date +%Y%m%d_%H%M%S`.log"
 
 read -d '' message <<EOF
@@ -74,7 +89,7 @@ EOF
 echo "$message"
 echo
 # make sure the old add-on is deleted
-if [ -d ${REPO_DIR} ]; then
+if [ -d ${REPO_DIR} ] && [ "$2" != "lite" ] ; then
 echo "Removing old add-on at ${REPO_DIR}"
 rm -rf ${REPO_DIR}
 fi
@@ -6104,8 +6119,13 @@ echo -ne "\tzip "
 mv -vf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsymlink "
+if [ "$2" = "lite" ] ; then
+ln -vsf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/${ADDON_NAME}-lite-LATEST.zip" &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+else
 ln -vsf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/${ADDON_NAME}-LATEST.zip" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+fi
 echo -ne "\ticon.png "
 echo "$icon" | base64 --decode > "${REPO_DIR}/${ADDON_NAME}/resources/icon.png"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -6128,4 +6148,10 @@ echo
 echo "Finished."
 echo
 
-done 
+} 
+
+build_it "S905"
+build_it "S905" "lite"
+build_it "S912"
+build_it "S912"  "lite"
+
