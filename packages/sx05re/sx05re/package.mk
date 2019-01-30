@@ -57,4 +57,26 @@ makeinstall_target() {
     
     mkdir -p $INSTALL/usr/share/libretro-database
      touch $INSTALL/usr/share/libretro-database/dummy
+     
 }
+
+post_install() {
+# Remove unnecesary Retroarch Assets and overlays
+rm -rf "$INSTALL/usr/share/retroarch-assets/branding"
+rm -rf "$INSTALL/usr/share/retroarch-assets/glui"
+rm -rf "$INSTALL/usr/share/retroarch-assets/nuklear"
+rm -rf "$INSTALL/usr/share/retroarch-assets/nxrgui"
+rm -rf "$INSTALL/usr/share/retroarch-assets/ozone"
+rm -rf "$INSTALL/usr/share/retroarch-assets/pkg"
+rm -rf "$INSTALL/usr/share/retroarch-assets/switch"
+rm -rf "$INSTALL/usr/share/retroarch-assets/wallpapers"
+rm -rf "$INSTALL/usr/share/retroarch-assets/zarch"
+
+rm -rf "$INSTALL/usr/share/retroarch-overlays/borders"
+rm -rf "$INSTALL/usr/share/retroarch-overlays/effects"
+rm -rf "$INSTALL/usr/share/retroarch-overlays/gamepads"
+rm -rf "$INSTALL/usr/share/retroarch-overlays/ipad"
+rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
+rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
+
+} 
