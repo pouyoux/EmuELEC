@@ -35,6 +35,7 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
 
 PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook"
+LIBRETRO_CORES_LITE="atari800 beetle-pce bluemsx dosbox fbalpha gambatte genesis-plus-gx gpsp mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella uae4arm"
 
 if [ "$2" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES_LITE"
