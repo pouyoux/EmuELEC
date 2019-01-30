@@ -17,13 +17,13 @@
 ################################################################################
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="8aea194"
+PKG_VERSION="ca6298e"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
 PKG_SITE="https://github.com/hrydgard/ppsspp"
 PKG_URL="https://github.com/hrydgard/ppsspp.git"
-PKG_DEPENDS_TARGET="toolchain ffmpeg libzip libpng SDL2-git zlib zip linux"
+PKG_DEPENDS_TARGET="toolchain ffmpeg libzip libpng SDL2-git zlib zip"
 PKG_SHORTDESC="PPSSPPDL"
 PKG_LONGDESC="PPSSPP Standalone"
 GET_HANDLER_SUPPORT="git"
