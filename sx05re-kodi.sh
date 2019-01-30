@@ -34,7 +34,7 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
 
-PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype emulationstation-theme-ComicBook"
+PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook"
 
 if [ "$2" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES_LITE"
