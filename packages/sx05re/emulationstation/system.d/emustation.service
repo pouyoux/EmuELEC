@@ -1,6 +1,8 @@
 [Unit]
 Description=EmulationStation emulator frontend
 ConditionPathExists=/var/lock/start.games
+After=graphical.target
+Requires=graphical.target
 
 [Service]
 Environment=DISPLAY=:0.0
@@ -12,9 +14,9 @@ ExecStartPre=/usr/bin/killkodi.sh
 ExecStart=/usr/bin/startfe.sh
 KillMode=process
 TimeoutStopSec=3
-Restart=on-failure
+Restart=always
 RestartSec=2
 StartLimitInterval=0
 
 [Install]
-WantedBy=kodi.target
+WantedBy=sx05re.target

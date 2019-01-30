@@ -79,4 +79,7 @@ rm -rf "$INSTALL/usr/share/retroarch-overlays/ipad"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
 
+    # link default.target to sx05re.target
+   ln -sf sx05re.target $INSTALL/usr/lib/systemd/system/default.target
+   enable_service sx05re-autostart.service
 } 

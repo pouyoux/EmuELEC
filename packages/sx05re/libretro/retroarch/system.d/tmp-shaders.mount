@@ -9,4 +9,4 @@ Type=overlay
 Options=lowerdir=/usr/share/common-shaders,upperdir=/storage/shaders,workdir=/storage/.tmp/shaders-workdir
 
 [Install]
-WantedBy=kodi.target
+WantedBy=sx05re.target
