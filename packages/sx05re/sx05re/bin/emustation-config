@@ -55,13 +55,4 @@ if [ ! -L "$CONFIG_DIR" ]; then
 ln -sf $CONFIG_DIR2 $CONFIG_DIR
 fi 
 
-if [ ! "$(find $ROMS_DIR -type f -print -quit | wc -l)" ]; then
-    mkdir -p $ROMS_DIR
-    touch $ROMS_DIR/you_need_roms.nes
-fi
-
-if [ ! "$(find $BIOS_DIR -type f -print -quit | wc -l)" ]; then
-    mkdir -p $BIOS_DIR
-    touch $BIOS_DIR/put_bios_here
-fi
 exit 0
