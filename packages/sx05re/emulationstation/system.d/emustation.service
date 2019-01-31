@@ -1,8 +1,6 @@
 [Unit]
 Description=EmulationStation emulator frontend
 ConditionPathExists=/var/lock/start.games
-After=graphical.target
-Requires=graphical.target
 
 [Service]
 Environment=DISPLAY=:0.0

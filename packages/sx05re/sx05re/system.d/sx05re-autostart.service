@@ -10,4 +10,4 @@ ExecStart=-/bin/sh -c ". /etc/profile; exec /bin/sh /storage/.config/autostart.s
 RemainAfterExit=yes
 
 [Install]
-WantedBy=emulationstation.service
+WantedBy=sx05re.target
