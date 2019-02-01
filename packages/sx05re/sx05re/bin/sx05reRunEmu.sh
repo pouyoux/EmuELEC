@@ -1,5 +1,15 @@
 #!/bin/sh
 
+hdmimode=`cat /sys/class/display/mode`;
+
+# Set framebuffer geometry to match the resolution, splash should change according to the resolution. 
+case $hdmimode in
+  480*)            X=720  Y=480  SPLASH="/storage/.config/splash/splash-1080.png" ;;
+  576*)            X=720  Y=576  SPLASH="/storage/.config/splash/splash-1080.png" ;;
+  720p*)           X=1280 Y=720  SPLASH="/storage/.config/splash/splash-1080.png" ;;
+  *)               X=1920 Y=1080 SPLASH="/storage/.config/splash/splash-1080.png" ;;
+esac
+
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
 SX05RELOG="/storage/sx05re.log"
