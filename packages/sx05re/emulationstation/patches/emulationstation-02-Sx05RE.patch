@@ -1,28 +1,22 @@
 diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 --- a/es-app/src/guis/GuiMenu.cpp	Thu Jun 08 07:58:22 2017
 +++ b/es-app/src/guis/GuiMenu.cpp	Thu Jun 08 16:55:16 2017
-@@ -21,11 +21,14 @@
- {
+@@ -23,6 +23,9 @@
  	bool isFullUI = UIModeController::getInstance()->isUIModeFull();
  
-+		addEntry("Sx05RE", 0x777777FF, true, [this] { openSx05RESettings(); });
+ 	if (isFullUI)
++	    addEntry("Sx05RE", 0x777777FF, true, [this] { openSx05RESettings(); });
 +	
-+	// This will be removed/changed as it doesn't work, or works poorly on Sx05RE,try to use sselph scraper
- 	if (isFullUI)
++	if (isFullUI)
  		addEntry("SCRAPER", 0x777777FF, true, [this] { openScraperSettings(); });
--
--	addEntry("SOUND SETTINGS", 0x777777FF, true, [this] { openSoundSettings(); });
--
-+    /* removed, no use for it on Sx05RE
-+  	addEntry("SOUND SETTINGS", 0x777777FF, true, [this] { openSoundSettings(); });
-+    */
  
- 	if (isFullUI)
- 		addEntry("UI SETTINGS", 0x777777FF, true, [this] { openUISettings(); });
-@@ -48,6 +51,248 @@
+ 	addEntry("SOUND SETTINGS", 0x777777FF, true, [this] { openSoundSettings(); });
+@@ -46,6 +49,252 @@
+ 	addVersionInfo();
+ 	setSize(mMenu.getSize());
  	setPosition((Renderer::getScreenWidth() - mSize.x()) / 2, Renderer::getScreenHeight() * 0.15f);
- }
- 
++}
++
 +void GuiMenu::openSx05RESettings()
 +{
 +	auto s = new GuiSettings(mWindow, "Sx05RE Settings");
@@ -31,11 +25,11 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	auto sx05re_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "ARCADE EMULATOR", false);
 +		std::vector<std::string> mamechoices;
 +		mamechoices.push_back("mame2003_plus");
-+		/*mamechoices.push_back("mame2003");*/
-+		/*mamechoices.push_back("mame2003-midway");*/
-+	  /*mamechoices.push_back("AdvanceMame");*/
-+		/*mamechoices.push_back("mame2010");*/
-+		/*mamechoices.push_back("mame2014");*/
++		mamechoices.push_back("mame2003");
++		mamechoices.push_back("mame2003-midway");
++	    mamechoices.push_back("AdvanceMame");
++		mamechoices.push_back("mame2010");
++		mamechoices.push_back("mame2014");
 +		/*devices.push_back("Other");*/
 +		/*devices.push_back("Options");*/
 +		for (auto it = mamechoices.cbegin(); it != mamechoices.cend(); it++)
@@ -211,8 +205,12 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +		auto sx05re_boot_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "START AT BOOT", false);
 +		std::vector<std::string> devices;
 +		devices.push_back("Emulationstation");
-+		devices.push_back("Kodi");
++		/*devices.push_back("Kodi");*/
 +		devices.push_back("Retroarch");
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
 +		for (auto it = devices.cbegin(); it != devices.cend(); it++)
 +		sx05re_boot_def->add(*it, *it, Settings::getInstance()->getString("Sx05RE_BOOT") == *it);
 +		s->addWithLabel("START AT BOOT", sx05re_boot_def);
@@ -240,7 +238,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	row.addElement(std::make_shared<TextComponent>(window, "RESET Sx05RE EMULATORS TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
 +	s->addRow(row);
 +	row.elements.clear();
-+	
++	/*
 +	row.makeAcceptInputHandler([window] {
 +		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL KODI ADDONS AND CONFIG!!!!!!!!!! RESET KODI TO DEFAULT CONFIG AND RESTART?", "YES",
 +				[] { 
@@ -250,9 +248,9 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	row.addElement(std::make_shared<TextComponent>(window, "RESET KODI TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
 +	s->addRow(row);
 +	row.elements.clear();
-+	
++	*/
 +	row.makeAcceptInputHandler([window] {
-+		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL CONFIGS/ADDONS!!!!!!!!!! RESET Sx05RE/KODI TO DEFAULT CONFIG AND RESTART?", "YES",
++		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL CONFIGS/ADDONS!!!!!!!!!! RESET SYSTEM TO DEFAULT CONFIG AND RESTART?", "YES",
 +				[] { 
 +				runSystemCommand("/usr/bin/clearconfig.sh ALL");
 +				}, "NO", nullptr));
@@ -263,111 +261,35 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	
 +	mWindow->pushGui(s);
 + }
-+}
-+
+ }
+ 
  void GuiMenu::openScraperSettings()
- {
- 	auto s = new GuiSettings(mWindow, "SCRAPER");
-@@ -412,57 +658,67 @@
- 	auto s = new GuiSettings(mWindow, "QUIT");
- 
- 	Window* window = mWindow;
--
- 	ComponentListRow row;
--	if (UIModeController::getInstance()->isUIModeFull())
--	{
--		row.makeAcceptInputHandler([window] {
--			window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
--				[] {
--				if(quitES("/tmp/es-restart") != 0)
--					LOG(LogWarning) << "Restart terminated with non-zero result!";
--			}, "NO", nullptr));
--		});
--		row.addElement(std::make_shared<TextComponent>(window, "RESTART EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
--		s->addRow(row);
--
- 
-+			row.makeAcceptInputHandler([window] {
-+				window->pushGui(new GuiMsgBox(window, "QUIT TO KODI? ", "YES",
-+					[] {
-+					remove("/var/lock/start.games");
-+            		runSystemCommand("touch /var/lock/start.kodi");
-+			        runSystemCommand("systemctl start kodi.service");
-+					SDL_Event ev;
-+					ev.type = SDL_QUIT;
-+					SDL_PushEvent(&ev);
-+				}, "NO", nullptr));
-+			});
-+			row.addElement(std::make_shared<TextComponent>(window, "START KODI", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+			s->addRow(row);
- 
--		if(Settings::getInstance()->getBool("ShowExit"))
--		{
- 			row.elements.clear();
- 			row.makeAcceptInputHandler([window] {
--				window->pushGui(new GuiMsgBox(window, "REALLY QUIT?", "YES",
-+				window->pushGui(new GuiMsgBox(window, "QUIT TO RETROARCH? ", "YES",
- 					[] {
-+					remove("/var/lock/start.games");
-+            		runSystemCommand("touch /var/lock/start.retro");
-+			        runSystemCommand("systemctl start retroarch.service");
- 					SDL_Event ev;
- 					ev.type = SDL_QUIT;
- 					SDL_PushEvent(&ev);
- 				}, "NO", nullptr));
- 			});
--			row.addElement(std::make_shared<TextComponent>(window, "QUIT EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+			row.addElement(std::make_shared<TextComponent>(window, "START RETROARCH", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
- 			s->addRow(row);
--		}
--	}
-+      
-+       row.elements.clear();
-+		row.makeAcceptInputHandler([window] {
-+			window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
-+				[] {
-+    		   runSystemCommand("systemctl restart emustation.service");
-+			}, "NO", nullptr));
-+		});
-+		row.addElement(std::make_shared<TextComponent>(window, "RESTART EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+		s->addRow(row);
-+
- 	row.elements.clear();
- 	row.makeAcceptInputHandler([window] {
- 		window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
- 			[] {
--			if (quitES("/tmp/es-sysrestart") != 0)
-+			if (system("systemctl reboot") != 0)
- 				LOG(LogWarning) << "Restart terminated with non-zero result!";
- 		}, "NO", nullptr));
- 	});
--	row.addElement(std::make_shared<TextComponent>(window, "RESTART SYSTEM", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+	row.addElement(std::make_shared<TextComponent>(window, "RESTART Sx05RE", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
- 	s->addRow(row);
- 
- 	row.elements.clear();
- 	row.makeAcceptInputHandler([window] {
- 		window->pushGui(new GuiMsgBox(window, "REALLY SHUTDOWN?", "YES",
- 			[] {
--			if (quitES("/tmp/es-shutdown") != 0)
-+			if (system("systemctl poweroff") != 0)
- 				LOG(LogWarning) << "Shutdown terminated with non-zero result!";
- 		}, "NO", nullptr));
- 	});
--	row.addElement(std::make_shared<TextComponent>(window, "SHUTDOWN SYSTEM", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+	row.addElement(std::make_shared<TextComponent>(window, "SHUTDOWN Sx05RE", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
- 	s->addRow(row);
- 
- 	mWindow->pushGui(s);
-@@ -474,7 +730,7 @@
+@@ -113,6 +362,7 @@
+ 		audio_cards.push_back("hw");
+ 		audio_cards.push_back("plughw");
+ 		audio_cards.push_back("null");
++		/*audio_cards.push_back("hdmi");*/
+ 		if (Settings::getInstance()->getString("AudioCard") != "") {
+ 			if(std::find(audio_cards.begin(), audio_cards.end(), Settings::getInstance()->getString("AudioCard")) == audio_cards.end()) {
+ 				audio_cards.push_back(Settings::getInstance()->getString("AudioCard"));
+@@ -135,6 +385,7 @@
+ 		transitions.push_back("Master");
+ 		transitions.push_back("Digital");
+ 		transitions.push_back("Analogue");
++		/* transitions.push_back("HDMI"); */
+ 		if (Settings::getInstance()->getString("AudioDevice") != "") {
+ 			if(std::find(transitions.begin(), transitions.end(), Settings::getInstance()->getString("AudioDevice")) == transitions.end()) {
+ 				transitions.push_back(Settings::getInstance()->getString("AudioDevice"));
+@@ -522,7 +773,7 @@
  
  	mVersion.setFont(Font::get(FONT_SIZE_SMALL));
  	mVersion.setColor(0x5E5E5EFF);
 -	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate);
-+	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate +" SX05RE v2.2");
++	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate +" SX05RE v2.2 IP:" + getShOutput(R"(/usr/bin/ip.sh)"));
  	mVersion.setHorizontalAlignment(ALIGN_CENTER);
  	addChild(&mVersion);
  }
+
 --- a/es-app/src/guis/GuiMenu.h	2018-03-09 12:11:38.000000000 -0600
 +++ b/es-app/src/guis/GuiMenu.h	2018-03-16 01:20:44.411257304 -0600
 @@ -26,6 +26,7 @@
@@ -378,3 +300,39 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  
  	MenuComponent mMenu;
  	TextComponent mVersion;
+--- a/es-core/src/platform.h
++++ b/es-core/src/platform.h
+@@ -26,5 +26,6 @@
+ int runSystemCommand(const std::string& cmd_utf8); // run a utf-8 encoded in the shell (requires wstring conversion on Windows)
+ int quitES(const std::string& filename);
+ void touch(const std::string& filename);
++std::string getShOutput(const std::string& mStr);
+ 
+ #endif // ES_CORE_PLATFORM_H
+--- a/es-core/src/platform.cpp
++++ b/es-core/src/platform.cpp
+@@ -40,6 +40,23 @@
+ #endif
+ }
+ 
++std::string getShOutput(const std::string& mStr)
++{
++    std::string result, file;
++    FILE* pipe{popen(mStr.c_str(), "r")};
++    char buffer[256];
++
++    while(fgets(buffer, sizeof(buffer), pipe) != NULL)
++    {
++        file = buffer;
++        result += file.substr(0, file.size() - 1);
++    }
++
++    pclose(pipe);
++    return result;
++}
++
++
+ int quitES(const std::string& filename)
+ {
+ 	touch(filename);
+
