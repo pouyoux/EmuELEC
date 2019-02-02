@@ -426,4 +426,15 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  int quitES(const std::string& filename)
  {
  	touch(filename);
-
+--- a/es-app/src/main.cpp
++++ b/es-app/src/main.cpp
+@@ -323,6 +323,9 @@
+ 		window.pushGui(new GuiMsgBox(&window,
+ 			errorMsg,
+ 			"QUIT", [] {
++			    remove("/var/lock/start.games");
++           	runSystemCommand("touch /var/lock/start.kodi");
++		        runSystemCommand("systemctl start kodi.service");
+ 				SDL_Event* quit = new SDL_Event();
+ 				quit->type = SDL_QUIT;
+ 				SDL_PushEvent(quit);
