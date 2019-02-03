@@ -2,8 +2,8 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libhybris"
-PKG_VERSION="e5f73d6"
-PKG_SHA256="7e977a1f28e8b8d330e619c1d823a439b7b239f27c31763fc9d83f70a64acfbd"
+PKG_VERSION="070c3ab"
+PKG_SHA256="070dcf48aa424c1c56c1d95f5116051a22a76bd5ac0c877febf04b63d9559ea2"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/libhybris/libhybris"
