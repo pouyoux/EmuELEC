@@ -432,8 +432,8 @@ read -d '' addon <<EOF
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Sx05RE addon. Provides binary, cores and basic settings to launch it</summary>
-		<description lang="en">Sx05RE addon based on source modified by Lakka project and Sx05RE. Provides binary, cores and basic settings to launch it. Lakka is Just Enough OS for RetroArch - check out this project at www.lakka.tv.</description>
-		<disclaimer lang="en">This is an unofficial add-on. Please don't ask for support in CoreELEC or Lakka forums / irc channels.</disclaimer>
+		<description lang="en">Sx05RE addon is based on ToKe79 Retroarch/Lakka addon. Provides binary, cores and basic settings to launch Sx05RE. </description>
+		<disclaimer lang="en">This is an unofficial add-on. Please don't ask for support in CoreELEC,Lakka or ToKe79 github, forums or irc channels.</disclaimer>
 		<platform>linux</platform>
 		<assets>
 			<icon>resources/icon.png</icon>
@@ -449,6 +449,9 @@ read -d '' content <<EOF
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 import os
 import util
+
+dialog = xbmcgui.Dialog()
+dialog.notification('Sx05RE', 'Launching....', xbmcgui.NOTIFICATION_INFO, 5000)
 
 ADDON_ID = '${ADDON_NAME}'
 
