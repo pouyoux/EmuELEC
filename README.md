@@ -1,3 +1,32 @@
+**Sx05RE**
+A retro emulation fork for Amlogic S905 and S912 devices.  
+Based on  [CoreELEC](https://github.com/CoreELEC/CoreELEC) and [Lakka](https://github.com/libretro/Lakka-LibreELEC), I just combine them with [Emulationstation](https://github.com/RetroPie/EmulationStation) and some standalone emulators ([Advancemame](https://github.com/amadvance/advancemame), [PPSSPP](https://github.com/hrydgard/ppsspp), [Reicast](https://github.com/reicast/reicast-emulator), [Amiberry](https://github.com/midwan/amiberry) and others). 
+
+To build use:  
+
+git clone https://github.com/shantigilbert/CoreELEC.git Sx05RE  
+cd Sx05RE  
+PROJECT=Amlogic DEVICE=S905 ARCH=arm DISTRO=Sx05RE make image  
+PROJECT=Amlogic DEVICE=S912 ARCH=arm DISTRO=Sx05RE make image  
+
+If you just want to build Sx05RE as a Kodi Addon:  
+
+git clone https://github.com/shantigilbert/CoreELEC.git Sx05RE  
+cd Sx05RE  
+./sx05re-kodi.sh  
+after it's finished, zip files should be in the Repo folder.  
+
+Note that the Kodi Addon has only been tested in CoreELEC and it will (of course) only work on Amlogic S905 and S912 devices.
+
+I use Ubuntu 18 LTS
+
+Please note, this is mostly a personal project made for my S905 box I can't guarantee that it will work for your box, I've spent many hours trying to optimize and make sure everything works, but I can't test everything and things might just not work at all, also keep in mind the limitations of the hardware and don't expect everything to run at 60FPS (specially N64, PSP and Reicast) I can't guarantee changes to fit your personal needs, but I do appreciate any PRs, help on testing other boxes and fixing issues in general.  
+
+I work on this project on my personal time, I don't make any money out of it, so it takes a while for me to properly test any changes, but I will do my best to help you fix issues you might have on other boxes limited to my time and experience. 
+
+
+Happy retrogaming! 
+
 # CoreELEC
 
 CoreELEC is a 'Just enough OS' Linux distribution for running Kodi on popular low-cost hardware. CoreELEC is a minor fork of [LibreELEC](https://libreelec.tv), it's built by the community for the community. [CoreELEC website](http://coreelec.org).
