@@ -1,0 +1,19 @@
+--- a/glesv2/glesv2.c
++++ b/glesv2/glesv2.c2
+@@ -682,15 +682,7 @@
+ 
+ const GLubyte* glGetString (GLenum name)
+ {
+-	// Return 2.0 even though drivers might actually support 3.0 or higher,
+-	// because libhybris does not provide any 3.0+ symbols.
+-	if (name == GL_VERSION) {
+-		static GLubyte glGetString_versionString[64];
+-		snprintf((char *)glGetString_versionString, sizeof(glGetString_versionString), "OpenGL ES 2.0 (%s)", (*_glGetString)(name));
+-		return glGetString_versionString;
+-	}
+-
+-	return (*_glGetString)(name);
++	(*_glGetString)(name);
+ }
+ 
+ void glGetTexParameterfv (GLenum target, GLenum pname, GLfloat* params)
