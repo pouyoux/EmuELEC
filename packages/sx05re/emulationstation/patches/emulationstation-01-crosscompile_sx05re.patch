@@ -10,24 +10,11 @@ diff U3 a/EmulationStation-master/CMakeLists.txt b/test/EmulationStation-master/
      EXISTS "/usr/lib/arm-linux-gnueabihf/libMali.so" OR
      EXISTS "/usr/lib/aarch64-linux-gnu/libMali.so" OR
      EXISTS "/usr/lib/arm-linux-gnueabihf/mali-egl/libmali.so" OR
-@@ -51,7 +51,7 @@
- find_package(SDL2 REQUIRED)
+@@ -58,7 +58,6 @@
  find_package(CURL REQUIRED)
  find_package(VLC REQUIRED)
+ find_package(RapidJSON REQUIRED)
 -find_package(libCEC)
-+#find_package(libCEC)
  
  #add ALSA for Linux
  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-@@ -64,9 +64,9 @@
-     add_definitions(-D_RPI_)
- endif()
- 
--if(DEFINED libCEC_FOUND)
--    add_definitions(-DHAVE_LIBCEC)
--endif()
-+#if(DEFINED libCEC_FOUND)
-+#    add_definitions(-DHAVE_LIBCEC)
-+#endif()
- 
- #-------------------------------------------------------------------------------
