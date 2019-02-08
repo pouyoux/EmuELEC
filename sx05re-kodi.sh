@@ -7,24 +7,40 @@ build_it() {
 DEVICE=""
 REPO_DIR=""
 
+[ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
+
+# make sure you change these lines to point to your Sx05RE CoreELEC git clone
+SX05RE="${SCRIPT_DIR}"
+GIT_BRANCH="Sx05RE"
+
+LOG="${SCRIPT_DIR}/sx05re-kodi_`date +%Y%m%d_%H%M%S`.log"
+
+# Exit if not in the right branch 
+if [ -d "$SX05RE" ] ; then
+	cd "$SX05RE"
+	git checkout ${GIT_BRANCH} &>>"$LOG"
+		branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+	if [ $branch != $GIT_BRANCH ]; then 
+	   echo "ERROR: Could not automatically switch branch to $GIT_BRANCH. Please make sure you are in branch $GIT_BRANCH before running this script"
+	   echo "Wrong GIT branch, wanted $GIT_BRANCH got $branch" &>>"$LOG"
+	   exit 1
+   fi 
+fi 
+
 [ -z "$DISTRO" ] && DISTRO=Sx05RE
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
 [ -z "$DEVICE" ] && DEVICE=$1
 [ -z "$VERSION" ] && VERSION=""
-[ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
 [ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${DEVICE}"
 [ -z "$PROVIDER" ] && PROVIDER="CoreELEC"
 [ -z "$BUILD_VER" ] && BUILD_VER=$(cat $SCRIPT_DIR/distributions/$DISTRO/version | grep LIBREELEC_VERSION | grep -oP '"\K[^"\047]+(?=["\047])')
 
-# make sure you change this line to point to your Sx05RE CoreELEC git clone
-LAKKA="${SCRIPT_DIR}"
 BUILD_SUBDIR="build.${DISTRO}-${DEVICE:-$PROJECT}.${ARCH}-${BUILD_VER}"
 SCRIPT="scripts/build"
 PACKAGES_SUBDIR="packages"
 PROJECT_DIR="${SCRIPT_DIR}/retroarch_work"
 TARGET_DIR="${PROJECT_DIR}/`date +%Y-%m-%d_%H%M%S`"
-GIT_BRANCH="Sx05RE"
 BASE_NAME="$PROVIDER.$DISTRO"
 
 LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays core-info common-shaders"
@@ -69,8 +85,6 @@ else
   ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}.zip"
 fi
 
-LOG="${SCRIPT_DIR}/sx05re-kodi_`date +%Y%m%d_%H%M%S`.log"
-
 read -d '' message <<EOF
 Building Sx05RE KODI add-on for CoreELEC:
 
@@ -92,18 +106,6 @@ EOF
 echo "$message"
 echo
 
-
-if [ -d "$LAKKA" ] ; then
-	cd "$LAKKA"
-	git checkout ${GIT_BRANCH} &>>"$LOG"
-		branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
-	if [ $branch != $GIT_BRANCH ]; then 
-	   echo "ERROR: Could not switch branch to $GIT_BRANCH. Please commit your changes or stash them before you run this script"
-	   echo "Wrong GIT branch, wanted $GIT_BRANCH got $branch" &>>"$LOG"
-	   exit 1
-   fi 
-fi 
-
 # make sure the old add-on is deleted
 if [ -d ${REPO_DIR} ] && [ "$2" != "lite" ] ; then
 echo "Removing old add-on at ${REPO_DIR}"
@@ -116,9 +118,8 @@ for folder in ${REPO_DIR} ${REPO_DIR}/${ADDON_NAME} ${REPO_DIR}/${ADDON_NAME}/re
 done
 echo
 
-if [ -d "$LAKKA" ] ; then
-	cd "$LAKKA"
-	git checkout ${GIT_BRANCH} &>>"$LOG"
+if [ -d "$SX05RE" ] ; then
+	cd "$SX05RE"
 	echo "Building packages:"
 	for package in $PACKAGES_ALL ; do
 		echo -ne "\t$package "
@@ -171,7 +172,7 @@ if [ -d "$LAKKA" ] ; then
 
 	echo
 else
-	echo "Folder '$LAKKA' does not exist! Aborting!" >&2
+	echo "Folder '$SX05RE' does not exist! Aborting!" >&2
 	exit 1
 fi
 if [ -f "$ADDON_DIR" ] ; then
