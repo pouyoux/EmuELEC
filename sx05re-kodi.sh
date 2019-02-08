@@ -80,6 +80,8 @@ DEVICE=${DEVICE}
 ARCH=${ARCH}
 VERSION=${VERSION}
 BUILD_VER=${BUILD_VER}
+GIT_BRANCH=${GIT_BRANCH}
+
 
 Working in: ${SCRIPT_DIR}
 Temporary project folder: ${TARGET_DIR}
@@ -89,6 +91,19 @@ EOF
 
 echo "$message"
 echo
+
+
+if [ -d "$LAKKA" ] ; then
+	cd "$LAKKA"
+	git checkout ${GIT_BRANCH} &>>"$LOG"
+		branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+	if [ $branch != $GIT_BRANCH ]; then 
+	   echo "ERROR: Could not switch branch to $GIT_BRANCH. Please commit your changes or stash them before you run this script"
+	   echo "Wrong GIT branch, wanted $GIT_BRANCH got $branch" &>>"$LOG"
+	   exit 1
+   fi 
+fi 
+
 # make sure the old add-on is deleted
 if [ -d ${REPO_DIR} ] && [ "$2" != "lite" ] ; then
 echo "Removing old add-on at ${REPO_DIR}"
