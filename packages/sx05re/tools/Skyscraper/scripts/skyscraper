@@ -15,6 +15,6 @@ if [ ! -L ${SKYSCRAPER_HOME} ]; then
   ln -s ${SKYSCRAPER_HOME_CONFIG} ${SKYSCRAPER_HOME}
 fi
 
-skyscraper "$@"
+Skyscraper "$@"
 
 
