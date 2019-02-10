@@ -33,7 +33,6 @@ configure_target() {
 
 post_makeinstall_target() {
   # Install scripts 
-  mv $INSTALL/usr/bin/Skyscraper $INSTALL/usr/bin/skyscraper
   cp $PKG_DIR/scripts/* $INSTALL/usr/bin/
 
   # Install config
