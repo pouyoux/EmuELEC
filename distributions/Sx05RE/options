@@ -17,7 +17,7 @@
   GREETING0="##############################################"
   GREETING1="#                 Sx05RE	             #"
   GREETING2="#    An emulation build for Sx05 Devices     #"
-  GREETING3="#            Based on LibreELEC              #"
+  GREETING3="#            Based on CoreELEC               #"
   GREETING4="##############################################"
 
 # Root password to integrate in the target system
