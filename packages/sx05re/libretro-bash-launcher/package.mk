@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="libretro-bash-launcher"
-PKG_VERSION="630f135"
+PKG_VERSION="78b4042"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
