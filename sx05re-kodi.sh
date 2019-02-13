@@ -337,10 +337,10 @@ FULLPATHTOROMS="\$(find /media/*/roms/ -name \$ROMFILE -maxdepth 1)"
 if [[ -z "\${FULLPATHTOROMS}" ]]; then
 # echo "can't find roms"
 
-    if [ -L /storage/roms ]; then
+    if [ ! -e /storage/roms ]; then
       rm /storage/roms
       mv /storage/roms2 /storage/roms
- fi
+    fi
     else
       mv /storage/roms /storage/roms2
       #echo "move the roms folder"
@@ -384,8 +384,17 @@ LOGFILE="/storage/retroarch.log"
  fi
 
 [ ! -d "\$RA_CONFIG_DIR" ] && mkdir -p "\$RA_CONFIG_DIR"
-[ ! -d "\$ROMS_FOLDER" ] && mkdir -p "\$ROMS_FOLDER"
-[ ! -d "\$ROMS_FOLDER/\$DOWNLOADS" ] && mkdir -p "\$ROMS_FOLDER/\$DOWNLOADS"
+  
+ if [ ! -d "\$ROMS_FOLDER" ] && [ ! -L "\$ROMS_FOLDER" ]; then
+    mkdir -p "\$ROMS_FOLDER"
+    
+     all_roms="downloads,amiga,atari2600,atari5200,atari7800,atarilynx,bios,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,videopac,zxspectrum" 
+ 
+     for romfolder in \$(echo \$all_roms | tr "," " "); do
+        mkdir -p "\$ROMS_FOLDER/\$romfolder"
+     done
+  fi
+ [ ! -d "\$ROMS_FOLDER/\$DOWNLOADS" ] && mkdir -p "\$ROMS_FOLDER/\$DOWNLOADS"
 
 for subdir in \$RA_CONFIG_SUBDIRS ; do
 	[ ! -d "\$RA_CONFIG_DIR/\$subdir" ] && mkdir -p "\$RA_CONFIG_DIR/\$subdir"
@@ -502,7 +511,7 @@ read -d '' content <<EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
 	<category label="General">
-		<setting id="ra_stop_kodi" label="Stop KODI (free memory) before launching Retroarch" type="enum" default="1" values="No|Yes" />
+		<setting id="ra_stop_kodi" label="Stop KODI (free memory) before launching Sx05RE" type="enum" default="1" values="No|Yes" />
 		<setting id="ra_log" label="Logging of Sx05RE output" type="enum" default="0" values="No|Yes" />
 		<setting id="ra_verbose" label="Verbose logging (for debugging)" type="enum" default="0" values="No|Yes" />
 		<setting id="ra_es" label="Run Emulationstation instead of Retroarch" type="enum" default="1" values="No|Yes" />
