@@ -36,39 +36,14 @@ make_target() {
     DTB_LIST="$DTB_LIST $DTB_NAME"
   done
 
-  # Filter device tree list depending on project
-  case "$DEVICE" in
-    S905)
-      for f in ${DTB_LIST[@]}; do
-        [[ "$f" == gxbb* ]] || [[ "$f" == gxl* ]] && DTB_LIST_FILTERED="$DTB_LIST_FILTERED $f"
-      done
-      ;;
-    S912)
-      for f in ${DTB_LIST[@]}; do
-        [[ "$f" == gxm* ]] && DTB_LIST_FILTERED="$DTB_LIST_FILTERED $f"
-      done
-      ;;
-    *)
-      for f in ${DTB_LIST[@]}; do
-        if listcontains "$KERNEL_UBOOT_EXTRA_TARGET" "$f"; then
-          DTB_LIST_FILTERED="$DTB_LIST_FILTERED $f"
-        fi
-      done
-      ;;
-  esac
-
   # Compile device trees
-  kernel_make $DTB_LIST_FILTERED
+  kernel_make $DTB_LIST
   cp arch/$TARGET_KERNEL_ARCH/boot/dts/amlogic/*.dtb $PKG_BUILD
 
   popd > /dev/null
 }
 
 makeinstall_target() {
-  case "$DEVICE" in
-    S905|S912)
-      mkdir -p $INSTALL/usr/share/bootloader/device_trees
-      cp -a $PKG_BUILD/*.dtb $INSTALL/usr/share/bootloader/device_trees
-    ;;
-  esac
+  mkdir -p $INSTALL/usr/share/bootloader/device_trees
+  cp -a $PKG_BUILD/*.dtb $INSTALL/usr/share/bootloader/device_trees
 }
