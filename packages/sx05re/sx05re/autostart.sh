@@ -10,10 +10,10 @@ cp /usr/config/nau/oe_settings.xml /storage/.kodi/userdata/addon_data/service.co
 fi 
 
 # temp I need to find out why the retroarch.cfg is not being copied witouth this line
-if [ ! -f "/storage/.config/retroarch/retroarch.cfg" ]; then
-mkdir -p /storage/.config/retroarch
-cp /etc/retroarch.cfg /storage/.config/retroarch/retroarch.cfg
-fi 
+# if [ ! -f "/storage/.config/retroarch/retroarch.cfg" ]; then
+# mkdir -p /storage/.config/retroarch
+# cp /etc/retroarch.cfg /storage/.config/retroarch/retroarch.cfg
+# fi 
 
 
 # Overclocking? 
