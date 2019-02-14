@@ -4,7 +4,6 @@
 # It has been adapted to Sx05RE and modified to install emulationstation and other emulators.
 
 build_it() {
-DEVICE=""
 REPO_DIR=""
 
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
@@ -30,13 +29,12 @@ fi
 [ -z "$DISTRO" ] && DISTRO=Sx05RE
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
-[ -z "$DEVICE" ] && DEVICE=$1
 [ -z "$VERSION" ] && VERSION=""
-[ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${DEVICE}"
+[ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo"
 [ -z "$PROVIDER" ] && PROVIDER="CoreELEC"
 [ -z "$BUILD_VER" ] && BUILD_VER=$(cat $SCRIPT_DIR/distributions/$DISTRO/version | grep LIBREELEC_VERSION | grep -oP '"\K[^"\047]+(?=["\047])')
 
-BUILD_SUBDIR="build.${DISTRO}-${DEVICE:-$PROJECT}.${ARCH}-${BUILD_VER}"
+BUILD_SUBDIR="build.${DISTRO}-${PROJECT}.${ARCH}-${BUILD_VER}"
 SCRIPT="scripts/build"
 PACKAGES_SUBDIR="packages"
 PROJECT_DIR="${SCRIPT_DIR}/retroarch_work"
@@ -53,7 +51,7 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-
 PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook"
 LIBRETRO_CORES_LITE="atari800 beetle-pce bluemsx dosbox fbalpha gambatte genesis-plus-gx gpsp mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella uae4arm"
 
-if [ "$2" = "lite" ]; then
+if [ "$1" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES_LITE"
  else
   PACKAGES_ALL="$LIBRETRO_CORES"
@@ -68,21 +66,16 @@ if [ -n "$DISABLED_CORES" ] ; then
 	done
 fi
 
-if [ -n "$DEVICE" ]; then
-	ADDON_NAME=${BASE_NAME}.${DEVICE}_${ARCH}
-	RA_NAME_SUFFIX=${DEVICE}.${ARCH}
-else
 	ADDON_NAME=${BASE_NAME}.${PROJECT}_${ARCH}
 	RA_NAME_SUFFIX=${PROJECT}.${ARCH}
-fi
 
 ADDON_NAME="script.sx05re.launcher"
 ADDON_DIR="${PROJECT_DIR}/${ADDON_NAME}"
 
-if [ "$2" = "lite" ] ; then
-  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}-lite.zip"
+if [ "$1" = "lite" ] ; then
+  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-lite.zip"
 else
-  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-${DEVICE}.zip"
+  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}.zip"
 fi
 
 read -d '' message <<EOF
@@ -90,7 +83,6 @@ Building Sx05RE KODI add-on for CoreELEC:
 
 DISTRO=${DISTRO}
 PROJECT=${PROJECT}
-DEVICE=${DEVICE}
 ARCH=${ARCH}
 VERSION=${VERSION}
 BUILD_VER=${BUILD_VER}
@@ -107,7 +99,7 @@ echo "$message"
 echo
 
 # make sure the old add-on is deleted
-if [ -d ${REPO_DIR} ] && [ "$2" != "lite" ] ; then
+if [ -d ${REPO_DIR} ] && [ "$1" != "lite" ] ; then
 echo "Removing old add-on at ${REPO_DIR}"
 rm -rf ${REPO_DIR}
 fi
@@ -123,11 +115,7 @@ if [ -d "$SX05RE" ] ; then
 	echo "Building packages:"
 	for package in $PACKAGES_ALL ; do
 		echo -ne "\t$package "
-		if [ -n "$DEVICE" ] ; then
-			DISTRO=$DISTRO PROJECT=$PROJECT DEVICE=$DEVICE ARCH=$ARCH ./$SCRIPT $package &>>"$LOG"
-		else
 			DISTRO=$DISTRO PROJECT=$PROJECT ARCH=$ARCH ./$SCRIPT $package &>>"$LOG"
-		fi
 		if [ $? -eq 0 ] ; then
 			echo "(ok)"
 		else
@@ -189,13 +177,13 @@ cd "${ADDON_DIR}"
 echo "Creating folder structure..."
 for f in config resources ; do
 	echo -ne "\t$f "
-	mkdir $f &>>"$LOG"
+	mkdir -p $f &>>"$LOG"
 	[ $? -eq 0 ] && echo -e "(ok)" || { echo -e "(failed)" ; exit 1 ; }
 done
 echo
 echo "Moving files to addon..."
 echo -ne "\tretroarch.cfg "
-mv -v "${TARGET_DIR}/etc/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
+mv -v "${TARGET_DIR}/usr/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tjoypads "
 mv -v "${TARGET_DIR}/etc/retroarch-joypad-autoconfig" "${ADDON_DIR}/resources/joypads" &>>"$LOG"
@@ -6148,7 +6136,7 @@ echo -ne "\tzip "
 mv -vf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsymlink "
-if [ "$2" = "lite" ] ; then
+if [ "$1" = "lite" ] ; then
 ln -vsf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/${ADDON_NAME}-lite-LATEST.zip" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 else
@@ -6179,8 +6167,5 @@ echo
 
 } 
 
-build_it "S905"
-build_it "S905" "lite"
-build_it "S912"
-build_it "S912"  "lite"
-
+build_it 
+build_it "lite"
