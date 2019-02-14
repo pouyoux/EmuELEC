@@ -19,33 +19,29 @@
 ################################################################################
 
 PKG_NAME="retroarch"
-PKG_VERSION="a82cc31"
+PKG_VERSION="feb6b19"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="https://github.com/libretro/RetroArch.git"
-PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty"
+PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty $OPENGLES samba avahi nss-mdns"
 PKG_LONGDESC="Reference frontend for the libretro API."
 GET_HANDLER_SUPPORT="git"
-
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGLES"
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET samba"
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET avahi nss-mdns"
-  RETROARCH_GL="--enable-opengles --disable-kms --disable-x11 --enable-mali_fbdev --disable-qt"
-  RETROARCH_NEON="--enable-neon"
 
 pre_configure_target() {
 TARGET_CONFIGURE_OPTS=""
 PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            --disable-sdl \
                            --disable-ssl \
-                           $RETROARCH_GL \
-                           $RETROARCH_NEON \
+                           --enable-opengles \
+                           --disable-kms \
+                           --disable-x11 \
+                           --enable-mali_fbdev \
+                           --disable-qt \
+                           --enable-neon \
                            --enable-zlib \
                            --enable-freetype \
 			               --disable-discord"
-
-  TARGET_CONFIGURE_OPTS=""
-  cd $PKG_BUILD
+cd $PKG_BUILD
 }
 
 make_target() {
@@ -149,27 +145,12 @@ makeinstall_target() {
   sed -i -e "s/# menu_show_online_updater = true/menu_show_online_updater = true/" $INSTALL/etc/retroarch.cfg
   sed -i -e "s/# input_overlay_opacity = 1.0/input_overlay_opacity = 0.15/" $INSTALL/etc/retroarch.cfg
 
-
-  # Gamegirl
-  if [ "$PROJECT" == "Gamegirl" ]; then
-    echo "xmb_theme = 3" >> $INSTALL/etc/retroarch.cfg
-    echo "xmb_menu_color_theme = 9" >> $INSTALL/etc/retroarch.cfg
-    echo "video_font_size = 10" >> $INSTALL/etc/retroarch.cfg
-    echo "aspect_ratio_index = 0" >> $INSTALL/etc/retroarch.cfg
-    echo "audio_device = \"sysdefault:CARD=ALSA\"" >> $INSTALL/etc/retroarch.cfg
-    echo "menu_timedate_enable = false" >> $INSTALL/etc/retroarch.cfg
-    echo "xmb_shadows_enable = true" >> $INSTALL/etc/retroarch.cfg
-    sed -i -e "s/input_menu_toggle_gamepad_combo = 2/input_menu_toggle_gamepad_combo = 4/" $INSTALL/etc/retroarch.cfg
-    sed -i -e "s/video_smooth = false/video_smooth = true/" $INSTALL/etc/retroarch.cfg
-    sed -i -e "s/video_font_path =\/usr\/share\/retroarch-assets\/xmb\/monochrome\/font.ttf//" $INSTALL/etc/retroarch.cfg
-  fi
+  mkdir -p $INSTALL/usr/config/retroarch/
+  mv $INSTALL/etc/retroarch.cfg $INSTALL/usr/config/retroarch/
+  
 }
 
 post_install() {  
-  # link default.target to retroarch.target
-  #ln -sf retroarch.target $INSTALL/usr/lib/systemd/system/default.target
-  
-  #enable_service retroarch-autostart.service
   enable_service retroarch.service
   enable_service tmp-cores.mount
   enable_service tmp-joypads.mount
@@ -178,8 +159,3 @@ post_install() {
   enable_service tmp-shaders.mount
   enable_service tmp-overlays.mount
 }
-
-#post_makeinstall_target() {
- # mkdir -p $INSTALL/usr/lib/retroarch
-  #  cp $PKG_DIR/scripts/retroarch-config $INSTALL/usr/lib/retroarch
-#}
