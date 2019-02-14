@@ -30,14 +30,7 @@ PKG_BUILD_FLAGS="-gold"
 
 make_target() {
   cd shell/linux
-  case $PROJECT in
-    S905|S805|S912|Amlogic)
       make CC=$CC CXX=$CXX AS=$CC STRIP=$STRIP platform=odroidc2 reicast.elf
-      ;;
-    Generic)
-      make CC=$CC CXX=$CXX AS=$CC STRIP=$STRIP platform=x64 reicast.elf
-      ;;
-  esac
 }
 
 makeinstall_target() {
