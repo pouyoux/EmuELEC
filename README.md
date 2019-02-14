@@ -6,8 +6,9 @@ To build use:
 
 git clone https://github.com/shantigilbert/CoreELEC.git Sx05RE  
 cd Sx05RE  
-PROJECT=Amlogic DEVICE=S905 ARCH=arm DISTRO=Sx05RE make image  
-PROJECT=Amlogic DEVICE=S912 ARCH=arm DISTRO=Sx05RE make image  
+PROJECT=Amlogic ARCH=arm DISTRO=Sx05RE make image  
+
+Remember to use the proper DTB for your device! 
 
 If you just want to build Sx05RE as a Kodi Addon:  
 
