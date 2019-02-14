@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="emulationstation"
-PKG_VERSION="bec9836"
+PKG_VERSION="8878cb0"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
