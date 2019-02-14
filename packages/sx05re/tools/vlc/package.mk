@@ -152,8 +152,7 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-silent-rules \
             --disable-sid \
             --disable-crystalhd \
             --disable-dxva2 \
-            --enable-vlc \
-            LUAC=$ROOT/$TOOLCHAIN/bin/luac"
+            --enable-vlc"
 
 pre_configure_target() {
   export LDFLAGS="$LDFLAGS -lresolv"
