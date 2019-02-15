@@ -8,7 +8,7 @@ PKG_VERSION=""
 PKG_LICENSE="various"
 PKG_SITE=""
 PKG_URL=""
-PKG_DEPENDS_TARGET="sx05re"
+PKG_DEPENDS_TARGET="toolchain sx05re"
 PKG_SECTION="virtual"
 
 
