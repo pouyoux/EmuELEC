@@ -404,7 +404,10 @@ ln -sf libSDL2-2.0.so.0.9.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
 ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
-ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+
+if [ ! -e /storage/.emulationstation ]; then
+ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation/
+fi
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
 
