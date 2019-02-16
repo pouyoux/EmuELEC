@@ -405,8 +405,14 @@ ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
 
-if [ ! -e /storage/.emulationstation ]; then
-ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation/
+# delete symlink from older version
+if [ -L /storage/.emulationstation ]; then
+rm /storage/.emulationstation
+fi 
+
+#  Check if configuration for ES is copied to storage
+if [ ! -d "/storage/.emulationstation" ]; then
+cp -rf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
 fi
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
