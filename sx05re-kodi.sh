@@ -29,12 +29,11 @@ fi
 [ -z "$DISTRO" ] && DISTRO=Sx05RE
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
-[ -z "$VERSION" ] && VERSION=""
 [ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo"
 [ -z "$PROVIDER" ] && PROVIDER="CoreELEC"
-[ -z "$BUILD_VER" ] && BUILD_VER=$(cat $SCRIPT_DIR/distributions/$DISTRO/version | grep LIBREELEC_VERSION | grep -oP '"\K[^"\047]+(?=["\047])')
+[ -z "$VERSION" ] && VERSION=$(cat $SCRIPT_DIR/distributions/$DISTRO/version | grep LIBREELEC_VERSION | grep -oP '"\K[^"\047]+(?=["\047])')
 
-BUILD_SUBDIR="build.${DISTRO}-${PROJECT}.${ARCH}-${BUILD_VER}"
+BUILD_SUBDIR="build.${DISTRO}-${PROJECT}.${ARCH}-${VERSION}"
 SCRIPT="scripts/build"
 PACKAGES_SUBDIR="packages"
 PROJECT_DIR="${SCRIPT_DIR}/retroarch_work"
@@ -73,9 +72,9 @@ ADDON_NAME="script.sx05re.launcher"
 ADDON_DIR="${PROJECT_DIR}/${ADDON_NAME}"
 
 if [ "$1" = "lite" ] ; then
-  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}-lite.zip"
+  ARCHIVE_NAME="${ADDON_NAME}-${VERSION}-lite.zip"
 else
-  ARCHIVE_NAME="${ADDON_NAME}-${BUILD_VER}.zip"
+  ARCHIVE_NAME="${ADDON_NAME}-${VERSION}.zip"
 fi
 
 read -d '' message <<EOF
@@ -85,7 +84,6 @@ DISTRO=${DISTRO}
 PROJECT=${PROJECT}
 ARCH=${ARCH}
 VERSION=${VERSION}
-BUILD_VER=${BUILD_VER}
 GIT_BRANCH=${GIT_BRANCH}
 
 
@@ -436,7 +434,7 @@ chmod +x bin/retroarch.start
 echo -ne "\taddon.xml "
 read -d '' addon <<EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="${ADDON_NAME}" name="Sx05RE (${RA_NAME_SUFFIX})" version="${VERSION}" provider-name="${PROVIDER}">
+<addon id="${ADDON_NAME}" name="Sx05RE (${VERSION})" version="${VERSION}" provider-name="${PROVIDER}">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>
