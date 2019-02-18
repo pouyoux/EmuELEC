@@ -1,6 +1,4 @@
 #!/bin/sh
-
     touch /var/lock/start.games
-    cd /usr/bin/    
-    /usr/bin/emustation-config 
-    /usr/bin/emulationstation
+    systemctl start emustation
+    killkodi.sh > /dev/null 2>&1
