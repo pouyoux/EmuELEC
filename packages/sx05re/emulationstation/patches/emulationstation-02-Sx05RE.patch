@@ -428,6 +428,19 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  	touch(filename);
 --- a/es-app/src/main.cpp
 +++ b/es-app/src/main.cpp
+@@ -209,10 +209,10 @@
+ 	if(SystemData::sSystemVector.size() == 0)
+ 	{
+ 		LOG(LogError) << "No systems found! Does at least one system have a game present? (check that extensions match!)\n(Also, make sure you've updated your es_systems.cfg for XML!)";
+-		*errorString = "WE CAN'T FIND ANY SYSTEMS!\n"
++		*errorString = ("WE CAN'T FIND ANY SYSTEMS!\n"
+ 			"CHECK THAT YOUR PATHS ARE CORRECT IN THE SYSTEMS CONFIGURATION FILE, "
+-			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n\n"
+-			"VISIT EMULATIONSTATION.ORG FOR MORE INFORMATION.";
++			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n"
++			"OR INSERT A USB WITH YOUR ROMS AND THE '/roms/sx05reroms' FILE AND RESTART. \n\n  SSH/SFTP IP: " + getShOutput(R"(/usr/bin/ip.sh)")).c_str();
+ 		return false;
+ 	}
 @@ -323,6 +323,9 @@
  		window.pushGui(new GuiMsgBox(&window,
  			errorMsg,
