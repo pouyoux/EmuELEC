@@ -19,7 +19,7 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation advancemame PPSSPPSDL reicastsa common-shaders scraper fbida amiberry MC libretro-bash-launcher Skyscraper hatarisa"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation advancemame PPSSPPSDL reicastsa common-shaders scraper fbida amiberry MC libretro-bash-launcher Skyscraper hatarisa xmlstarlet"
 
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
