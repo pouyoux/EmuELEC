@@ -252,7 +252,6 @@ rm "${ADDON_DIR}/bin/killkodi.sh"
 rm "${ADDON_DIR}/bin/emulationstation.sh"
 rm "${ADDON_DIR}/bin/emustation-config"
 rm "${ADDON_DIR}/bin/clearconfig.sh"
-rm "${ADDON_DIR}/bin/ip.sh"
 rm "${ADDON_DIR}/bin/reicast.sh"
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
