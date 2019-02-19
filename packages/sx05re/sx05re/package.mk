@@ -17,6 +17,7 @@ PKG_LONGDESC="Sx05re Meta Package"
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
+PKG_NEED_UNPACK="$(get_pkg_directory kodi) $(get_pkg_directory CoreELEC-settings)"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation advancemame PPSSPPSDL reicastsa common-shaders scraper fbida amiberry MC libretro-bash-launcher Skyscraper"
@@ -78,5 +79,18 @@ rm -rf "$INSTALL/usr/share/retroarch-overlays/gamepads"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/ipad"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
+
+  # update addon manifest
+   ADDON_MANIFEST=$INSTALL/usr/share/kodi/system/addon-manifest.xml
+   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.emulationstation.launcher" $ADDON_MANIFEST
+ 
+ KODI=$INSTALL/usr/lib/systemd/system/kodi.service
+ sed -e "s|Wants=network-online.target|Wants=network-online.target\nConditionPathExists=/var/lock/start.kodi|g" -i $KODI
+  
+ SETTINGS=$INSTALL/usr/share/kodi/addons/service.coreelec.settings/defaults.py
+ sed -e "s|UPDATE_REQUEST_URL': 'https://update.coreelec.org/updates.php|UPDATE_REQUEST_URL': 'https://sorry.no.autoupdate|g" -i $SETTINGS
+ sed -e "s|'LOCAL_UPDATE_DIR': '/storage/.update/'|'LOCAL_UPDATE_DIR': '/storage/.noupdate/'|g" -i $SETTINGS
+ sed -e "/updates = {/{ N; s/updates = {.*'ENABLED': True,/updates = {\n    'ENABLED': False,/;}" -i $SETTINGS
+
 
 } 
