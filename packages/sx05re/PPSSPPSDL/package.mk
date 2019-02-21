@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="8090c3d"
+PKG_VERSION="c28bbde"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
