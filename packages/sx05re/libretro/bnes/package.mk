@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="bnes"
-PKG_VERSION="598c123"
+PKG_VERSION="598c123771c885f8c48967f82b3a496b9e105b79"
+PKG_SHA256="6e8d04517908593c7c3260d5358da4de0caffeb9dd5457b0097555a144f4c757"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"

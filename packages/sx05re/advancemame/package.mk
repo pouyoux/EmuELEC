@@ -4,7 +4,8 @@
 ################################################################################
 
 PKG_NAME="advancemame"
-PKG_VERSION="0038b8d"
+PKG_VERSION="0038b8d3fc0976576b550eebad5295033d306ab5"
+PKG_SHA256="0107bfd13d98cd030f5226d094f639f0bab883e9924a27f943c573720e56d727"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"

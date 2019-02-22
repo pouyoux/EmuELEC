@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="frodo"
-PKG_VERSION="4c15016"
+PKG_VERSION="4c1501686ac0a6815d6dc410556029b6577fd7ec"
+PKG_SHA256="6a009da4b9b83c3e0f103bfaeaf7f1dfc388e7488ecef5657c2f4a66d20819b7"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

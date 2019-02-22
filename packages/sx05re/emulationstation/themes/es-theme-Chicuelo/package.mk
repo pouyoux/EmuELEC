@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-Chicuelo"
-PKG_VERSION="df5c015"
+PKG_VERSION="df5c015e14b971df4c60f781d4986791647943d1"
+PKG_SHA256="1bf5120cda35d076e99be9f2c1b969b78e2978066bcfb6d98277f782906b6b5b"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="psp1"
-PKG_VERSION="edf1cb7"
+PKG_VERSION="edf1cb70cc01c9f4ce81a83e1538c7b5ab7a2658"
+PKG_SHA256=""
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

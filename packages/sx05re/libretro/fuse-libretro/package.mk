@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="fuse-libretro"
-PKG_VERSION="43d01de"
+PKG_VERSION="43d01dec6ad26e6014fabf79dbcf6a04ac2c7eea"
+PKG_SHA256="f6a170d126d46dee2442127bea7fab54fcd641a663941c92e087f00d38430251"
 PKG_REV="1"
 PKG_ARCH="i386 x86_64 arm"
 PKG_LICENSE="GPLv3"

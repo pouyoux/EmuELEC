@@ -17,7 +17,8 @@
 ################################################################################
 
 PKG_NAME="fsuae"
-PKG_VERSION="6b98f85"
+PKG_VERSION="6b98f852e00a83ecdcf497c1032882ad7b6efc99"
+PKG_SHA256="0beaf41955733f30cf092e7aa7e4f5e07a64c0608783fb7e6c820711c44e4ed9"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

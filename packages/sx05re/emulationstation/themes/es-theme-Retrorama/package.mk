@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-Retrorama"
-PKG_VERSION="994b3f7"
+PKG_VERSION="994b3f70402597511296f767a6f9bcad41ba5ef7"
+PKG_SHA256="5d16b3ed0e17c05e5d5946864c4e199e01df7a9c1a6dbce4837ef11938234a6a"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

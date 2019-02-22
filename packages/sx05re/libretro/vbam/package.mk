@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="vbam"
-PKG_VERSION="5ff5312"
+PKG_VERSION="5ff531281f39e0f3f0b8c1e6f2f9b7261844a6de"
+PKG_SHA256="bb7e390b3607f5e032c2ba209ea3cfdfc1dc807c528845c432c2696892618014"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

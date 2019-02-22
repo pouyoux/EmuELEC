@@ -18,7 +18,8 @@
 ################################################################################
 
 PKG_NAME="cannonball"
-PKG_VERSION="b687c7f"
+PKG_VERSION="b687c7fb72175b750409540a30607f5ef8e00016"
+PKG_SHA256="277040a25a9113204593f3520bb8fc55ae45fdbb00b112e1a71939cd257301bd"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/cannonball"

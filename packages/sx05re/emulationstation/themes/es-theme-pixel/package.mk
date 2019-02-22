@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-pixel"
-PKG_VERSION="37bd4fc"
+PKG_VERSION="37bd4fc3573c7145f54bde7b4df0831958ecd489"
+PKG_SHA256="2fa379d6a5f3ae840bfed068f098d9cb22667a2a814ab07af1a77fa0258e8339"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

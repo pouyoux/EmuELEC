@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-tronkyfran"
-PKG_VERSION="cff0721"
+PKG_VERSION="cff0721c77b7b596e7c3e74a867482b826371806"
+PKG_SHA256="3127dbb9e9cd8065e90d9891bc51923d11e71f8fa81ef84cdcda4fcc548437c1"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

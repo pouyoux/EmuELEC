@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-nes-mini"
-PKG_VERSION="4bdad8b"
+PKG_VERSION="4bdad8bdb5b80593619756916ddfbb80a58c532d"
+PKG_SHA256="b9b49ecb0ad1d52c43f0db72fda36c71822fc709582fa250db366c2d47001a2c"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

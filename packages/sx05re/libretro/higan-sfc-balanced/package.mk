@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="higan-sfc-balanced"
-PKG_VERSION="5e965d0"
+PKG_VERSION="5e965d0db4c0d05e7e8fb6449035538781c73473"
+PKG_SHA256="353a3c4643bf9a7c777c2def95d41d10f5407ce68d61522946e52c1494d8f8bb"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
