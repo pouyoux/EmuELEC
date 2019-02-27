@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="50de04a29059d20a707a47a9b1525cec0133d43f"
+PKG_VERSION="bd71af24db441d8a64b86af15034cf97bcf2204b"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
