@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # This file is part of the Lakka project and was created by ToKe79. It is originally from https://github.com/libretro/Lakka-LibreELEC/blob/master/libretro_update.sh
-# it has been sligtly modified to work with Sx05RE
+# it has been modified by Shanti Gilbert to work with Sx05RE
 
-[ -z "$LR_PKG_PATH" ] && LR_PKG_PATH="packages/sx05re/libretro"
+[ -z "$BUMPS" ] && BUMPS="no"
+[ -z "$LR_PKG_PATH" ] && LR_PKG_PATH="./packages"
 usage()
 {
   echo ""
@@ -34,7 +35,7 @@ case $1 in
           v="$@"
           [ "$v" == "" ] && { echo "Error: You must provide name(s) of package(s) to exclude after $x" ; exit 1 ; }
           for a in $v ; do
-            if [ -f $LR_PKG_PATH/$a/package.mk ] ; then
+            if [ -f $(find $LR_PKG_PATH -wholename */$a/package.mk) ] ; then
               PACKAGES_EX="$PACKAGES_EX $a"
             else
               echo "Warning: $a is not a libretro package."
@@ -63,7 +64,7 @@ case $1 in
           v="$@"
           [ "$v" == "" ] && { echo "Error: You must provide name(s) of package(s) to exclude after $x" ; exit 1 ; }
           for a in $v ; do
-            if [ -f $LR_PKG_PATH/$a/package.mk ] ; then
+            if [ -f $(find $LR_PKG_PATH -wholename */$a/package.mk) ] ; then
               PACKAGES_EX="$PACKAGES_EX $a"
             else
               echo "Warning: $a is not a libretro package."
@@ -93,7 +94,7 @@ case $1 in
     v="$@"
     [ "$v" == "" ] && { echo "Error: You must provide name(s) of package(s) after $x" ; exit 1 ; }
     for a in $v ; do
-      if [ -f $LR_PKG_PATH/$a/package.mk ] ; then
+      if [ -f $(find $LR_PKG_PATH -wholename */$a/package.mk) ] ; then
         PACKAGES_ALL="$PACKAGES_ALL $a "
       else
         echo "Warning: $a is not a libretro package - skipping."
@@ -114,17 +115,19 @@ if [ "$PACKAGES_EX" != "" ] ; then
 fi
 echo "Checking following packages: "$PACKAGES_ALL
 declare -i i=0
+declare -i ii=0
 for p in $PACKAGES_ALL
 do
-  f=$LR_PKG_PATH/$p/package.mk
+  f=$(find $LR_PKG_PATH -wholename */$p/package.mk)
   if [ ! -f "$f" ] ; then
     echo "$f: not found! Skipping."
     continue
+    else
+    echo "working on : $f"
+    source config/options "$p"
+    source "$f"
   fi
-  PKG_VERSION=`cat $f | grep -oP 'PKG_VERSION="\K[^"]+'`
-  PKG_SITE=`cat $f | grep -oP 'PKG_SITE="\K[^"]+'`
-  PKG_NAME=`cat $f | grep -oP 'PKG_NAME="\K[^"]+'`
-  PKG_GIT_BRANCH=`cat $f | grep -oP 'PKG_GIT_BRANCH="\K[^"]+'`
+ 
   if [ -z "$PKG_VERSION" ] || [ -z "$PKG_SITE" ] ; then
     echo "$f: does not have PKG_VERSION or PKG_SITE"
     echo "PKG_VERSION: $PKG_VERSION"
@@ -132,15 +135,54 @@ do
     echo "Skipping update."
     continue
   fi
-  [ -n "$PKG_GIT_BRANCH" ] && GIT_HEAD="heads/$PKG_GIT_BRANCH" || GIT_HEAD="HEAD"
-  UPS_VERSION=`git ls-remote $PKG_SITE | grep ${GIT_HEAD}$ | awk '{ print substr($1,1,7) }'`
-  if [ "$UPS_VERSION" == "$PKG_VERSION" ]; then
-    echo "$PKG_NAME is up to date ($UPS_VERSION)"
-  else
-    i+=1
-    echo "$PKG_NAME updated from $PKG_VERSION to $UPS_VERSION"
-    sed -i "s/$PKG_VERSION/$UPS_VERSION/" $f
-  fi
-done
-echo "$i package(s) updated."
+     
+if [ $BUMPS != "no" ]; then
 
+  if [ "$p" != "linux" ]; then
+    PKG_SITE=$PKG_SITE
+  else
+    PKG_SITE=$(echo $PKG_URL | sed 's/\/archive.*//g')
+  fi
+  echo "URL $PKG_SITE"
+
+  [ -n "$PKG_GIT_BRANCH" ] && GIT_HEAD="heads/$PKG_GIT_BRANCH" || GIT_HEAD="HEAD"
+   UPS_VERSION=`git ls-remote $PKG_SITE | grep ${GIT_HEAD}$ | awk '{ print substr($1,1,40) }'`
+   if [ "$UPS_VERSION" == "$PKG_VERSION" ]; then
+    echo "$PKG_NAME is up to date ($UPS_VERSION)"
+   else
+    i+=1
+     echo "$PKG_NAME updated from $PKG_VERSION to $UPS_VERSION"
+    sed -i "s/PKG_VERSION=\"$PKG_VERSION/PKG_VERSION=\"$UPS_VERSION/" $f
+   fi
+else
+  UPS_VERSION=$PKG_VERSION
+fi 
+
+  if [ "$GET_HANDLER_SUPPORT" != "git" ]; then  
+  
+   if grep -q PKG_SHA256 "$f"; then
+    echo "PKG_SHA256 exists on $f, clearing"
+    sed -i "s/PKG_SHA256=\"$PKG_SHA256\"/PKG_SHA256=\"\"/" $f
+    else
+    echo "PKG_SHA256 does not exists on $f, creating"
+    sed -i -e "s/PKG_VERSION=\"$UPS_VERSION\(.*\)\"/PKG_VERSION=\"$UPS_VERSION\1\"\nPKG_SHA256=\"\"/g" $f
+   fi
+
+     source "$f"
+    ./scripts/get "$PKG_NAME"
+    
+    if [ "$p" != "linux" ]; then
+    CALCSHA=$(cat ./sources/$PKG_NAME/$PKG_NAME-$UPS_VERSION.*.sha256)
+    else
+    CALCSHA=$(cat ./sources/$PKG_NAME/linux-$LINUX-$UPS_VERSION.tar.gz.sha256)
+    fi
+    
+    echo "NEW SHA256 $CALCSHA"
+    #sed -i -e "s/PKG_VERSION=\"$UPS_VERSION\(.*\)\"\n\(.*\)\PKG_SHA256=\"\"/PKG_VERSION=\"$UPS_VERSION\1\"\nPKG_SHA256=\"$CALCSHA\"/g" $f
+    sed -e "/PKG_VERSION=\"$UPS_VERSION\"/{ N; s/PKG_VERSION=\"$UPS_VERSION\".*PKG_SHA256=\"\"/PKG_VERSION=\"$UPS_VERSION\"\nPKG_SHA256=\"$CALCSHA\"/;}" -i $f
+    # sed -i "s/PKG_SHA256=\"$PKG_SHA256/PKG_SHA256=\"$CALCSHA/" $f
+    ii+=1
+ fi
+    
+ done
+echo "$i package(s) bumped. $ii sha256 updated packages"
