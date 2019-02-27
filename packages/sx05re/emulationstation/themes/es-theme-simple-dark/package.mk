@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-simple-dark"
-PKG_VERSION="4c33193"
+PKG_VERSION="4c33193cb3efd55b2631d856b9799e4841c3da8f"
+PKG_SHA256="07f2cc90a2966c1f66a799c6d8171401f547474f3d95db1838d67e2a1ab20bb9"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="mame2003-midway"
-PKG_VERSION="d1c764c"
+PKG_VERSION="d1c764cfa886e7451eb4b23f8084c309a9564bfe"
+PKG_SHA256="1eec462564242450781e6bc9932b41a8f1a42e6dc535baf883d80f06b13ef38c"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"

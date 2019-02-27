@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-ComicBook"
-PKG_VERSION="9a68f10"
+PKG_VERSION="9a68f104b609f5bd7c7a782090817ebe48e9a197"
+PKG_SHA256="fad822542cf54d9e7136921ae1759a53545ada79a6e98bcc8ab14223e0b5d582"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

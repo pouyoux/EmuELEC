@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-carbon"
-PKG_VERSION="3741345"
+PKG_VERSION="37413452b33497385c314b4d630d1b1ccafbb7d6"
+PKG_SHA256="60e693c55929a43a65b64af006e7ce84e91f69ade650d28530e107c8463c1c44"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

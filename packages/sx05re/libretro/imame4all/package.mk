@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="imame4all"
-PKG_VERSION="90d9909"
+PKG_VERSION="90d9909ab60dace88d5ab281fa1e9e43e5f25364"
+PKG_SHA256="e7fed9e0457edae536d9056d52458af18f53ddd3e77393d5cfff487cf07d33f9"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"

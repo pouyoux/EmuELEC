@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="beetle-wswan"
-PKG_VERSION="ecada66"
+PKG_VERSION="ecada6655c6e6b53b27ee83a23523ecb89769625"
+PKG_SHA256="1b4cb151b0cab58de72b608a2f6d894515848af90e95514c56e218568e2f3556"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

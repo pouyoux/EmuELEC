@@ -2,7 +2,8 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="es-theme-crt"
-PKG_VERSION="dd918d0"
+PKG_VERSION="dd918d0547be4fcf978bf7133625ebcd18800bae"
+PKG_SHA256="764100ed3ee68709b806888a067a247b1b604d27683c3f82de960a1198c7653a"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

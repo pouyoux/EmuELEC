@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="citra"
-PKG_VERSION="d4543ac"
+PKG_VERSION="d4543ac9cd486b24ae33458e2708dfeb05aa2eb8"
+PKG_SHA256="66ca923ddb1d2149e333027c99bcc27901983767923c212eb4d04987b562df54"
 PKG_REV="1"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2+"
