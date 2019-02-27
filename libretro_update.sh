@@ -126,6 +126,13 @@ do
      
 if [ $BUMPS != "no" ]; then
 
+  if [ "$p" != "linux" ]; then
+    PKG_SITE=$PKG_SITE
+  else
+    PKG_SITE=$(echo $PKG_URL | sed 's/\/archive.*//g')
+  fi
+  echo "URL $PKG_SITE"
+
   [ -n "$PKG_GIT_BRANCH" ] && GIT_HEAD="heads/$PKG_GIT_BRANCH" || GIT_HEAD="HEAD"
    UPS_VERSION=`git ls-remote $PKG_SITE | grep ${GIT_HEAD}$ | awk '{ print substr($1,1,40) }'`
    if [ "$UPS_VERSION" == "$PKG_VERSION" ]; then
@@ -149,11 +156,19 @@ fi
     sed -i -e "s/PKG_VERSION=\"$UPS_VERSION\(.*\)\"/PKG_VERSION=\"$UPS_VERSION\1\"\nPKG_SHA256=\"\"/g" $f
    fi
 
-    source "$f"
+     source "$f"
     ./scripts/get "$PKG_NAME"
-    CALCSHA=$(cat ./sources/$PKG_NAME/$PKG_NAME-$UPS_VERSION.tar.gz.sha256)
+    
+    if [ "$p" != "linux" ]; then
+    CALCSHA=$(cat ./sources/$PKG_NAME/$PKG_NAME-$UPS_VERSION.*.sha256)
+    else
+    CALCSHA=$(cat ./sources/$PKG_NAME/linux-$LINUX-$UPS_VERSION.tar.gz.sha256)
+    fi
+    
     echo "NEW SHA256 $CALCSHA"
-    sed -i "s/PKG_SHA256=\"$PKG_SHA256/PKG_SHA256=\"$CALCSHA/" $f
+    #sed -i -e "s/PKG_VERSION=\"$UPS_VERSION\(.*\)\"\n\(.*\)\PKG_SHA256=\"\"/PKG_VERSION=\"$UPS_VERSION\1\"\nPKG_SHA256=\"$CALCSHA\"/g" $f
+    sed -e "/PKG_VERSION=\"$UPS_VERSION\"/{ N; s/PKG_VERSION=\"$UPS_VERSION\".*PKG_SHA256=\"\"/PKG_VERSION=\"$UPS_VERSION\"\nPKG_SHA256=\"$CALCSHA\"/;}" -i $f
+    # sed -i "s/PKG_SHA256=\"$PKG_SHA256/PKG_SHA256=\"$CALCSHA/" $f
     ii+=1
  fi
     
