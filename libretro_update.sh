@@ -11,6 +11,10 @@ usage()
   echo "$0 <--all [--exclude list] | --used [--exclude list] | --packages list>"
   echo ""
   echo "Updates PKG_VERSION in package.mk of libretro packages to latest."
+  echo ""
+  echo "Parameters:"
+  echo " -a --all                 Update all libretro packages"
+  echo " -u --used                Update only libretro packages used by Lakka"
   echo " -p list --packages list  Update listed libretro packages"
   echo " -e list --exclude list   Update all/used packages except listed ones"
   echo ""
@@ -74,6 +78,14 @@ case $1 in
           ;;
       esac
     fi
+    # Get list of cores, which are used with Lakka:
+    OPTIONS_FILE="distributions/Sx05RE/options"
+    [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
+    [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
+    # List of core retroarch packages
+    RA_PACKAGES="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-overlays libretro-database core-info glsl-shaders"
+    # List of all libretro packages to update:
+    PACKAGES_ALL=" $RA_PACKAGES $LIBRETRO_CORES "
     ;;
   -p | --packages )
     PACKAGES_ALL=""
