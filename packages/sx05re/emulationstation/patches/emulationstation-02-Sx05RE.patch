@@ -448,14 +448,14 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  			errorMsg,
 -			"QUIT", [] {
 +			"QUIT TO KODI", [] {
-+			    remove("/var/lock/start.games");
-+				runSystemCommand("touch /var/lock/start.kodi");
-+		        runSystemCommand("systemctl start kodi.service");
++			    system("rm /var/lock/start.games");
++				system("touch /var/lock/start.kodi");
++		        system("systemctl start kodi.service");
  				SDL_Event* quit = new SDL_Event();
  				quit->type = SDL_QUIT;
  				SDL_PushEvent(quit);
 -			}));
-+			}, "NO", nullptr));
++			}));
  	}
  
  	//run the command line scraper then quit

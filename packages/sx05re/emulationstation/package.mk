@@ -35,7 +35,7 @@ post_makeinstall_target() {
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
    
    mkdir -p $INSTALL/usr/config/emulationstation
-    cp $PKG_DIR/config/* $INSTALL/usr/config/emulationstation
+    cp -rf $PKG_DIR/config/* $INSTALL/usr/config/emulationstation
 }
 
 
