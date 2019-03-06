@@ -47,8 +47,8 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-joypad-autoconfig retroarch-
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
 
-PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook"
-LIBRETRO_CORES_LITE="atari800 beetle-pce bluemsx dosbox fbalpha gambatte genesis-plus-gx gpsp mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella uae4arm"
+PACKAGES_Sx05RE="scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook bash"
+LIBRETRO_CORES_LITE="fbalpha gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
 if [ "$1" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES_LITE"
@@ -100,6 +100,11 @@ echo
 if [ -d ${REPO_DIR} ] && [ "$1" != "lite" ] ; then
 echo "Removing old add-on at ${REPO_DIR}"
 rm -rf ${REPO_DIR}
+fi
+
+if [ -d ${PROJECT_DIR} ] && [ "$1" != "lite" ] ; then
+echo "Removing old add-on at ${REPO_DIR}"
+rm -rf ${PROJECT_DIR}
 fi
 
 # Checks folders
@@ -246,7 +251,6 @@ echo -ne "\tReicast Config "
 mv -v "${TARGET_DIR}/usr/config/reicast" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tRemoving unneeded binaries "
-rm "${ADDON_DIR}/bin/setres.sh"
 rm "${ADDON_DIR}/bin/startfe.sh"
 rm "${ADDON_DIR}/bin/killkodi.sh"
 rm "${ADDON_DIR}/bin/emulationstation.sh"
@@ -313,6 +317,8 @@ echo -ne "\temustation-config "
 read -d '' content <<EOF
 #!/bin/sh
 
+/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh
+
 #name of the file we need to put in the roms folder in your USB or SDCARD 
 ROMFILE="sx05reroms"
 
@@ -320,7 +326,8 @@ ROMFILE="sx05reroms"
 FULLPATHTOROMS="\$(find /media/*/roms/ -name \$ROMFILE -maxdepth 1)"
 
 if [[ -z "\${FULLPATHTOROMS}" ]]; then
-# echo "can't find roms"
+# echo "can't find
+ roms"
 
     if [ ! -e /storage/roms ]; then
       rm /storage/roms
@@ -6064,9 +6071,18 @@ sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
+echo -ne "Making modifications to inputconfiguration.sh..."
+CFG="config/emulationstation/scripts/inputconfiguration.sh"
+sed -i -e "s/\/usr\/bin\/bash/\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin\/bash/" $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo -ne "Making modifications to es_input.cfg..."
+CFG="config/emulationstation/es_input.cfg"
+sed -i -e "s/<command>/<command>\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin\/bash /" $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "Making modifications to sx05reRunEmu.sh..."
 CFG="bin/sx05reRunEmu.sh"
-sed -i -e "s/\/usr\/bin\/setres.sh/#/" $CFG
 sed -i -e "s/fbi /echo \"\" #fbi /" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
@@ -6174,4 +6190,4 @@ echo
 } 
 
 build_it 
-build_it "lite"
+# build_it "lite"
