@@ -188,11 +188,12 @@ echo "Moving files to addon..."
 echo -ne "\tretroarch.cfg "
 mv -v "${TARGET_DIR}/usr/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tremoving unused joypads "
-find "${TARGET_DIR}/etc/retroarch-joypad-autoconfig/" -mindepth 1 -name udev -prune -o -exec rm -rf {} +
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tjoypads "
-mv -v "${TARGET_DIR}/etc/retroarch-joypad-autoconfig" "${ADDON_DIR}/resources/joypads" &>>"$LOG"
+#echo -ne "\tremoving unused joypads "
+#find "${TARGET_DIR}/etc/retroarch-joypad-autoconfig/" -mindepth 1 -name udev -prune -o -exec rm -rf {} +
+#[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+#echo -ne "\tjoypads "
+#mv -v "${TARGET_DIR}/etc/retroarch-joypad-autoconfig" "${ADDON_DIR}/resources/joypads" &>>"$LOG"
+mkdir -p "${ADDON_DIR}/resources/joypads" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tbinaries "
 mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
