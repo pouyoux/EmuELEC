@@ -57,6 +57,7 @@
 ##
 ## Returns:
 ##   None
+# Modified 2019 by Shanti Gilbert for Sx05RE/CoreELEC (https//www.coreelec.org)
 
 function inputconfiguration() {
 

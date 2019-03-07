@@ -8,6 +8,7 @@
 # See the LICENSE.md file at the top-level directory of this distribution and
 # at https://raw.githubusercontent.com/RetroPie/RetroPie-Setup/master/LICENSE.md
 #
+# Modified 2019 by Shanti Gilbert for Sx05RE/CoreELEC (https//www.coreelec.org)
 
 function onstart_reicast_joystick() {
     local file
