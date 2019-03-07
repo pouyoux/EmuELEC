@@ -17,24 +17,21 @@
 ################################################################################
 
 #https://nightlies.videolan.org/build/source/vlc-3.0.0-20170220-0237-git.tar.xz
+#https://download.videolan.org/pub/videolan/vlc/3.0.6/vlc-3.0.6.tar.xz
 PKG_NAME="vlc"
-PKG_VERSION="3.0.0"
+PKG_VERSION="3.0.6"
 PKG_REV="20180209-0230"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.videolan.org"
-PKG_URL="https://nightlies.videolan.org/build/source/$PKG_NAME-$PKG_VERSION-$PKG_REV.tar.xz"
-PKG_DEPENDS_TARGET="toolchain dbus libdvbpsi gnutls ffmpeg libmpeg2 zlib"
+PKG_URL="https://download.videolan.org/pub/videolan/$PKG_NAME/$PKG_VERSION/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS_TARGET="toolchain dbus libdvbpsi gnutls ffmpeg libmpeg2 zlib gnutls"
 PKG_SECTION="xmedia/tools"
 PKG_SHORTDESC="VideoLAN multimedia player and streamer"
 PKG_LONGDESC="VLC is the VideoLAN project's media player. It plays MPEG, MPEG2, MPEG4, DivX, MOV, WMV, QuickTime, mp3, Ogg/Vorbis files, DVDs, VCDs, and multimedia streams from various network sources."
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="yes"
 PKG_TOOLCHAIN="configure"
-
- if [ "$TARGET_ARCH" == "arm" ]; then
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET" 
-fi 
 
 PKG_CONFIGURE_OPTS_TARGET="--enable-silent-rules \
             --disable-dependency-tracking \
@@ -144,7 +141,6 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-silent-rules \
             --disable-mtp \
             --disable-lirc \
             --disable-libgcrypt \
-            --disable-gnutls \
             --disable-update-check \
             --disable-kva \
             --disable-bluray \
@@ -152,7 +148,9 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-silent-rules \
             --disable-sid \
             --disable-crystalhd \
             --disable-dxva2 \
-            --enable-vlc"
+            --disable-dav1d \
+            --disable-vlc /
+            --enable-neon"
 
 pre_configure_target() {
   export LDFLAGS="$LDFLAGS -lresolv"
