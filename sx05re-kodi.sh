@@ -418,6 +418,13 @@ if [ -L /storage/.emulationstation ]; then
 rm /storage/.emulationstation
 fi 
 
+if [ -L /tmp/joypads ]; then
+rm /tmp/joypads
+fi
+
+ln -sf \$ADDON_DIR/resources/joypads/ /tmp/joypads
+
+
 #  Check if configuration for ES is copied to storage
 if [ ! -d "/storage/.emulationstation" ]; then
 cp -rf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
