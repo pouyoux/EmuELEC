@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script is based on https://github.com/ToKe79/retroarch-kodi-addon-LibreELEC/blob/master/retroarch-kodi.sh
-# It has been adapted to Sx05RE and modified to install emulationstation and other emulators.
+# It has been adapted to Sx05RE by Shanti Gilbert and modified to install emulationstation and other emulators.
 
 build_it() {
 REPO_DIR=""
@@ -191,7 +191,7 @@ mv -v "${TARGET_DIR}/usr/config/splash" "${ADDON_DIR}/config/" &>>"$LOG"
 echo -ne "\tretroarch.cfg "
 mv -v "${TARGET_DIR}/usr/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tremoving unused joypads "
+echo -ne "\tcreating empty joypads dir"
 mkdir -p "${ADDON_DIR}/resources/joypads" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tbinaries "
@@ -209,10 +209,6 @@ mv -v "${TARGET_DIR}/usr/share/video_filters" "${ADDON_DIR}/resources/" &>>"$LOG
 echo -ne "\tshaders "
 mv -v "${TARGET_DIR}/usr/share/common-shaders" "${ADDON_DIR}/resources/shaders" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-# echo -ne "\tdatabases "
-# rm -rf "${TARGET_DIR}/usr/share/libretro-database/rdb"
-# mv -v "${TARGET_DIR}/usr/share/libretro-database" "${ADDON_DIR}/resources/database" &>>"$LOG"
-#[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tremoving unused assets "
 rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/branding"
 rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/glui"
