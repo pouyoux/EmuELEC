@@ -37,17 +37,20 @@ PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 PKG_BUILD_FLAGS="-lto"
 
+pre_configure_target() {
+  cd ..
+  rm -rf .$TARGET_NAME
+}
+
 configure_target() {
   :
 }
 
 make_target() {
-  export CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1"
-  cd ../backends/platform/libretro/build/
-  make
+ make -C backends/platform/libretro/build CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1"
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp scummvm_libretro.so $INSTALL/usr/lib/libretro/
+  cp backends/platform/libretro/build/scummvm_libretro.so $INSTALL/usr/lib/libretro/
 }

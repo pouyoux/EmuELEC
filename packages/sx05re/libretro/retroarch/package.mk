@@ -19,11 +19,11 @@
 ################################################################################
 
 PKG_NAME="retroarch"
-PKG_VERSION="5cce51ed8d450436baa5f189ce6aa872a0627139"
+PKG_VERSION="34f4d5ed0e763b0202e1aa697866e6da2fd154d9"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="https://github.com/libretro/RetroArch.git"
-PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info retroarch-joypad-autoconfig ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty $OPENGLES samba avahi nss-mdns"
+PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty $OPENGLES samba avahi nss-mdns freetype"
 PKG_LONGDESC="Reference frontend for the libretro API."
 GET_HANDLER_SUPPORT="git"
 
@@ -40,7 +40,9 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            --enable-neon \
                            --enable-zlib \
                            --enable-freetype \
-			               --disable-discord"
+			               --disable-discord \
+			               --disable-opengl1 \
+			               --disable-opengl_core "
 cd $PKG_BUILD
 }
 

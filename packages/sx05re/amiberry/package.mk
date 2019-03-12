@@ -7,7 +7,7 @@ PKG_ARCH="arm"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/midwan/amiberry"
 PKG_URL="https://github.com/midwan/amiberry.git"
-PKG_DEPENDS_TARGET="toolchain zlib SDL2-git SDL2_image SDL2_ttf capsimg libxml2 flac mpg123-compat libpng libmpeg2 retroarch-joypad-autoconfig"
+PKG_DEPENDS_TARGET="toolchain zlib SDL2-git SDL2_image SDL2_ttf capsimg libxml2 flac mpg123-compat libpng libmpeg2"
 PKG_LONGDESC="Amiberry is an optimized Amiga emulator for ARM-based boards."
 GET_HANDLER_SUPPORT="git"
 PKG_TOOLCHAIN="make"
@@ -49,8 +49,8 @@ makeinstall_target() {
   cp -R whdboot $INSTALL/usr/config/amiberry/
 
   # Create links to Retroarch controller files
-  ln -s /usr/share/retroarch/autoconfig/udev/8Bitdo_Pro_SF30_BT_B.cfg "$INSTALL/usr/config/amiberry/controller/8Bitdo SF30 Pro.cfg"
-  ln -s "/usr/share/retroarch/autoconfig/udev/Pro Controller.cfg" "$INSTALL/usr/config/amiberry/controller/Pro Controller.cfg"
+  # ln -s /usr/share/retroarch/autoconfig/udev/8Bitdo_Pro_SF30_BT_B.cfg "$INSTALL/usr/config/amiberry/controller/8Bitdo SF30 Pro.cfg"
+  # ln -s "/usr/share/retroarch/autoconfig/udev/Pro Controller.cfg" "$INSTALL/usr/config/amiberry/controller/Pro Controller.cfg"
 
   # Copy binary, scripts & link libcapsimg
   cp amiberry-*-sdl2 $INSTALL/usr/bin/amiberry

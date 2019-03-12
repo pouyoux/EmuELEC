@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team CoreELEC (https://coreelec.org)
 
 PKG_NAME="device-trees-amlogic"
-PKG_VERSION="155dd5bd215d6daa042006ca69e607cc816459bf"
-PKG_SHA256="0dcdf2490899650cd21864bbe571fd66846160933960c91d340c96077955c850"
+PKG_VERSION="f643cc24bff9df060f96ba1452510843c5f90fd6"
+PKG_SHA256="499680727afddfc14033a82482189210171d507935bf61665d878e1e1d3fc454"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/CoreELEC/device-trees-amlogic"
 PKG_URL="https://github.com/CoreELEC/device-trees-amlogic/archive/$PKG_VERSION.tar.gz"
@@ -19,7 +19,7 @@ make_target() {
 
   # Device trees already present in kernel tree we want to include
   EXTRA_TREES=( \
-                gxbb_p201 gxbb_p200_1G_wetek_hub gxbb_p200_2G_wetek_play_2 \
+                gxbb_p200 gxbb_p200_2G gxbb_p201 gxbb_p200_1G_wetek_hub gxbb_p200_2G_wetek_play_2 \
                 gxl_p212_1g gxl_p212_2g gxl_p281_1g gxl_p212_1g_lepotato gxl_p212_2g_lepotato \
                 gxm_q200_2g gxm_q201_1g gxm_q201_2g gxl_p231_1g_m8s_dvb \
 	      )

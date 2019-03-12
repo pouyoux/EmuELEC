@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="emulationstation"
-PKG_VERSION="70da690ca457d110fea78e46313e8049a60fd675"
+PKG_VERSION="f9e48897d3f8a5630496453a7a1ecbf9dbf98a14"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -35,7 +35,10 @@ post_makeinstall_target() {
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
    
    mkdir -p $INSTALL/usr/config/emulationstation
-    cp $PKG_DIR/config/* $INSTALL/usr/config/emulationstation
+    cp -rf $PKG_DIR/config/* $INSTALL/usr/config/emulationstation
+    chmod +x $INSTALL/usr/config/emulationstation/scripts/*
+    chmod +x $INSTALL/usr/config/emulationstation/scripts/configscripts/*
+    
 }
 
 
