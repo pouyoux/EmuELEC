@@ -1,12 +1,13 @@
-**Sx05RE**
-A retro emulation fork for Amlogic S905 and S912 devices.  
+**EmuELEC**
+Retro emulation for Amlogic devices.  
 Based on  [CoreELEC](https://github.com/CoreELEC/CoreELEC) and [Lakka](https://github.com/libretro/Lakka-LibreELEC), I just combine them with [Emulationstation](https://github.com/RetroPie/EmulationStation) and some standalone emulators ([Advancemame](https://github.com/amadvance/advancemame), [PPSSPP](https://github.com/hrydgard/ppsspp), [Reicast](https://github.com/reicast/reicast-emulator), [Amiberry](https://github.com/midwan/amiberry) and others). 
 
 To build use:  
 
-git clone https://github.com/shantigilbert/CoreELEC.git Sx05RE  
-cd Sx05RE  
-PROJECT=Amlogic ARCH=arm DISTRO=Sx05RE make image  
+git clone https://github.com/shantigilbert/CoreELEC.git EmuELEC  
+cd EmuELEC
+git checkout EmuELEC  
+PROJECT=Amlogic ARCH=arm DISTRO=EmuELEC make image  
 
 Remember to use the proper DTB for your device!
 

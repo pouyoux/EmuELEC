@@ -128,7 +128,7 @@
   # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
   # Space separated list is supported,
   # e.g. FIRMWARE="dvb-firmware misc-firmware wlan-firmware"
-    FIRMWARE="misc-firmware wlan-firmware dvb-firmware brcmfmac_sdio-firmware-all-aml rtl8723bs_bt qca9377-firmware-aml"
+    FIRMWARE="misc-firmware wlan-firmware brcmfmac_sdio-firmware-all-aml rtl8723bs_bt qca9377-firmware-aml"
 
   # build and install ATV IR remote support (yes / no)
     ATVCLIENT_SUPPORT="no"
@@ -153,15 +153,15 @@
   # additional packages to install:
   # Space separated list is supported,
   # e.g. ADDITIONAL_PACKAGES="PACKAGE1 PACKAGE2"
-    ADDITIONAL_PACKAGES="autoscript-amlogic dtc u-boot-tools-aml CoreELEC-Debug-Scripts"
+    ADDITIONAL_PACKAGES="autoscript-amlogic dtc u-boot-tools-aml"
 
   # build and install driver addons (yes / no)
-    DRIVER_ADDONS_SUPPORT="yes"
+    DRIVER_ADDONS_SUPPORT="no"
 
   # driver addons to install:
   # for a list of additinoal drivers see packages/linux-driver-addons
   # Space separated list is supported,
-  # DRIVER_ADDONS="crazycat_aml dvb-latest"
+  # DRIVER_ADDONS=""
 
   # add OOTB support for IR remote
     IR_REMOTE_KEYMAPS="$IR_REMOTE_KEYMAPS odroid wetek_hub wetek_play_2 tanix kvim2"

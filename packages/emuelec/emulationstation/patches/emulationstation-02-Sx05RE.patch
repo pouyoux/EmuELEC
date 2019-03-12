@@ -1,0 +1,463 @@
+diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+--- a/es-app/src/guis/GuiMenu.cpp	Thu Jun 08 07:58:22 2017
++++ b/es-app/src/guis/GuiMenu.cpp	Thu Jun 08 16:55:16 2017
+@@ -23,6 +23,9 @@
+ 	bool isFullUI = UIModeController::getInstance()->isUIModeFull();
+ 
+ 	if (isFullUI)
++	    addEntry("EmuELEC", 0x777777FF, true, [this] { openEmuELECSettings(); });
++	
++	if (isFullUI)
+ 		addEntry("SCRAPER", 0x777777FF, true, [this] { openScraperSettings(); });
+ 
+ 	addEntry("SOUND SETTINGS", 0x777777FF, true, [this] { openSoundSettings(); });
+@@ -46,6 +49,252 @@
+ 	addVersionInfo();
+ 	setSize(mMenu.getSize());
+ 	setPosition((Renderer::getScreenWidth() - mSize.x()) / 2, Renderer::getScreenHeight() * 0.15f);
++}
++
++void GuiMenu::openEmuELECSettings()
++{
++	auto s = new GuiSettings(mWindow, "EmuELEC Settings");
++	
++	
++	auto emuelec_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "ARCADE EMULATOR", false);
++		std::vector<std::string> mamechoices;
++		mamechoices.push_back("mame2003_plus");
++		mamechoices.push_back("mame2003");
++		mamechoices.push_back("mame2003-midway");
++	    mamechoices.push_back("AdvanceMame");
++		mamechoices.push_back("mame2010");
++		mamechoices.push_back("mame2014");
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = mamechoices.cbegin(); it != mamechoices.cend(); it++)
++		emuelec_mame_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_MAME_CORE") == *it);
++		s->addWithLabel("MAME EMULATOR", emuelec_mame_def);
++		s->addSaveFunc([emuelec_mame_def] {
++		/* runSystemCommand("echo "+emuelec_mame_def->getSelected()+" > /storage/.config/emuelec/mame"); */
++			if (Settings::getInstance()->getString("EmuELEC_MAME_CORE") != emuelec_mame_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_MAME_CORE", emuelec_mame_def->getSelected());
++		});
++	
++	auto emuelec_fba_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "FBA/NEO-GEO CORE", false);
++		std::vector<std::string> fbachoices;
++		fbachoices.push_back("fbalpha");
++		/*fbachoices.push_back("mame2003");*/
++		/*fbachoices.push_back("mame2003-midway");*/
++		fbachoices.push_back("mame2003_plus");
++		/*fbachoices.push_back("mame2010");*/
++		/*fbachoices.push_back("mame2014");*/
++		/*fbachoices.push_back("AdvanceMame");*/
++		/*devices.push_back("Options");*/
++		for (auto it = fbachoices.cbegin(); it != fbachoices.cend(); it++)
++		emuelec_fba_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_FBA_CORE") == *it);
++		s->addWithLabel("FBA/NEO-GEO CORE", emuelec_fba_def);
++		s->addSaveFunc([emuelec_fba_def] {
++		/* runSystemCommand("echo "+emuelec_fba_def->getSelected()+" > /storage/.config/emuelec/mame"); */
++			if (Settings::getInstance()->getString("EmuELEC_FBA_CORE") != emuelec_fba_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_FBA_CORE", emuelec_fba_def->getSelected());
++		});
++		
++	auto emuelec_psp_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "PSP EMULATOR", false);
++		std::vector<std::string> pspchoices;
++		pspchoices.push_back("PPSSPPSA");
++		pspchoices.push_back("ppsspp");
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = pspchoices.cbegin(); it != pspchoices.cend(); it++)
++		emuelec_psp_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_PSP_CORE") == *it);
++		s->addWithLabel("PSP EMULATOR", emuelec_psp_def);
++		s->addSaveFunc([emuelec_psp_def] {
++		/* runSystemCommand("echo "+emuelec_psp_def->getSelected()+" > /storage/.config/emuelec/psp"); */
++			if (Settings::getInstance()->getString("EmuELEC_PSP_CORE") != emuelec_psp_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_PSP_CORE", emuelec_psp_def->getSelected());
++		});	
++	
++	
++	auto emuelec_n64_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "N64 CORE", false);
++		std::vector<std::string> n64choices;
++		n64choices.push_back("mupen64plus");
++		n64choices.push_back("parallel_n64");
++		/*n64choices.push_back("quicknes");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = n64choices.cbegin(); it != n64choices.cend(); it++)
++		emuelec_n64_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_N64_CORE") == *it);
++		s->addWithLabel("N64 CORE", emuelec_n64_def);
++		s->addSaveFunc([emuelec_n64_def] {
++		/* runSystemCommand("echo "+emuelec_n64_def->getSelected()+" > /storage/.config/emuelec/nes"); */
++			if (Settings::getInstance()->getString("EmuELEC_N64_CORE") != emuelec_n64_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_N64_CORE", emuelec_n64_def->getSelected());
++		});
++	
++			
++	auto emuelec_nes_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "NES/FC/FDS CORE", false);
++		std::vector<std::string> neschoices;
++		neschoices.push_back("fceumm");
++		neschoices.push_back("nestopia");
++		/*neschoices.push_back("quicknes");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = neschoices.cbegin(); it != neschoices.cend(); it++)
++		emuelec_nes_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_NES_CORE") == *it);
++		s->addWithLabel("NES/FC/FDS CORE", emuelec_nes_def);
++		s->addSaveFunc([emuelec_nes_def] {
++		/* runSystemCommand("echo "+emuelec_nes_def->getSelected()+" > /storage/.config/emuelec/nes"); */
++			if (Settings::getInstance()->getString("EmuELEC_NES_CORE") != emuelec_nes_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_NES_CORE", emuelec_nes_def->getSelected());
++		});
++		
++		
++	auto emuelec_snes_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "SNES CORE", false);
++		std::vector<std::string> sneschoices;
++		sneschoices.push_back("snes9x");
++		sneschoices.push_back("snes9x2002");
++		sneschoices.push_back("snes9x2005");
++		sneschoices.push_back("snes9x2005_plus");
++		sneschoices.push_back("snes9x2010");
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = sneschoices.cbegin(); it != sneschoices.cend(); it++)
++		emuelec_snes_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_SNES_CORE") == *it);
++		s->addWithLabel("SNES CORE", emuelec_snes_def);
++		s->addSaveFunc([emuelec_snes_def] {
++		/* runSystemCommand("echo "+emuelec_snes_def->getSelected()+" > /storage/.config/emuelec/snes"); */
++			if (Settings::getInstance()->getString("EmuELEC_SNES_CORE") != emuelec_snes_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_SNES_CORE", emuelec_snes_def->getSelected());
++		});
++	
++	auto emuelec_gen_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "GENESIS/MS/CD CORE", false);
++		std::vector<std::string> genesischoices;
++		genesischoices.push_back("genesis_plus_gx");
++		genesischoices.push_back("picodrive");
++		/*genesischoices.push_back("snes9x2005");*/
++		/*genesischoices.push_back("snes9x2005_plus");*/
++		/*genesischoices.push_back("snes9x2010");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = genesischoices.cbegin(); it != genesischoices.cend(); it++)
++		emuelec_gen_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_GEN_CORE") == *it);
++		s->addWithLabel("GENESIS/MS/CD CORE", emuelec_gen_def);
++		s->addSaveFunc([emuelec_gen_def] {
++			/* runSystemCommand("echo "+emuelec_gen_def->getSelected()+" > /storage/.config/emuelec/snes"); */
++			if (Settings::getInstance()->getString("EmuELEC_GEN_CORE") != emuelec_gen_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_GEN_CORE", emuelec_gen_def->getSelected());
++		});
++		
++	auto emuelec_gba_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "GBA CORE", false);
++		std::vector<std::string> gbachoices;
++		gbachoices.push_back("mgba");
++		gbachoices.push_back("gpsp");
++		gbachoices.push_back("vbam");
++		gbachoices.push_back("vba-next");
++		/*gbachoices.push_back("snes9x2010");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = gbachoices.cbegin(); it != gbachoices.cend(); it++)
++		emuelec_gba_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_GBA_CORE") == *it);
++		s->addWithLabel("GBA CORE", emuelec_gba_def);
++		s->addSaveFunc([emuelec_gba_def] {
++			/* runSystemCommand("echo "+emuelec_gba_def->getSelected()+" > /storage/.config/emuelec/snes"); */
++			if (Settings::getInstance()->getString("EmuELEC_GBA_CORE") != emuelec_gba_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_GBA_CORE", emuelec_gba_def->getSelected());
++		});
++		
++	auto emuelec_gbc_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "GB/GBC CORE", false);
++		std::vector<std::string> gbcchoices;
++		gbcchoices.push_back("gambatte");
++		gbcchoices.push_back("gearboy");
++		gbcchoices.push_back("tgbdual");
++		/*gbcchoices.push_back("snes9x2005_plus");*/
++		/*gbcchoices.push_back("snes9x2010");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = gbcchoices.cbegin(); it != gbcchoices.cend(); it++)
++		emuelec_gbc_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_GBC_CORE") == *it);
++		s->addWithLabel("GB/GBC CORE", emuelec_gbc_def);
++		s->addSaveFunc([emuelec_gbc_def] {
++			/* runSystemCommand("echo "+emuelec_gbc_def->getSelected()+" > /storage/.config/emuelec/snes"); */
++			if (Settings::getInstance()->getString("EmuELEC_GBC_CORE") != emuelec_gbc_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_GBC_CORE", emuelec_gbc_def->getSelected());
++		});
++	
++		auto emuelec_boot_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "START AT BOOT", false);
++		std::vector<std::string> devices;
++		devices.push_back("Emulationstation");
++		/*devices.push_back("Kodi");*/
++		devices.push_back("Retroarch");
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		/*devices.push_back("Other");*/
++		/*devices.push_back("Options");*/
++		for (auto it = devices.cbegin(); it != devices.cend(); it++)
++		emuelec_boot_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_BOOT") == *it);
++		s->addWithLabel("START AT BOOT", emuelec_boot_def);
++		s->addSaveFunc([emuelec_boot_def] {
++			/*runSystemCommand("echo "+emuelec_boot_def->getSelected()+" > /storage/.config/def_fe");*/
++			if (Settings::getInstance()->getString("EmuELEC_BOOT") != emuelec_boot_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_BOOT", emuelec_boot_def->getSelected());
++		});
++				
++	Window* window = mWindow;
++	ComponentListRow row;
++	
++	if (UIModeController::getInstance()->isUIModeFull())
++	{
++	row.addElement(std::make_shared<TextComponent>(window, "!!!!!!!DANGER ZONE!!!!!!!", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++	s->addRow(row);
++	row.elements.clear();
++
++	row.makeAcceptInputHandler([window] {
++		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL EMULATOR CONFIGS!!!!!!!!!! RESET EmuELEC EMULATORS TO DEFAULT AND RESTART?", "YES",
++				[] { 
++				runSystemCommand("/usr/bin/clearconfig.sh EMUS");
++				}, "NO", nullptr));
++	});
++	row.addElement(std::make_shared<TextComponent>(window, "RESET EmuELEC EMULATORS TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++	s->addRow(row);
++	row.elements.clear();
++	/*
++	row.makeAcceptInputHandler([window] {
++		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL KODI ADDONS AND CONFIG!!!!!!!!!! RESET KODI TO DEFAULT CONFIG AND RESTART?", "YES",
++				[] { 
++				runSystemCommand("/usr/bin/clearconfig.sh KODI");
++				}, "NO", nullptr));
++	});
++	row.addElement(std::make_shared<TextComponent>(window, "RESET KODI TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++	s->addRow(row);
++	row.elements.clear();
++	*/
++	row.makeAcceptInputHandler([window] {
++		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL CONFIGS/ADDONS!!!!!!!!!! RESET SYSTEM TO DEFAULT CONFIG AND RESTART?", "YES",
++				[] { 
++				runSystemCommand("/usr/bin/clearconfig.sh ALL");
++				}, "NO", nullptr));
++	});
++	row.addElement(std::make_shared<TextComponent>(window, "RESET SYSTEM TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++	s->addRow(row);
++	row.elements.clear();
++	
++	mWindow->pushGui(s);
++ }
+ }
+ 
+ void GuiMenu::openScraperSettings()
+@@ -113,6 +362,7 @@
+ 		audio_cards.push_back("hw");
+ 		audio_cards.push_back("plughw");
+ 		audio_cards.push_back("null");
++		/*audio_cards.push_back("hdmi");*/
+ 		if (Settings::getInstance()->getString("AudioCard") != "") {
+ 			if(std::find(audio_cards.begin(), audio_cards.end(), Settings::getInstance()->getString("AudioCard")) == audio_cards.end()) {
+ 				audio_cards.push_back(Settings::getInstance()->getString("AudioCard"));
+@@ -135,6 +385,7 @@
+ 		transitions.push_back("Master");
+ 		transitions.push_back("Digital");
+ 		transitions.push_back("Analogue");
++		/* transitions.push_back("HDMI"); */
+ 		if (Settings::getInstance()->getString("AudioDevice") != "") {
+ 			if(std::find(transitions.begin(), transitions.end(), Settings::getInstance()->getString("AudioDevice")) == transitions.end()) {
+ 				transitions.push_back(Settings::getInstance()->getString("AudioDevice"));
+@@ -412,57 +658,67 @@
+ 	auto s = new GuiSettings(mWindow, "QUIT");
+ 
+ 	Window* window = mWindow;
+-
+ 	ComponentListRow row;
+-	if (UIModeController::getInstance()->isUIModeFull())
+-	{
+-		row.makeAcceptInputHandler([window] {
+-			window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
+-				[] {
+-				if(quitES("/tmp/es-restart") != 0)
+-					LOG(LogWarning) << "Restart terminated with non-zero result!";
+-			}, "NO", nullptr));
+-		});
+-		row.addElement(std::make_shared<TextComponent>(window, "RESTART EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
+-		s->addRow(row);
+-
+ 
++			/* row.makeAcceptInputHandler([window] {
++				window->pushGui(new GuiMsgBox(window, "QUIT TO KODI? ", "YES",
++					[] {
++					remove("/var/lock/start.games");
++            		runSystemCommand("touch /var/lock/start.kodi");
++			        runSystemCommand("systemctl start kodi.service");
++					SDL_Event ev;
++					ev.type = SDL_QUIT;
++					SDL_PushEvent(&ev);
++				}, "NO", nullptr));
++			});
++			row.addElement(std::make_shared<TextComponent>(window, "START KODI", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++			s->addRow(row); */
+ 
+-		if(Settings::getInstance()->getBool("ShowExit"))
+-		{
+ 			row.elements.clear();
+ 			row.makeAcceptInputHandler([window] {
+-				window->pushGui(new GuiMsgBox(window, "REALLY QUIT?", "YES",
++				window->pushGui(new GuiMsgBox(window, "QUIT TO RETROARCH? ", "YES",
+ 					[] {
++					remove("/var/lock/start.games");
++            		runSystemCommand("touch /var/lock/start.retro");
++			        runSystemCommand("systemctl start retroarch.service");
+ 					SDL_Event ev;
+ 					ev.type = SDL_QUIT;
+ 					SDL_PushEvent(&ev);
+ 				}, "NO", nullptr));
+ 			});
+-			row.addElement(std::make_shared<TextComponent>(window, "QUIT EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++			row.addElement(std::make_shared<TextComponent>(window, "START RETROARCH", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
+ 			s->addRow(row);
+-		}
+-	}
++      
++       row.elements.clear();
++		row.makeAcceptInputHandler([window] {
++			window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
++				[] {
++    		   runSystemCommand("systemctl restart emustation.service");
++			}, "NO", nullptr));
++		});
++		row.addElement(std::make_shared<TextComponent>(window, "RESTART EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++		s->addRow(row);
++
+ 	row.elements.clear();
+ 	row.makeAcceptInputHandler([window] {
+ 		window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
+ 			[] {
+-			if (quitES("/tmp/es-sysrestart") != 0)
++			if (system("systemctl reboot") != 0)
+ 				LOG(LogWarning) << "Restart terminated with non-zero result!";
+ 		}, "NO", nullptr));
+ 	});
+-	row.addElement(std::make_shared<TextComponent>(window, "RESTART SYSTEM", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++	row.addElement(std::make_shared<TextComponent>(window, "RESTART SYSTEM", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
+ 	s->addRow(row);
+ 
+ 	row.elements.clear();
+ 	row.makeAcceptInputHandler([window] {
+ 		window->pushGui(new GuiMsgBox(window, "REALLY SHUTDOWN?", "YES",
+ 			[] {
+-			if (quitES("/tmp/es-shutdown") != 0)
++			if (system("systemctl poweroff") != 0)
+ 				LOG(LogWarning) << "Shutdown terminated with non-zero result!";
+ 		}, "NO", nullptr));
+ 	});
+-	row.addElement(std::make_shared<TextComponent>(window, "SHUTDOWN SYSTEM", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
++	row.addElement(std::make_shared<TextComponent>(window, "SHUTDOWN SYSTEM", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
+ 	s->addRow(row);
+ 
+ 	mWindow->pushGui(s);
+@@ -522,7 +773,7 @@
+ 
+ 	mVersion.setFont(Font::get(FONT_SIZE_SMALL));
+ 	mVersion.setColor(0x5E5E5EFF);
+-	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate);
++	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate +" SX05RE v2.3.1-NK IP:" + getShOutput(R"(/usr/bin/ip.sh)"));
+ 	mVersion.setHorizontalAlignment(ALIGN_CENTER);
+ 	addChild(&mVersion);
+ }
+
+--- a/es-app/src/guis/GuiMenu.h	2018-03-09 12:11:38.000000000 -0600
++++ b/es-app/src/guis/GuiMenu.h	2018-03-16 01:20:44.411257304 -0600
+@@ -26,6 +26,7 @@
+ 	void openScreensaverOptions();
+ 	void openSoundSettings();
+ 	void openUISettings();
++	void openEmuELECSettings();
+ 
+ 	MenuComponent mMenu;
+ 	TextComponent mVersion;
+--- a/es-core/src/platform.h
++++ b/es-core/src/platform.h
+@@ -26,5 +26,6 @@
+ int runSystemCommand(const std::string& cmd_utf8); // run a utf-8 encoded in the shell (requires wstring conversion on Windows)
+ int quitES(const std::string& filename);
+ void touch(const std::string& filename);
++std::string getShOutput(const std::string& mStr);
+ 
+ #endif // ES_CORE_PLATFORM_H
+--- a/es-core/src/platform.cpp
++++ b/es-core/src/platform.cpp
+@@ -40,6 +40,23 @@
+ #endif
+ }
+ 
++std::string getShOutput(const std::string& mStr)
++{
++    std::string result, file;
++    FILE* pipe{popen(mStr.c_str(), "r")};
++    char buffer[256];
++
++    while(fgets(buffer, sizeof(buffer), pipe) != NULL)
++    {
++        file = buffer;
++        result += file.substr(0, file.size() - 1);
++    }
++
++    pclose(pipe);
++    return result;
++}
++
++
+ int quitES(const std::string& filename)
+ {
+ 	touch(filename);
+--- a/es-app/src/main.cpp
++++ b/es-app/src/main.cpp
+@@ -209,10 +209,10 @@
+ 	if(SystemData::sSystemVector.size() == 0)
+ 	{
+ 		LOG(LogError) << "No systems found! Does at least one system have a game present? (check that extensions match!)\n(Also, make sure you've updated your es_systems.cfg for XML!)";
+-		*errorString = "WE CAN'T FIND ANY SYSTEMS!\n"
++		*errorString = ("WE CAN'T FIND ANY SYSTEMS!\n"
+ 			"CHECK THAT YOUR PATHS ARE CORRECT IN THE SYSTEMS CONFIGURATION FILE, "
+-			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n\n"
+-			"VISIT EMULATIONSTATION.ORG FOR MORE INFORMATION.";
++			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n"
++			"OR INSERT A USB WITH YOUR ROMS AND THE '/roms/emuelecroms' FILE AND RESTART. \n\n  SSH/SFTP IP: " + getShOutput(R"(/usr/bin/ip.sh)")).c_str();
+ 		return false;
+ 	}
+ 
+@@ -330,11 +330,16 @@
+ 		// we can't handle es_systems.cfg file problems inside ES itself, so display the error message then quit
+ 		window.pushGui(new GuiMsgBox(&window,
+ 			errorMsg,
+-			"QUIT", [] {
++			"RESTART ES", [] {
++				runSystemCommand("systemctl restart emustation.service");
+ 				SDL_Event* quit = new SDL_Event();
+ 				quit->type = SDL_QUIT;
+ 				SDL_PushEvent(quit);
+-			}));
++			}, "RESTART SYSTEM", [] {
++				/* remove("/var/lock/start.games");
++           	runSystemCommand("touch /var/lock/start.kodi"); */
++		        runSystemCommand("systemctl reboot");
++				}));
+ 	}
+ 
+ 	//run the command line scraper then quit

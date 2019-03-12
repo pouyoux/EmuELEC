@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# Kodi seems to set its own FB settings for 720p, so we revert them to one that work on ES, I use all resolutions just in case :)
+/usr/bin/setres.sh
+SPLASH="/storage/.config/splash/splash-1080.png"
+(
+  fbi $SPLASH -noverbose > /dev/null 2>&1
+)&
+
+sleep 2
+# Lets try and find some roms on a mounted USB drive
+# Since the ROMS folder is not getting created at boot, we check if it exists, if it doesn't then we create it.
+if [ ! -d "/storage/roms" ] && [ ! -d "/storage/roms2" ]; then
+  mkdir /storage/roms
+
+all_roms="atari2600,atari5200,atari7800,atarilynx,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,videopac,zxspectrum"
+
+for romfolder in $(echo $all_roms | tr "," " "); do
+  mkdir -p /storage/roms/$romfolder
+done
+
+fi
+
+# name of the file we need to put in the roms folder in your USB or SDCARD
+ROMFILE="emuelecroms"
+
+# we look for the file in the rompath
+FULLPATHTOROMS="$(find /media/*/roms/ -maxdepth 1 -name $ROMFILE)"
+
+if [[ -z "${FULLPATHTOROMS}" ]]; then
+# echo "can't find roms on USB"
+
+    if [ ! -e /storage/roms ]; then
+      rm /storage/roms
+      mv /storage/roms2 /storage/roms
+ fi
+    else
+      mv /storage/roms /storage/roms2
+      #echo "move the roms folder"
+
+       # we strip the name of the file.
+       PATHTOROMS=${FULLPATHTOROMS%$ROMFILE}
+
+       #we create the symlink to the roms in our USB
+       ln -sf $PATHTOROMS /storage/roms
+ fi
+
+# initial ES setup
+BIOS_DIR="/storage/roms/bios"
+ROMS_DIR="/storage/roms/"
+CONFIG_DIR="/storage/.emulationstation"
+CONFIG_DIR2="/storage/.config/emulationstation"
+
+if [ ! -L "$CONFIG_DIR" ]; then
+ln -sf $CONFIG_DIR2 $CONFIG_DIR
+fi
+
+exit 0

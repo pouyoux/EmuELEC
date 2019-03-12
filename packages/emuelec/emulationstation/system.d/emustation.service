@@ -1,0 +1,17 @@
+[Unit]
+Description=EmulationStation emulator frontend
+ConditionPathExists=/var/lock/start.games
+
+[Service]
+Environment=HOME=/storage
+ExecStartPre=/usr/bin/emustation-config
+ExecStartPre=/usr/bin/killkodi.sh
+ExecStart=/usr/bin/emulationstation
+KillMode=process
+TimeoutStopSec=3
+Restart=always
+RestartSec=2
+StartLimitInterval=0
+
+[Install]
+WantedBy=emuelec.target
