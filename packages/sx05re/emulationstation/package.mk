@@ -36,6 +36,9 @@ post_makeinstall_target() {
    
    mkdir -p $INSTALL/usr/config/emulationstation
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/emulationstation
+    chmod +x $INSTALL/usr/config/emulationstation/scripts/*
+    chmod +x $INSTALL/usr/config/emulationstation/scripts/configscripts/*
+    
 }
 
 
