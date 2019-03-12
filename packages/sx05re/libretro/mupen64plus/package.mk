@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="mupen64plus"
-PKG_VERSION="563565dea05b6b205cfadfb1bb3b73522938916b"
-PKG_SHA256="3926e621ee6a843f83c70da74a4e3f3b3018f11ac28bd9c3f9ff30c5011b7021"
+PKG_VERSION="be81697cd2cdee3a8488eac6789b984975006730"
+PKG_SHA256="2ab7255f8fb32f74eb7dd757a755914e29526ddb3536cfef065c26cf37870d88"
 PKG_REV="1"
 PKG_ARCH="arm i386 x86_64"
 PKG_LICENSE="GPLv2"
