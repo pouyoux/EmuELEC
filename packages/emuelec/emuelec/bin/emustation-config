@@ -2,7 +2,7 @@
 
 # Kodi seems to set its own FB settings for 720p, so we revert them to one that work on ES, I use all resolutions just in case :)
 /usr/bin/setres.sh
-SPLASH="/storage/.config/splash/splash-1080.png"
+SPLASH="/usr/config/splash/splash-1080.png"
 (
   fbi $SPLASH -noverbose > /dev/null 2>&1
 )&
