@@ -46,9 +46,6 @@ makeinstall_target() {
     cp $PKG_DIR/bin/* $INSTALL/usr/bin/
     chmod +x $INSTALL/usr/bin/*
 
-  mkdir -p $INSTALL/usr/share/kodi/addons/
-    cp -rf $PKG_DIR/addon/* $INSTALL/usr/share/kodi/addons/
-
   mkdir -p $INSTALL/usr/share/retroarch-overlays
     cp -r $PKG_DIR/overlay/* $INSTALL/usr/share/retroarch-overlays
   
@@ -57,7 +54,6 @@ makeinstall_target() {
     
     mkdir -p $INSTALL/usr/share/libretro-database
      touch $INSTALL/usr/share/libretro-database/dummy
-     
 }
 
 post_install() {
@@ -78,6 +74,8 @@ rm -rf "$INSTALL/usr/share/retroarch-overlays/gamepads"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/ipad"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
+
+mkdir -p $INSTALL/etc/retroarch-joypad-autoconfig
 
     # link default.target to emuelec.target
    ln -sf emuelec.target $INSTALL/usr/lib/systemd/system/default.target

@@ -19,17 +19,19 @@
 ################################################################################
 
 PKG_NAME="common-shaders"
-PKG_VERSION="d161a1b"
+PKG_VERSION="d161a1bb13209e40bbfa294f674310080ce5222e"
+PKG_SHA256="1dabe3ccc85cbc462b167660cf0b6437744b89172dbdffd1389bfa38d7600ac8"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/RetroPie/common-shaders"
-PKG_URL="https://github.com/RetroPie/common-shaders/archive/$PKG_VERSION.tar.gz"
+PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="emuelec"
 PKG_SHORTDESC="Manually converted libretro/common-shaders for arm devices treebranch pi"
 PKG_LONGDESC="Manually converted libretro/common-shaders for arm devices treebranch pi"
+PKG_GIT_BRANCH="rpi"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
