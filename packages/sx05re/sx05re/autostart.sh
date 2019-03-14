@@ -28,3 +28,24 @@ case "$DEFE" in
 	/usr/bin/startfe.sh &
 	;;
 esac
+
+# Bluetooth, Make sure you change your BT MAC address, you need to do this by SSH the first time
+# by running 
+
+# hcitool scan
+# bluetoothctl pair yourmac
+# bluetoothctl trust yourmac 
+
+# If you want to use bluetooth, uncomment every line after this one 
+
+# BTMAC="E4:17:D8:8B:F1:80"
+# (
+# echo "agent on" | bluetoothctl
+# echo "default-agent" | bluetoothctl
+# echo "power on" | bluetoothctl
+# echo "discoverable on" | bluetoothctl
+# echo "pairable on" | bluetoothctl
+# echo "scan on" | bluetoothctl
+# echo "trust $BTMAC" | bluetoothctl
+# echo "connect $BTMAC" | bluetoothctl
+# )&
