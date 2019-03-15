@@ -20,7 +20,7 @@ PKG_TOOLCHAIN="make"
 PKG_NEED_UNPACK="$(get_pkg_directory kodi) $(get_pkg_directory CoreELEC-settings)"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation advancemame PPSSPPSDL reicastsa common-shaders scraper fbida amiberry MC libretro-bash-launcher hatarisa"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation advancemame PPSSPPSDL reicastsa common-shaders scraper fbida amiberry MC libretro-bash-launcher hatarisa mpv"
 
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
