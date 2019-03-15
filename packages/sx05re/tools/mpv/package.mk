@@ -15,7 +15,7 @@ PKG_TOOLCHAIN="manual"
 
 configure_target() {
   ./bootstrap.py
-  ./waf configure --enable-mali-fbdev --enable-sdl2
+  ./waf configure --enable-mali-fbdev --enable-sdl2 --disable-pulse --disable-libbluray
 }
 
 make_target() {
