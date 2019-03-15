@@ -183,16 +183,16 @@ function map_retroarch_joystick() {
             keys=("input_r" "input_save_state")
             ;;
         lefttop|lefttrigger)
-            keys=("input_l2")
+            keys=("input_l2" "input_rewind")
             ;;
         righttop|righttrigger)
-            keys=("input_r2")
+            keys=("input_r2" "input_toggle_fast_forward_axis")
             ;;
         leftthumb)
             keys=("input_l3")
             ;;
         rightthumb)
-            keys=("input_r3")
+            keys=("input_r3" "input_fps_toggle")
             ;;
         start)
             keys=("input_start" "input_exit_emulator")
