@@ -423,7 +423,8 @@ ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
 ln -sf libdrm.so.2.4.0 \$ADDON_DIR/lib/libdrm.so.2
 ln -sf libexif.so.12.3.3 \$ADDON_DIR/lib/libexif.so.12
 
-# delete symlink from older version
+# delete symlinks to avoid doubles
+
 if [ -L /storage/.emulationstation ]; then
 rm /storage/.emulationstation
 fi 
@@ -436,8 +437,16 @@ ln -sf \$ADDON_DIR/resources/joypads/ /tmp/joypads
 
 
 #  Check if configuration for ES is copied to storage
-if [ ! -L "/storage/.emulationstation" ]; then
-ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+if [ ! -e "/storage/.emulationstation" ]; then
+#ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+mkdir /storage/.emulationstation
+cp -rf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+fi
+
+if [ -f "/storage/.emulationstation/forceupdate" ]; then
+cp -rf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+cp "\$ADDON_DIR/config/retroarch.cfg" "\$RA_CONFIG_FILE"
+rm /storage/.emulationstation/forceupdate
 fi
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
