@@ -1,6 +1,6 @@
 ################################################################################
 #      This file is part of emuelec
-#      no copyright, do as you please :)4f3880d
+#      no copyright, do as you please :)
 ################################################################################
 
 PKG_NAME="advancemame"
@@ -30,7 +30,7 @@ cp -r $PKG_DIR/.version $PKG_BUILD
 
 make_target() {
 ./autogen.sh
-./configure --prefix=/usr --datadir=/usr/share/ --datarootdir=/usr/share/ --host=arm --enable-fb --enable-freetype --with-freetype-prefix=$SYSROOT_PREFIX/usr/ --enable-slang
+./configure --prefix=/usr --datadir=/usr/share/ --datarootdir=/usr/share/ --host=armv8a-libreelec-linux --enable-fb --enable-freetype --with-freetype-prefix=$SYSROOT_PREFIX/usr/ --enable-slang
 make 
 }
 
@@ -45,7 +45,7 @@ mkdir -p $INSTALL/usr/bin
    cp -r $PKG_DIR/bin/* $INSTALL/usr/bin
 chmod +x $INSTALL/usr/bin/advmame.sh
 
-cp -r $PKG_BUILD/obj/mame/generic/blend/advmame $INSTALL/usr/bin
+cp -r $PKG_BUILD/obj/mame/linux/blend/advmame $INSTALL/usr/bin
 cp -r $PKG_BUILD/support/category.ini $INSTALL/usr/share/advance
 cp -r $PKG_BUILD/support/sysinfo.dat $INSTALL/usr/share/advance
 cp -r $PKG_BUILD/support/history.dat $INSTALL/usr/share/advance
