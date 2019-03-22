@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export TERM="linux"
 export TERMINFO="/usr/share/terminfo"
 export TERMINFO_DIRS=$TERMINFO
