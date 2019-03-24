@@ -81,6 +81,7 @@ rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
 
 mkdir -p $INSTALL/etc/retroarch-joypad-autoconfig
+cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
 
   # update addon manifest
    ADDON_MANIFEST=$INSTALL/usr/share/kodi/system/addon-manifest.xml
