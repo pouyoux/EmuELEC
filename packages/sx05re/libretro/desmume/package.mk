@@ -26,7 +26,7 @@ PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/desmume"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain"
+PKG_DEPENDS_TARGET="toolchain linux glibc libpcap"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
 PKG_SHORTDESC="libretro wrapper for desmume NDS emulator."
@@ -36,27 +36,18 @@ PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
-if [ "$OPENGL" == "no" -o "$OPENGL" == "" ]; then
-  OGL=0
-else
-  OGL=1
-fi
+PKG_MAKE_OPTS_TARGET="-C desmume/src/frontend/libretro -f Makefile.libretro GIT_VERSION=${PKG_VERSION:0:7}"
 
-post_patch() {
-  # enable OGL back if present
-  if [ "$OPENGL" != "no" -a "$OPENGL" != "" ]; then
-    patch --reverse -d `echo "$PKG_BUILD" | cut -f1 -d\ ` -p1 < $PKG_DIR/patches/desmume-002-disable-ogl.patch
-  fi
-}
 
-make_target() {
-  if [ "$ARCH" == "arm" ]; then
-    make -C desmume/src/frontend/libretro platform=armv LDFLAGS="$LDFLAGS -lpthread" HAVE_GL=$OGL DESMUME_OPENGL=$OGL DESMUME_OPENGL_CORE=$OGL # DESMUME_JIT_ARM=1
-  elif [ "$ARCH" == "aarch64" ]; then
-    make -C desmume/src/frontend/libretro platform=arm64-unix LDFLAGS="$LDFLAGS -lpthread" HAVE_GL=$OGL DESMUME_OPENGL=$OGL DESMUME_OPENGL_CORE=$OGL
-  else
-    make -C desmume/src/frontend/libretro LDFLAGS="$LDFLAGS -lpthread" HAVE_GL=$OGL DESMUME_OPENGL=$OGL DESMUME_OPENGL_CORE=$OGL
-  fi
+pre_configure_target() {
+  case $TARGET_CPU in
+    arm1176jzf-s)
+      PKG_MAKE_OPTS_TARGET+=" platform=armv6-hardfloat-$TARGET_CPU"
+      ;;
+    cortex-a7|cortex-a9|cortex-a53)
+      PKG_MAKE_OPTS_TARGET+=" platform=armv7-neon-hardfloat-$TARGET_CPU"
+      ;;
+  esac
 }
 
 makeinstall_target() {

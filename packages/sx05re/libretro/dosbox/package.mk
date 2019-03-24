@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="dosbox"
-PKG_VERSION="7216efe33153f028573ad68a843d897bdb11a69c"
-PKG_SHA256="ce4c6fd502c3fdbe8d6f32628c6bd572f0ce8ed253d80b50cfad39fba3e16693"
+PKG_VERSION="2aa0bd13b372956b2fe989ca5e9d8e45f75fb44d"
+PKG_SHA256="15e31cfdb251fae1f2096030227327dcae781640a32cb5f34c23764fb9c7bb75"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
