@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="reicastsa"
-PKG_VERSION="ad61f95dd6b4c6218846a25de6194550311a5d28"
-PKG_SHA256="8215ef2e702e79d3b91f41c9826e37476ee9f71e7dc1477d6e6f8b332126bf96"
+PKG_VERSION="cb278e367b5e5635be9ebf45fd77fac2ce2fed7a"
+PKG_SHA256="74f69c7b1122b178a17840b51a225b8487dfc8bc30dacc9153495e0c88683259"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/reicast/reicast-emulator"
