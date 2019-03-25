@@ -470,13 +470,13 @@ ln -sf \$ADDON_DIR/resources/joypads/ /tmp/joypads
 if [ ! -e "/storage/.emulationstation" ]; then
 #ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
 mkdir /storage/.emulationstation
-cp -rf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+cp -rf $ADDON_DIR/config/emulationstation/* /storage/.emulationstation
 fi
 
-if [ -f "/storage/.emulationstation/forceupdate" ]; then
-cp -rf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
-cp "\$ADDON_DIR/config/retroarch.cfg" "\$RA_CONFIG_FILE"
-rm /storage/.emulationstation/forceupdate
+if [ -f "\$ADDON_DIR/forceupdate" ]; then
+cp -rf $ADDON_DIR/config/emulationstation/* /storage/.emulationstation
+cp -rf "\$ADDON_DIR/config/retroarch.cfg" "\$RA_CONFIG_FILE"
+rm "\$ADDON_DIR/forceupdate"
 fi
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
@@ -617,7 +617,7 @@ sed -i -e "s/\/usr\/bin\/bash/\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin\/bash
 
 echo -ne "Making modifications to sx05reRunEmu.sh..."
 CFG="bin/sx05reRunEmu.sh"
-sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
+sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
