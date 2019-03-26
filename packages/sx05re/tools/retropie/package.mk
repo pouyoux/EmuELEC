@@ -10,7 +10,7 @@ PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE=""
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain fbterm git"
+PKG_DEPENDS_TARGET="toolchain fbterm git dbus-python pygobject coreutils Skyscraper"
 PKG_SECTION="emuelec"
 PKG_SHORTDESC="Retropie scripts"
 PKG_LONGDESC="Retropie scripts adapted for emuELEC"
@@ -23,5 +23,5 @@ make_target() {
   mkdir -p $INSTALL/usr/config/retropie/
     cp -rf $PKG_DIR/retropie/* $INSTALL/usr/config/retropie/
     ln -sf /storage/.config/retropie $INSTALL/retropie
-    #ln -sf /storage/roms/games/yquake2/baseq2/pak1.pak $INSTALL/usr/share/games/quake2/baseq2/pak1.pak
-}
+    find $INSTALL/usr/config/retropie/ -type f -iname "*" -exec chmod  +x {} \;
+   }

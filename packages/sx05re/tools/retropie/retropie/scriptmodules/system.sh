@@ -63,7 +63,7 @@ function setup_env() {
 
 function get_os_version() {
     # make sure lsb_release is installed
-    getDepends lsb-release
+    # getDepends lsb-release
 
     # get os distributor id, description, release number and codename
     local os
@@ -74,6 +74,8 @@ function get_os_version() {
     __os_codename="${os[3]}"
     
     local error=""
+    __os_id="Ubuntu"
+    __os_release="16.10"
     case "$__os_id" in
         Raspbian|Debian)
             # Debian unstable is not officially supported though
@@ -181,7 +183,7 @@ function get_os_version() {
     [[ -n "$error" ]] && fatalError "$error\n\n$(lsb_release -idrc)"
 
     # add 32bit/64bit to platform flags
-    __platform_flags+=" $(getconf LONG_BIT)bit"
+    __platform_flags+=" 32bit"
 
     # configure Raspberry Pi graphics stack
     isPlatform "rpi" && get_rpi_video
@@ -322,7 +324,7 @@ function platform_odroid-c1() {
 }
 
 function platform_odroid-c2() {
-    if [[ "$(getconf LONG_BIT)" -eq 32 ]]; then
+    if [[ "32" -eq 32 ]]; then
         __default_cflags="-O2 -march=armv8-a+crc -mtune=cortex-a53 -mfpu=neon-fp-armv8"
         __platform_flags="arm armv8 neon mali gles"
     else

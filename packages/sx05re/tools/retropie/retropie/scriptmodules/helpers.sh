@@ -117,7 +117,7 @@ function addLineToFile() {
     if [[ -f "$2" ]]; then
         cp -p "$2" "$2.bak"
     else
-        sed -i --follow-symlinks '$a\' "$2"
+        sed -i '$a\' "$2"
     fi
 
     echo "$1" >> "$2"
@@ -192,6 +192,7 @@ function aptRemove() {
 ## @retval 0 on success
 ## @retval 1 on failure
 function getDepends() {
+	return 0
     local required
     local packages=()
     local failed=()
@@ -565,11 +566,11 @@ function renameModule() {
         rm -rf "$rootdir/$md_type/$to"
         mv "$rootdir/$md_type/$from" "$rootdir/$md_type/$to"
         # replace any default = "$from"
-        sed -i --follow-symlinks "s/\"$from\"/\"$to\"/g" "$configdir"/*/emulators.cfg
+        sed -i "s/\"$from\"/\"$to\"/g" "$configdir"/*/emulators.cfg
         # replace any $from = "cmdline"
-        sed -i --follow-symlinks "s/^$from\([ =]\)/$to\1/g" "$configdir"/*/emulators.cfg
+        sed -i "s/^$from\([ =]\)/$to\1/g" "$configdir"/*/emulators.cfg
         # replace any paths with /$from/
-        sed -i --follow-symlinks "s|/$from/|/$to/|g" "$configdir"/*/emulators.cfg
+        sed -i "s|/$from/|/$to/|g" "$configdir"/*/emulators.cfg
     fi
 }
 
@@ -1004,7 +1005,7 @@ function ensureFBMode() {
     local res_x="$1"
     local res_y="$2"
     local res="${res_x}x${res_y}"
-    sed -i --follow-symlinks "/$res mode/,/endmode/d" /etc/fb.modes
+    sed -i "/$res mode/,/endmode/d" /etc/fb.modes
 
     cat >> /etc/fb.modes <<_EOF_
 # added by RetroPie-Setup - $res mode for emulators

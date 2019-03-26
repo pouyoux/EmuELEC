@@ -55,7 +55,7 @@
 ## pressed the GUI is shown, where a user can set video modes, default emulators
 ## and other options (depending what is being launched).
 
-ROOTDIR="/opt/retropie"
+ROOTDIR="/retropie"
 CONFIGDIR="$ROOTDIR/configs"
 LOG="/dev/shm/runcommand.log"
 

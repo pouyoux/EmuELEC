@@ -14,7 +14,7 @@ __version="4.4.9"
 [[ "$__debug" -eq 1 ]] && set -x
 
 # main retropie install location
-rootdir="/storage/retropie"
+rootdir="/retropie"
 
 # if __user is set, try and install for that user, else use SUDO_USER
 if [[ -n "$__user" ]]; then
@@ -29,9 +29,9 @@ else
 fi
 
 home="/storage"
-datadir="$home/RetroPie"
-biosdir="$datadir/BIOS"
-romdir="$datadir/roms"
+datadir="$home/.config/retropie/RetroPie"
+romdir="$home/roms"
+biosdir="$romdir/BIOS"
 emudir="$rootdir/emulators"
 configdir="$rootdir/configs"
 
@@ -39,7 +39,7 @@ scriptdir="$(dirname "$0")"
 scriptdir="$(cd "$scriptdir" && pwd)"
 
 __logdir="$scriptdir/logs"
-__tmpdir="$scriptdir/tmp"
+__tmpdir="/tmp"
 __builddir="$__tmpdir/build"
 __swapdir="$__tmpdir"
 

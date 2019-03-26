@@ -39,10 +39,7 @@ function depends_bluetooth() {
 
 function get_script_bluetooth() {
     name="$1"
-    if ! which "$name"; then
-        [[ "$name" == "bluez-test-input" ]] && name="bluez-test-device"
-        name="$md_data/$name"
-    fi
+    name="/retropie/scriptmodules/supplementary/bluetooth/$name"
     echo "$name"
 }
 
@@ -178,8 +175,8 @@ function register_bluetooth() {
 
     mac_address="$choice"
     device_name="${mac_addresses[$choice]}"
-
-    if [[ "$device_name" =~ "PLAYSTATION(R)3 Controller" ]]; then
+    
+     if [[ "$device_name" =~ "PLAYSTATION(R)3 Controller" ]]; then
         $(get_script_bluetooth bluez-test-device) disconnect "$mac_address" 2>&1
         $(get_script_bluetooth bluez-test-device) trusted "$mac_address" yes 2>&1
         local trusted=$($(get_script_bluetooth bluez-test-device) trusted "$mac_address" 2>&1)
@@ -191,87 +188,13 @@ function register_bluetooth() {
         return
     fi
 
-    local cmd=(dialog --backtitle "$__backtitle" --menu "Please choose the security mode - Try the first one, then second if that fails" 22 76 16)
-    options=(
-        1 "DisplayYesNo"
-        2 "KeyboardDisplay"
-        3 "NoInputNoOutput"
-        4 "DisplayOnly"
-        5 "KeyboardOnly"
-    )
-    choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-    [[ -z "$choice" ]] && return
-
-    local mode="${options[choice*2-1]}"
-
-    # create a named pipe & fd for input for bluez-simple-agent
-    local fifo="$(mktemp -u)"
-    mkfifo "$fifo"
-    exec 3<>"$fifo"
-    local line
-    local pin
-    local error=""
-    local skip_connect=0
-    while read -r line; do
-        case "$line" in
-            "RequestPinCode"*)
-                cmd=(dialog --nocancel --backtitle "$__backtitle" --menu "Please choose a pin" 22 76 16)
-                options=(
-                    1 "Pin 0000"
-                    2 "Enter own Pin"
-                )
-                choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-                pin="0000"
-                if [[ "$choice" == "2" ]]; then
-                    pin=$(dialog --backtitle "$__backtitle" --inputbox "Please enter a pin" 10 60 2>&1 >/dev/tty)
-                fi
-                dialog --backtitle "$__backtitle" --infobox "Please enter pin $pin on your bluetooth device" 10 60
-                echo "$pin" >&3
-                # read "Enter PIN Code:"
-                read -n 15 line
-                ;;
-            "RequestConfirmation"*)
-                # read "Confirm passkey (yes/no): "
-                echo "yes" >&3
-                read -n 26 line
-                skip_connect=1
-                break
-                ;;
-            "DisplayPasskey"*|"DisplayPinCode"*)
-                # extract key from end of line
-                # DisplayPasskey (/org/bluez/1284/hci0/dev_01_02_03_04_05_06, 123456)
-                [[ "$line" =~ ,\ (.+)\) ]] && pin=${BASH_REMATCH[1]}
-                dialog --backtitle "$__backtitle" --infobox "Please enter pin $pin on your bluetooth device" 10 60
-                ;;
-            "Creating device failed"*)
-                error="$line"
-                ;;
-        esac
-    # read from bluez-simple-agent buffered line by line
-    done < <(stdbuf -oL $(get_script_bluetooth bluez-simple-agent) -c "$mode" hci0 "$mac_address" <&3)
-    exec 3>&-
-    rm -f "$fifo"
-
-    if [[ "$skip_connect" -eq 1 ]]; then
-        if hcitool con | grep -q "$mac_address"; then
-            printMsgs "dialog" "Successfully registered and connected to $mac_address"
-            return 0
-        else
-            printMsgs "dialog" "Unable to connect to bluetooth device. Please try pairing with the commandline tool 'bluetoothctl'"
-            return 1
-        fi
-    fi
-
-    if [[ -z "$error" ]]; then
-        error=$($(get_script_bluetooth bluez-test-device) trusted "$mac_address" yes 2>&1)
-        if [[ -z "$error" ]] ; then
-            error=$($(get_script_bluetooth bluez-test-input) connect "$mac_address" 2>&1)
-            if [[ -z "$error" ]]; then
-                printMsgs "dialog" "Successfully registered and connected to $mac_address"
-                return 0
-            fi
-        fi
-    fi
+       messa=$(echo -e "pair $mac_address" | bluetoothctl)
+       printMsgs "dialog" "Successfully paired with $mac_address $messa"
+       messa=$(bluetoothctl -- trust $mac_address)
+       printMsgs "dialog" "Successfully registered and connected to $mac_address $messa"
+       messa=$(bluetoothctl -- connect $mac_address)
+        printMsgs "dialog" "Successfully registered and connected to $mac_address $messa"
+        return 0
 
     printMsgs "dialog" "An error occurred connecting to the bluetooth device ($error)"
     return 1
@@ -309,7 +232,7 @@ function connect_bluetooth() {
     local mac_address
     local device_name
     while read mac_address; read device_name; do
-        $($(get_script_bluetooth bluez-test-input) connect "$mac_address" 2>/dev/null)
+        bluetoothctl connect "$mac_address" 2>/dev/null
     done < <(list_registered_bluetooth)
 }
 

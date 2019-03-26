@@ -51,7 +51,7 @@ function latest_ver_scraper() {
 }
 
 function list_systems_scraper() {
-    find -L "$romdir" -mindepth 1 -maxdepth 1 -not -empty -type d | sort
+    find -L "$romdir" -mindepth 1 -maxdepth 1 -type d | sort
 }
 
 function scrape_scraper() {
@@ -191,7 +191,7 @@ function _load_config_scraper() {
 }
 
 function gui_scraper() {
-    if pgrep "emulationstatio" >/dev/null; then
+    if pgrep "emulationsssstatio" >/dev/null; then
         printMsgs "dialog" "This scraper must not be run while Emulation Station is running or the scraped data will be overwritten. \n\nPlease quit from Emulation Station, and run RetroPie-Setup from the terminal"
         return
     fi

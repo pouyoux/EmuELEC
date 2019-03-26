@@ -8,4 +8,3 @@ source /retropie/scriptmodules/helpers.sh
 fbterm $1 -s 24 < /dev/tty1
 
 joy2keyStop
-
