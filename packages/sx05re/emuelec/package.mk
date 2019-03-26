@@ -76,6 +76,7 @@ rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
 rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
 
 mkdir -p $INSTALL/etc/retroarch-joypad-autoconfig
+cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
 
     # link default.target to emuelec.target
    ln -sf emuelec.target $INSTALL/usr/lib/systemd/system/default.target
