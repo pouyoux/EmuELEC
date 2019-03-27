@@ -2,7 +2,9 @@
 
 hdmimode=`cat /sys/class/display/mode`;
 
-killall mpg123
+if  pgrep mpg123 >/dev/null ; then
+/storage/.emulationstation/scripts/bgm.sh 
+fi
 
 # Set framebuffer geometry to match the resolution, splash should change according to the resolution. 
 case $hdmimode in
@@ -57,6 +59,9 @@ echo "3rd Parameter: $3" >> $SX05RELOG
 echo "4th Parameter: $4" >> $SX05RELOG 
 echo "Run Command is:" >> $SX05RELOG 
 eval echo  ${RUNTHIS} >> $SX05RELOG 
+
+# TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
+killall mpg123
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
 if [ "$3" == "NOLOG" ] || [ "$4" == "NOLOG" ]; then
