@@ -45,14 +45,4 @@ if [[ -z "${FULLPATHTOROMS}" ]]; then
        ln -sf $PATHTOROMS /storage/roms
  fi
 
-# initial ES setup
-BIOS_DIR="/storage/roms/bios"
-ROMS_DIR="/storage/roms/"
-CONFIG_DIR="/storage/.emulationstation"
-CONFIG_DIR2="/storage/.config/emulationstation"
-
-if [ ! -L "$CONFIG_DIR" ]; then
-ln -sf $CONFIG_DIR2 $CONFIG_DIR
-fi
-
 exit 0

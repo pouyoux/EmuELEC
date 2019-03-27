@@ -2,6 +2,8 @@
 
 hdmimode=`cat /sys/class/display/mode`;
 
+killall mpg123
+
 # Set framebuffer geometry to match the resolution, splash should change according to the resolution. 
 case $hdmimode in
   480*)            X=720  Y=480  SPLASH="/storage/.config/splash/loading-game.png" ;;
@@ -64,6 +66,17 @@ else
    echo "Emulator Output is:" >> $SX05RELOG
    eval ${RUNTHIS} >> $SX05RELOG 2>&1
 fi 
+
+
+DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
+
+if [ "$DEFE" == "true" ]; then
+killall mpg123
+/storage/.emulationstation/scripts/bgm.sh
+fi 
+
+
+
 
 # Return to default mode
 /usr/bin/setres.sh
