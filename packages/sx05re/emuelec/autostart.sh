@@ -8,6 +8,22 @@ echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo "performance" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
 echo 5 > /sys/class/mpgpu/cur_freq
 
+# Is BMG enabled ?
+DEFE=$(sed -n 's|\s*<string name="EmuELEC_BGM_BOOT" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
+
+case "$DEFE" in
+"Yes")
+	killall mpg123
+	/storage/.emulationstation/scripts/bgm.sh
+	sed -i -e "s/name=\"BGM\" value=\"false\"/name=\"BGM\" value=\"true\"/" /storage/.emulationstation/es_settings.cfg
+	;;
+*)
+	killall mpg123
+	sed -i -e "s/name=\"BGM\" value=\"true\"/name=\"BGM\" value=\"false\"/" /storage/.emulationstation/es_settings.cfg
+	;;
+esac
+
+# What to start at boot?
 DEFE=$(sed -n 's|\s*<string name="EmuELEC_BOOT" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
 case "$DEFE" in
