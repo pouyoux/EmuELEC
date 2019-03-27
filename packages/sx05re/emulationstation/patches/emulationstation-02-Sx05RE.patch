@@ -205,7 +205,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +		auto sx05re_boot_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "START AT BOOT", false);
 +		std::vector<std::string> devices;
 +		devices.push_back("Emulationstation");
-+		devices.push_back("Kodi");
++		/*devices.push_back("Kodi");*/
 +		devices.push_back("Retroarch");
 +		/*devices.push_back("Other");*/
 +		/*devices.push_back("Options");*/
@@ -238,7 +238,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	row.addElement(std::make_shared<TextComponent>(window, "RESET Sx05RE EMULATORS TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
 +	s->addRow(row);
 +	row.elements.clear();
-+	
++	/*
 +	row.makeAcceptInputHandler([window] {
 +		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL KODI ADDONS AND CONFIG!!!!!!!!!! RESET KODI TO DEFAULT CONFIG AND RESTART?", "YES",
 +				[] { 
@@ -248,7 +248,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	row.addElement(std::make_shared<TextComponent>(window, "RESET KODI TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
 +	s->addRow(row);
 +	row.elements.clear();
-+	
++	*/
 +	row.makeAcceptInputHandler([window] {
 +		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL CONFIGS/ADDONS!!!!!!!!!! RESET SYSTEM TO DEFAULT CONFIG AND RESTART?", "YES",
 +				[] { 
@@ -299,7 +299,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 -		s->addRow(row);
 -
  
-+			row.makeAcceptInputHandler([window] {
++			/* row.makeAcceptInputHandler([window] {
 +				window->pushGui(new GuiMsgBox(window, "QUIT TO KODI? ", "YES",
 +					[] {
 +					remove("/var/lock/start.games");
@@ -311,7 +311,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +				}, "NO", nullptr));
 +			});
 +			row.addElement(std::make_shared<TextComponent>(window, "START KODI", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+			s->addRow(row);
++			s->addRow(row); */
  
 -		if(Settings::getInstance()->getBool("ShowExit"))
 -		{
@@ -442,20 +442,22 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  		return false;
  	}
  
-@@ -330,11 +330,14 @@
+@@ -330,11 +330,16 @@
  		// we can't handle es_systems.cfg file problems inside ES itself, so display the error message then quit
  		window.pushGui(new GuiMsgBox(&window,
  			errorMsg,
 -			"QUIT", [] {
-+			"QUIT TO KODI", [] {
-+			    system("rm /var/lock/start.games");
-+				system("touch /var/lock/start.kodi");
-+		        system("systemctl start kodi.service");
++			"RESTART ES", [] {
++				runSystemCommand("systemctl restart emustation.service");
  				SDL_Event* quit = new SDL_Event();
  				quit->type = SDL_QUIT;
  				SDL_PushEvent(quit);
 -			}));
-+			}));
++			}, "RESTART SYSTEM", [] {
++				/* remove("/var/lock/start.games");
++           	runSystemCommand("touch /var/lock/start.kodi"); */
++		        runSystemCommand("systemctl reboot");
++				}));
  	}
  
  	//run the command line scraper then quit
