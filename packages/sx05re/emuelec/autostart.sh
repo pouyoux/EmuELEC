@@ -8,7 +8,9 @@ echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo "performance" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
 echo 5 > /sys/class/mpgpu/cur_freq
 
-# Is BMG enabled ?
+# Is BMG enabled ? only after the first boot
+if [ -f /storage/.emulationstation/es_settings.cfg ]; then
+
 DEFE=$(sed -n 's|\s*<string name="EmuELEC_BGM_BOOT" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
 case "$DEFE" in
@@ -22,6 +24,8 @@ case "$DEFE" in
 	sed -i -e "s/name=\"BGM\" value=\"true\"/name=\"BGM\" value=\"false\"/" /storage/.emulationstation/es_settings.cfg
 	;;
 esac
+
+fi
 
 # What to start at boot?
 DEFE=$(sed -n 's|\s*<string name="EmuELEC_BOOT" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)

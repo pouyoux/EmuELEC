@@ -68,15 +68,12 @@ else
 fi 
 
 
-DEFE=$(sed -n 's|\s*<string name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
+DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
 if [ "$DEFE" == "true" ]; then
 killall mpg123
 /storage/.emulationstation/scripts/bgm.sh
 fi 
-
-
-
 
 # Return to default mode
 /usr/bin/setres.sh
