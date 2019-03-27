@@ -71,7 +71,8 @@ fi
 DEFE=$(sed -n 's|\s*<string name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
 if [ "$DEFE" == "true" ]; then
-/storage//emulationstation/scripts/bmg.sh
+killall mpg123
+/storage/.emulationstation/scripts/bgm.sh
 fi 
 
 
