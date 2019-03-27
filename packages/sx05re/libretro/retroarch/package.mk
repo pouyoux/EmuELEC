@@ -27,6 +27,11 @@ PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-
 PKG_LONGDESC="Reference frontend for the libretro API."
 GET_HANDLER_SUPPORT="git"
 
+# Pulseaudio Support
+  if [ "${PULSEAUDIO_SUPPORT}" = yes ]; then
+    PKG_DEPENDS_TARGET+=" pulseaudio"
+fi
+
 pre_configure_target() {
 TARGET_CONFIGURE_OPTS=""
 PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
