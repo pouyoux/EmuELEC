@@ -14,6 +14,11 @@ case $hdmimode in
   *)               X=1920 Y=1080 SPLASH="/storage/.config/splash/loading-game.png" ;;
 esac
 
+# Splash screen, not sure if this is the best way to do it, but it works so far, but not as good as I want it too with PPSSPPSDL and advmame :(
+(
+  mpv $SPLASH > /dev/null 2>&1
+)&
+
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
 SX05RELOG="/storage/emuelec.log"
@@ -45,12 +50,6 @@ case $1 in
       fi
         ;;
 esac
-
-
-# Splash screen, not sure if this is the best way to do it, but it works so far, but not as good as I want it too with PPSSPPSDL and advmame :(
-(
-  fbi $SPLASH -noverbose > /dev/null 2>&1
-)&
 
 # Write the command to the log file.
 echo "1st parameter: $1" >> $SX05RELOG 
