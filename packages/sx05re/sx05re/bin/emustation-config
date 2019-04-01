@@ -4,7 +4,7 @@
 /usr/bin/setres.sh
 SPLASH="/storage/.config/splash/splash-1080.png"
 (
-  fbi $SPLASH -noverbose > /dev/null 2>&1
+  mpv $SPLASH > /dev/null 2>&1
 )&
 
 sleep 2
@@ -13,7 +13,7 @@ sleep 2
 if [ ! -d "/storage/roms" ] && [ ! -d "/storage/roms2" ]; then
   mkdir /storage/roms
 
-all_roms="atari2600,atari5200,atari7800,atarilynx,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,videopac,zxspectrum"
+all_roms="atari2600,atari5200,atari7800,atarilynx,BGM,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,tg16,tg16cd,videopac,zxspectrum"
 
 for romfolder in $(echo $all_roms | tr "," " "); do
   mkdir -p /storage/roms/$romfolder
