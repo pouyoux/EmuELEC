@@ -16,7 +16,7 @@ echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 # echo "performance" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
 echo 5 > /sys/class/mpgpu/cur_freq
 
-# Is BMG enabled ? only after the first boot
+# Is BMG enabled? then start the music
 if [ -f /storage/.emulationstation/es_settings.cfg ]; then
 
 DEFE=$(sed -n 's|\s*<string name="EmuELEC_BGM_BOOT" value="\(.*\)" />|\1|p' $CONFIG_DIR/es_settings.cfg)
@@ -35,29 +35,36 @@ esac
 
 fi
 
-# What to start at boot?
-DEFE=$(sed -n 's|\s*<string name="EmuELEC_BOOT" value="\(.*\)" />|\1|p' $CONFIG_DIR/es_settings.cfg)
+# handle SSH
+DEFE=$(sed -n 's|\s*<bool name="SSH" value="\(.*\)" />|\1|p' $CONFIG_DIR/es_settings.cfg)
+
+    mkdir -p /storage/.cache/services/
+    touch /storage/.cache/services/sshd.conf
 
 case "$DEFE" in
-"Retroarch")
-	rm -rf /var/lock/start.kodi
-	rm -rf /var/lock/start.games
-	touch /var/lock/start.retro
-	systemctl start retroarch
+"true")
+	systemctl start sshd
 	;;
-"Kodi")
-	rm -rf /var/lock/start.retro
-	rm -rf /var/lock/start.games
-	touch  /var/lock/start.kodi
-	;;
-*)
-	rm -rf /var/lock/start.kodi
-	rm -rf /var/lock/start.retro
-	/usr/bin/startfe.sh &
+"false")
+	systemctl stop sshd
 	;;
 esac
 
+# What to start at boot?
+DEFE=$(sed -n 's|\s*<string name="EmuELEC_BOOT" value="\(.*\)" />|\1|p' $CONFIG_DIR/es_settings.cfg)
 
+rm -rf /var/lock/start.retro
+rm -rf /var/lock/start.games
+	
+case "$DEFE" in
+"Retroarch")
+	touch /var/lock/start.retro
+	systemctl start retroarch
+	;;
+*)
+	/usr/bin/startfe.sh &
+	;;
+esac
 
 # Bluetooth, Make sure you change your BT MAC address, you need to do this by SSH the first time
 # by running 
