@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="dolphin"
-PKG_VERSION="6fc594155829e72f7ee3783f809383da9584185d"
-PKG_SHA256="e0318d8a821ccc3e32317dfda9b8d9c7ad200f7bc4f4017543aa30e652abd9ed"
+PKG_VERSION="1d973f4170e18f87b863d6534c077ac7b6fc7ce2"
+PKG_SHA256="18864071af1cd3bc434a01cd6ec43036dd7ef4ad1f26edc20baba5aa46dd319d"
 PKG_REV="1"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
