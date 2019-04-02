@@ -57,7 +57,7 @@ post_configure_target() {
 }
 
 make_target() {
-  R= make -f Makefile.libretro
+  R= make -f Makefile.libretro platform=armv ARM_ASM=1 use_fame=0 use_cyclone=1 use_sh2drc=1 use_svpdrc=1 use_cz80=1 use_drz80=0
 }
 
 makeinstall_target() {
