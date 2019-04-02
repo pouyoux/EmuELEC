@@ -13,8 +13,10 @@ PKG_LONGDESC="Video player based on MPlayer/mplayer2 https://mpv.io"
 PKG_TOOLCHAIN="manual"
 
 configure_target() {
-  ./bootstrap.py
-  ./waf configure --enable-sdl2 --disable-pulse --disable-libbluray
+  #./bootstrap.py 
+  # the bootstrap was failing for some reason. 
+  cp $PKG_DIR/waf/* $PKG_BUILD  
+  ./waf configure --enable-sdl2 --disable-pulse --disable-libbluray --disable-drm
 }
 
 make_target() {
