@@ -1,8 +1,9 @@
 #!/bin/sh
 
 hdmimode=`cat /sys/class/display/mode`;
+arguments="$@"
 
-if [ "$3" != "KEEPMUSIC" ] || [ "$4" != "KEEPMUSIC" ]; then
+if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	if  pgrep mpg123 >/dev/null ; then
 	/storage/.emulationstation/scripts/bgm.sh 
 	fi
@@ -68,7 +69,7 @@ echo "Run Command is:" >> $SX05RELOG
 eval echo  ${RUNTHIS} >> $SX05RELOG 
 
 # TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
-if [ "$3" != "KEEPMUSIC" ] || [ "$4" != "KEEPMUSIC" ]; then
+if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	killall mpg123 
 fi
 
@@ -81,7 +82,7 @@ else
    eval ${RUNTHIS} >> $SX05RELOG 2>&1
 fi 
 
-if [ "$3" != "KEEPMUSIC" ] || [ "$4" != "KEEPMUSIC" ]; then
+if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
 	if [ "$DEFE" == "true" ]; then
