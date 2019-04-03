@@ -7,7 +7,7 @@ PKG_SHA256="6153823e2ebf544c633bf164bc3277475e4ecf60ae9826d739add134d4443f0b"
 PKG_ARCH="any"
 PKG_SITE="https://github.com/DCurrent/openbor"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain SDL2-git libvorbisidec libogg libvpx gl4es"
+PKG_DEPENDS_TARGET="toolchain SDL2-git libvorbisidec libogg libvpx gl4es libpng16"
 PKG_SHORTDESC="OpenBOR is the ultimate 2D side scrolling engine for beat em' ups, shooters, and more! "
 PKG_LONGDESC="OpenBOR is the ultimate 2D side scrolling engine for beat em' ups, shooters, and more! "
 PKG_TOOLCHAIN="manual"
@@ -25,4 +25,8 @@ cd $PKG_BUILD/engine
 makeinstall_target() {
   mkdir -p $INSTALL/usr/bin
     cp `find . -name "OpenBOR.elf" | xargs echo` $INSTALL/usr/bin/OpenBOR
+    cp $PKG_DIR/scripts/*.sh $INSTALL/usr/bin
+    chmod +x $INSTALL/usr/bin/*
+    mkdir -p $INSTALL/usr/config/openbor  
+	cp $PKG_DIR/config/* $INSTALL/usr/config/openbor
    } 
