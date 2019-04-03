@@ -2,8 +2,10 @@
 
 hdmimode=`cat /sys/class/display/mode`;
 
-if  pgrep mpg123 >/dev/null ; then
-/storage/.emulationstation/scripts/bgm.sh 
+if [ "$3" != "KEEPMUSIC" ] || [ "$4" != "KEEPMUSIC" ]; then
+	if  pgrep mpg123 >/dev/null ; then
+	/storage/.emulationstation/scripts/bgm.sh 
+	fi
 fi
 
 # Set framebuffer geometry to match the resolution, splash should change according to the resolution. 
@@ -33,15 +35,21 @@ RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
 
 # Else, read the first argument to see if its LIBRETRO, REICAST, MAME or PSP
 case $1 in
+"OPENBOR")
+	RUNTHIS='/usr/bin/openbor.sh "$2"'
+		;;
+"RETROPIE")
+	RUNTHIS='bash /retropie/scripts/fbterm.sh "$2"'
+		;;
 "LIBRETRO")
-   RUNTHIS='/usr/bin/retroarch -L /tmp/cores/$2_libretro.so "$3"'
-         ;;
+	RUNTHIS='/usr/bin/retroarch -L /tmp/cores/$2_libretro.so "$3"'
+		;;
 "REICAST")
-   RUNTHIS='/usr/bin/reicast.sh "$2"'
-         ;;
+	RUNTHIS='/usr/bin/reicast.sh "$2"'
+		;;
 "ADVMAME")
-   RUNTHIS='/usr/bin/advmame.sh "$2"'
-         ;;
+	RUNTHIS='/usr/bin/advmame.sh "$2"'
+		;;
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
    #PPSSPP can run at 32BPP but only with buffered rendering, some games need non-buffered and the only way they work is if I set it to 16BPP
@@ -60,7 +68,9 @@ echo "Run Command is:" >> $SX05RELOG
 eval echo  ${RUNTHIS} >> $SX05RELOG 
 
 # TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
-killall mpg123
+if [ "$3" != "KEEPMUSIC" ] || [ "$4" != "KEEPMUSIC" ]; then
+	killall mpg123 
+fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
 if [ "$3" == "NOLOG" ] || [ "$4" == "NOLOG" ]; then
@@ -71,13 +81,14 @@ else
    eval ${RUNTHIS} >> $SX05RELOG 2>&1
 fi 
 
+if [ "$3" != "KEEPMUSIC" ] || [ "$4" != "KEEPMUSIC" ]; then
+	DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
-DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
-
-if [ "$DEFE" == "true" ]; then
-killall mpg123
-/storage/.emulationstation/scripts/bgm.sh
-fi 
+	if [ "$DEFE" == "true" ]; then
+	killall mpg123
+	/storage/.emulationstation/scripts/bgm.sh
+	fi 
+fi
 
 
 
