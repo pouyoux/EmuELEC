@@ -5,6 +5,8 @@
 # after you set up your gamne, copy the /storage/.config/openbor/Saves/{gamename}.cfg file to /storage/.config/openbor/master.cfg
 # master.cfg will only be copied the first time you run that particular game.
 
+/usr/bin/setres.sh 16
+
 pakname=$(basename "$1")
 pakname="${pakname%.*}"
 
@@ -23,7 +25,9 @@ echo $pakname
 
 # Run OpenBOR in the config folder
     cd /storage/.config/openbor/
-	OpenBOR
+	SDL_AUDIODRIVER=alsa OpenBOR
 
 # Delete Pak from temp folder
 	rm -rf /storage/.config/openbor/Paks/*
+
+/usr/bin/setres.sh 32

@@ -10,7 +10,6 @@ case "$1" in
 	;;
 esac
 
-	BPP=32
 case "$MODE" in
 "480p60hz")
 	fbset -fb /dev/fb0 -g 720 480 720 960 $BPP

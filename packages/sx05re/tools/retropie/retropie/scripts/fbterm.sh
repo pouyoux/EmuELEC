@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+setres.sh 16
+source /retropie/scripts/env.sh
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/retropie/lib
 export PATH=$PATH:/retropie/bin
 
