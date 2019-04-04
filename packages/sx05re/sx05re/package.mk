@@ -10,7 +10,7 @@ PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
 PKG_SITE=""
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain retroarch $LIBRETRO_CORES"
+PKG_DEPENDS_TARGET="toolchain emulationstation retroarch"
 PKG_SECTION="sx05re"
 PKG_SHORTDESC="Sx05re Meta Package"
 PKG_LONGDESC="Sx05re Meta Package"
@@ -20,8 +20,9 @@ PKG_TOOLCHAIN="make"
 PKG_NEED_UNPACK="$(get_pkg_directory kodi) $(get_pkg_directory CoreELEC-settings)"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET emulationstation advancemame PPSSPPSDL reicastsa common-shaders scraper fbida amiberry MC libretro-bash-launcher hatarisa mpv SDL_GameControllerDB openbor"
-
+PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
+PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB  retropie"
+PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
 # PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $LIBRETRO_EXTRA_CORES"
