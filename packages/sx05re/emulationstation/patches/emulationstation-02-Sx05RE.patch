@@ -267,15 +267,6 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  			if(std::find(transitions.begin(), transitions.end(), Settings::getInstance()->getString("AudioDevice")) == transitions.end()) {
  				transitions.push_back(Settings::getInstance()->getString("AudioDevice"));
 
-@@ -527,7 +774,7 @@
- 
- 	mVersion.setFont(Font::get(FONT_SIZE_SMALL));
- 	mVersion.setColor(0x5E5E5EFF);
--	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate);
-+	mVersion.setText("EMULATIONSTATION V" + Utils::String::toUpper(PROGRAM_VERSION_STRING) + buildDate +" SX05RE v2.5 IP:" + getShOutput(R"(/usr/bin/ip.sh)"));
- 	mVersion.setHorizontalAlignment(ALIGN_CENTER);
- 	addChild(&mVersion);
- }
 
 --- a/es-app/src/guis/GuiMenu.h	2018-03-09 12:11:38.000000000 -0600
 +++ b/es-app/src/guis/GuiMenu.h	2018-03-16 01:20:44.411257304 -0600
