@@ -8,7 +8,7 @@ PKG_SHA256=""
 PKG_LICENSE="GPLv2+"
 PKG_SITE="https://github.com/joeky888/fbterm"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain bash pyudev dialog six"
+PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC=" fbterm is a framebuffer based terminal emulator for linux "
 PKG_TOOLCHAIN="configure"
 
