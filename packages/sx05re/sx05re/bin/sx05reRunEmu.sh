@@ -74,7 +74,7 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
-if [ "$3" == "NOLOG" ] || [ "$4" == "NOLOG" ]; then
+if [[ $arguments != *"NOLOG"* ]]; then
    echo "Emulator log was dissabled" >> $SX05RELOG
    eval ${RUNTHIS}
 else
