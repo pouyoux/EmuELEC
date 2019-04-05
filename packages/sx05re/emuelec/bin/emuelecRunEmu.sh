@@ -24,12 +24,12 @@ esac
 
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
-SX05RELOG="/storage/emuelec.log"
+EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
 
 # Clear the log file
-echo "EmuELEC Run Log" > $SX05RELOG
+echo "EmuELEC Run Log" > $EMUELECLOG
 
 # if the emulator is in es_settings this is the line that will run 
 RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
@@ -61,12 +61,12 @@ case $1 in
 esac
 
 # Write the command to the log file.
-echo "1st parameter: $1" >> $SX05RELOG 
-echo "2nd Parameter: $2" >> $SX05RELOG 
-echo "3rd Parameter: $3" >> $SX05RELOG 
-echo "4th Parameter: $4" >> $SX05RELOG 
-echo "Run Command is:" >> $SX05RELOG 
-eval echo  ${RUNTHIS} >> $SX05RELOG 
+echo "1st parameter: $1" >> $EMUELECLOG 
+echo "2nd Parameter: $2" >> $EMUELECLOG 
+echo "3rd Parameter: $3" >> $EMUELECLOG 
+echo "4th Parameter: $4" >> $EMUELECLOG 
+echo "Run Command is:" >> $EMUELECLOG 
+eval echo  ${RUNTHIS} >> $EMUELECLOG 
 
 # TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
@@ -75,10 +75,10 @@ fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
 if [[ $arguments != *"NOLOG"* ]]; then
-   echo "Emulator Output is:" >> $SX05RELOG
-   eval ${RUNTHIS} >> $SX05RELOG 2>&1
+   echo "Emulator Output is:" >> $EMUELECLOG
+   eval ${RUNTHIS} >> $EMUELECLOG 2>&1
 else
-   echo "Emulator log was dissabled" >> $SX05RELOG
+   echo "Emulator log was dissabled" >> $EMUELECLOG
    eval ${RUNTHIS}
 fi 
 
