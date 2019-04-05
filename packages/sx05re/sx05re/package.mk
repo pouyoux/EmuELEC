@@ -21,7 +21,7 @@ PKG_NEED_UNPACK="$(get_pkg_directory kodi) $(get_pkg_directory CoreELEC-settings
 
 # Thanks to magicseb  Reicast SA now WORKS :D
 PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
-PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB  retropie"
+PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB retropie linux-utils"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
