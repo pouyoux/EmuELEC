@@ -75,11 +75,11 @@ fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
 if [[ $arguments != *"NOLOG"* ]]; then
-   echo "Emulator log was dissabled" >> $SX05RELOG
-   eval ${RUNTHIS}
-else
    echo "Emulator Output is:" >> $SX05RELOG
    eval ${RUNTHIS} >> $SX05RELOG 2>&1
+else
+   echo "Emulator log was dissabled" >> $SX05RELOG
+   eval ${RUNTHIS}
 fi 
 
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
