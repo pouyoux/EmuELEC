@@ -445,7 +445,7 @@ fi
 # ln -sf libvdpau.so.1.0.0 \$ADDON_DIR/lib/libvdpau.so.1
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
-# ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
+ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
 ln -sf libSDL2-2.0.so.0.9.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
 ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
