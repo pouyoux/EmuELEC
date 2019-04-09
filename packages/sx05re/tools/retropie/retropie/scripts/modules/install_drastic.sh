@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+
+source /retropie/scripts/env.sh
+joy2keyStart
+
+function drastic_confirm() {
+    local default
+     if dialog --yesno "This will install Drastic and enable it on Emulationstation, you will need to restart ES after this script ends, continue?"  22 76 >/dev/tty; then
+		drastic_install
+		dialog --msgbox "Drastic installation is done!, don't forget to install roms to /storage/roms/nds and restart Emulationstation!" 22 76 >/dev/tty 
+      fi
+ }
+
+function drastic_install() {
 
 LINK="https://github.com/Retro-Arena/binaries/raw/master/odroid-xu4/drastic.tar.gz"
 ES_FOLDER="/storage/.emulationstation"
@@ -9,14 +22,14 @@ EXE="$ES_FOLDER/scripts/drastic.sh"
 mkdir -p "$ES_FOLDER/scripts/"
 
 wget -O $LINKDEST $LINK
-tar xvf $LINKDEST -C "$ES_FOLDER/scripts/"
+tar xvf $LINKDEST -C "$ES_FOLDER/scripts"
 rm $LINKDEST
 
 if grep -q '<name>nds</name>' "$CFG"
 then
 	echo 'Drastic is already setup in your es_systems.cfg file'
 	echo 'deleting...nds from es_system.cfg'
-	xmlstarlet ed -L -P -d "/systemList/system[name='nds']" $CFG
+	xmlstarlet ed -L -P -d "/systemList/system[name='nds']" $CFG	
 fi
 
 	echo 'Adding Drastic to systems list'
@@ -46,10 +59,14 @@ cd /storage/.emulationstation/scripts/drastic/
 # Terrible hack as a workaround for the screen freezing after returning to ES
  (
   mpv "/storage/.config/splash/splash-1080.png" > /dev/null 2>&1
-  fbterm chvt 1 < /dev/tty1 &
  )&
 EOF
 echo "$content" > $ES_FOLDER/scripts/drastic.sh
 chmod +x $ES_FOLDER/scripts/drastic.sh
 
 echo "Done, restart ES"
+
+}
+
+drastic_confirm
+
