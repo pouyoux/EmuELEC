@@ -1,10 +1,12 @@
 #!/bin/bash
 
 source /retropie/scripts/env.sh
+source "$scriptdir/scriptmodules/supplementary/esthemes.sh"
+rp_registerAllModules
+
 joy2keyStart
 
 function drastic_confirm() {
-    local default
      if dialog --yesno "This will install Drastic and enable it on Emulationstation, you will need to restart ES after this script ends, continue?"  22 76 >/dev/tty; then
 		drastic_install
 		dialog --msgbox "Drastic installation is done!, don't forget to install roms to /storage/roms/nds and restart Emulationstation!" 22 76 >/dev/tty 
@@ -12,7 +14,6 @@ function drastic_confirm() {
  }
 
 function drastic_install() {
-
 LINK="https://github.com/Retro-Arena/binaries/raw/master/odroid-xu4/drastic.tar.gz"
 ES_FOLDER="/storage/.emulationstation"
 LINKDEST="$ES_FOLDER/scripts/drastic.tar.gz"
