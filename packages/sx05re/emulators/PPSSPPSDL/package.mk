@@ -1,20 +1,6 @@
-################################################################################
-#      This file is part of LibreELEC - http://www.libreelec.tv
-#      Copyright (C) 2016 Team LibreELEC
-#
-#  LibreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  LibreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
+# Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
 
 PKG_NAME="PPSSPPSDL"
 PKG_VERSION="24cfad87d19e2fb599e4a16482b35e313b2ec95b"
@@ -31,24 +17,11 @@ PKG_TOOLCHAIN="cmake-make"
 
 pre_configure_target() {
   PKG_CMAKE_OPTS_TARGET="-DUSE_SYSTEM_FFMPEG=ON"
-
-  if [ "${ARCH}" = "arm" ] && [ ! "${TARGET_CPU}" = "arm1176jzf-s" ]; then
-    PKG_CMAKE_OPTS_TARGET+=" -DARMV7=ON"
-  elif [ "${TARGET_CPU}" = "arm1176jzf-s" ]; then
-    PKG_CMAKE_OPTS_TARGET+=" -DARM=ON"
-  fi
-
-  if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
-    PKG_CMAKE_OPTS_TARGET+=" -DUSING_FBDEV=ON \
+  PKG_CMAKE_OPTS_TARGET+=" -DARMV7=ON"
+  PKG_CMAKE_OPTS_TARGET+=" -DUSING_FBDEV=ON \
                              -DUSING_EGL=ON \
                              -DUSING_GLES2=ON"
-  fi
-
-  if [ "${DISPLAYSERVER}" = "x11" ] && [ "${VULKAN_SUPPORT}" = "yes" ]; then
-    PKG_CMAKE_OPTS_TARGET+=" -DUSING_X11_VULKAN=ON"
-  else
-    PKG_CMAKE_OPTS_TARGET+=" -DUSING_X11_VULKAN=OFF"
-  fi
+  PKG_CMAKE_OPTS_TARGET+=" -DUSING_X11_VULKAN=OFF"
 }
 
 pre_make_target() {
@@ -62,5 +35,7 @@ makeinstall_target() {
   mkdir -p $INSTALL/usr/bin
     cp $PKG_DIR/ppsspp.sh $INSTALL/usr/bin/ppsspp.sh
     cp `find . -name "PPSSPPSDL" | xargs echo` $INSTALL/usr/bin/PPSSPPSDL
-    cp -r `find . -name "assets" | xargs echo` $INSTALL/usr/bin/
+    ln -sf /storage/.config/ppsspp/assets $INSTALL/usr/bin/assets
+    mkdir -p $INSTALL/usr/config/ppsspp/
+    cp -r `find . -name "assets" | xargs echo` $INSTALL/usr/config/ppsspp/
 } 
