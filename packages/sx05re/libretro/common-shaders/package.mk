@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="common-shaders"
-PKG_VERSION="d161a1b"
+PKG_VERSION="d161a1bb13209e40bbfa294f674310080ce5222e"
+PKG_SHA256="1dabe3ccc85cbc462b167660cf0b6437744b89172dbdffd1389bfa38d7600ac8"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -34,7 +35,7 @@ PKG_LONGDESC="Manually converted libretro/common-shaders for arm devices treebra
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
-
+PKG_GIT_BRANCH="rpi"
 
 
 make_target() {

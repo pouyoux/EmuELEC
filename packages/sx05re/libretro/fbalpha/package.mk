@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="fbalpha"
-PKG_VERSION="a995bc53d890df7499c931cfa3d0a29779a902cd"
-PKG_SHA256="3266261a035292eadf106e12f51930af7085737f9206828c87c24c6361562a0f"
+PKG_VERSION="31207067ea17131ff3fe74c67b5c375827ad84bc"
+PKG_SHA256="612ebb7eac3a0c19990a83ffc9061fbade3a9efbb08048b8e3f4e2f1d734f252"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="Non-commercial"
