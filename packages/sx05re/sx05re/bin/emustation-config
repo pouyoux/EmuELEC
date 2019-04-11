@@ -44,5 +44,5 @@ if [[ -z "${FULLPATHTOROMS}" ]]; then
        #we create the symlink to the roms in our USB
        ln -sf $PATHTOROMS /storage/roms
  fi
-
+pkill 'sleep 2'
 exit 0
