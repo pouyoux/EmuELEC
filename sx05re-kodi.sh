@@ -5,6 +5,7 @@
 
 build_it() {
 REPO_DIR=""
+FORCEUPDATE="yes"
 
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
 
@@ -40,14 +41,33 @@ PROJECT_DIR="${SCRIPT_DIR}/retroarch_work"
 TARGET_DIR="${PROJECT_DIR}/`date +%Y-%m-%d_%H%M%S`"
 BASE_NAME="$PROVIDER.$DISTRO"
 
-LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-shaders"
+LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-shaders openal-soft"
 
     # Get cores from Sx05RE options file
     OPTIONS_FILE="${SCRIPT_DIR}/distributions/${DISTRO}/options"
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
 
-PACKAGES_Sx05RE="fbida libdrm libexif scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook bash"
+PKG_EMUS="emulationstation advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
+PACKAGES_Sx05RE="$PKG_EMUS \
+				mpv \
+				sx05re \
+				empty \
+				sixpair \
+				joyutils \
+				SDL2-git \
+				freeimage \
+				vlc \
+				freetype \
+				es-theme-ComicBook \
+				bash \
+				libretro-bash-launcher \
+				SDL_GameControllerDB
+				libvorbisidec \
+				gl4es \
+				python-evdev \
+				libpng16"
+				
 LIBRETRO_CORES_LITE="fbalpha gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
 if [ "$1" = "lite" ]; then
@@ -178,24 +198,31 @@ mkdir -p "${ADDON_DIR}" &>>"$LOG"
 echo
 cd "${ADDON_DIR}"
 echo "Creating folder structure..."
-for f in config resources ; do
+for f in config resources bin; do
 	echo -ne "\t$f "
 	mkdir -p $f &>>"$LOG"
 	[ $? -eq 0 ] && echo -e "(ok)" || { echo -e "(failed)" ; exit 1 ; }
 done
 echo
-echo "Moving files to addon..."
-echo -ne "\tSplash Screen "
-mv -v "${TARGET_DIR}/usr/config/splash" "${ADDON_DIR}/config/" &>>"$LOG"
+if [ "$FORCEUPDATE" == "yes" ]; then
+echo -ne "Creating forceupdate..."
+echo
+touch "${ADDON_DIR}/forceupdate"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+fi
+echo -ne "Moving config files to addon..."
+cp -rf "${TARGET_DIR}/usr/config" "${ADDON_DIR}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tretroarch.cfg "
-mv -v "${TARGET_DIR}/usr/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
+mv -v "${ADDON_DIR}/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tcreating empty joypads dir"
 mkdir -p "${ADDON_DIR}/resources/joypads" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tbinaries "
 mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
+rm -rf "${ADDON_DIR}/bin/assets"
+mv -v "${ADDON_DIR}/config/ppsspp/assets" "${ADDON_DIR}/bin" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tlibraries and cores "
 mv -v "${TARGET_DIR}/usr/lib" "${ADDON_DIR}/" &>>"$LOG"
@@ -236,26 +263,19 @@ echo -ne "\tadvacemame Config "
 rm -rf "${TARGET_DIR}/usr/share/advance/advmenu.rc"
 mv -v "${TARGET_DIR}/usr/share/advance" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tPPSSPP Config "
-mv -v "${TARGET_DIR}/usr/config/ppsspp" "${ADDON_DIR}/config" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tVLC Config "
 rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tES Config "
-mv -v "${TARGET_DIR}/usr/config/emulationstation" "${ADDON_DIR}/config" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tReicast Config "
-mv -v "${TARGET_DIR}/usr/config/reicast" "${ADDON_DIR}/config" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tRemoving unneeded binaries "
+echo -ne "\tRemoving unneeded files "
 rm "${ADDON_DIR}/bin/startfe.sh"
 rm "${ADDON_DIR}/bin/killkodi.sh"
 rm "${ADDON_DIR}/bin/emulationstation.sh"
 rm "${ADDON_DIR}/bin/emustation-config"
 rm "${ADDON_DIR}/bin/clearconfig.sh"
 rm "${ADDON_DIR}/bin/reicast.sh"
+rm "${ADDON_DIR}/config/autostart.sh"
+rm "${ADDON_DIR}/config/smb.conf"
+rm -rf "${ADDON_DIR}/config/vlc"
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
@@ -339,7 +359,7 @@ if [[ -z "\${FULLPATHTOROMS}" ]]; then
        PATHTOROMS=\${FULLPATHTOROMS%\$ROMFILE}
 
        #we create the symlink to the roms in our USB
-       ln -sf \$PATHTOROMS /storage/roms
+       ln -sTf \$PATHTOROMS /storage/roms
  fi
 
 exit 0
@@ -355,7 +375,7 @@ read -d '' content <<EOF
   <inputAction type="onfinish">
     <command>/storage/.kodi/addons/${ADDON_NAME}/bin/bash /storage/.emulationstation/scripts/inputconfiguration.sh</command>
   </inputAction>
-    <inputConfig type="joystick" deviceName="Sony PLAYSTATION(R)3 Controller" deviceGUID="-1">
+  <inputConfig type="joystick" deviceName="Sony PLAYSTATION(R)3 Controller">
 	<input name="a" type="button" id="13" value="1" />
 	<input name="b" type="button" id="14" value="1" />
 	<input name="down" type="button" id="6" value="1" />
@@ -381,7 +401,7 @@ read -d '' content <<EOF
 	<input name="up" type="button" id="4" value="1" />
 	<input name="x" type="button" id="12" value="1" />
 	<input name="y" type="button" id="15" value="1" />
-</inputConfig>    
+</inputConfig>
 </inputList>
 EOF
 echo "$content" > config/emulationstation/es_input.cfg
@@ -452,6 +472,8 @@ ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
 ln -sf libdrm.so.2.4.0 \$ADDON_DIR/lib/libdrm.so.2
 ln -sf libexif.so.12.3.3 \$ADDON_DIR/lib/libexif.so.12
+ln -sf libvorbisidec.so.1.0.3 \$ADDON_DIR/lib/libvorbisidec.so.1
+ln -sf libpng16.so.16.36.0 \$ADDON_DIR/lib/libpng16.so.16
 
 # delete symlinks to avoid doubles
 
@@ -463,18 +485,20 @@ if [ -L /tmp/joypads ]; then
 rm /tmp/joypads
 fi
 
-ln -sf \$ADDON_DIR/resources/joypads/ /tmp/joypads
+mkdir -p /storage/.local/lib/
 
+ln -sTf \$ADDON_DIR/resources/joypads/ /tmp/joypads
+ln -sTf \$ADDON_DIR/lib/python2.7 /storage/.local/lib/python2.7
 
 #  Check if configuration for ES is copied to storage
 if [ ! -e "/storage/.emulationstation" ]; then
 #ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
 mkdir /storage/.emulationstation
-cp -rf $ADDON_DIR/config/emulationstation/* /storage/.emulationstation
+cp -rf \$ADDON_DIR/config/emulationstation/* /storage/.emulationstation
 fi
 
 if [ -f "\$ADDON_DIR/forceupdate" ]; then
-cp -rf $ADDON_DIR/config/emulationstation/* /storage/.emulationstation
+cp -rf \$ADDON_DIR/config/emulationstation/* /storage/.emulationstation
 cp -rf "\$ADDON_DIR/config/retroarch.cfg" "\$RA_CONFIG_FILE"
 rm "\$ADDON_DIR/forceupdate"
 fi
@@ -631,9 +655,13 @@ sed -i -e "s/device_alsa_device default/device_alsa_device sdl/" "config/advance
 
 echo -ne "Making modifications to ppsspp.sh..."
 CFG="bin/ppsspp.sh"
-sed -i -e "s/\/usr\/bin\/setres.sh/#/" $CFG
+sed -i -e "s|/usr/bin/setres.sh|/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh|" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-
+echo -ne "Making modifications to openbor.sh..."
+CFG="bin/openbor.sh"
+sed -i -e "s|/usr/bin/setres.sh|/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh|" $CFG
+sed -i -e "s|/storage/.config/openbor/master.cfg|/storage/.kodi/addons/${ADDON_NAME}/config/openbor/master.cfg|" $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo "Making modifications to retroarch.cfg..."
 CFG="config/retroarch.cfg"
 echo -ne "\toverlays "
