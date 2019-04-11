@@ -66,7 +66,8 @@ PACKAGES_Sx05RE="$PKG_EMUS \
 				libvorbisidec \
 				gl4es \
 				python-evdev \
-				libpng16"
+				libpng16 \
+				mpg123-compat"
 				
 LIBRETRO_CORES_LITE="fbalpha gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
@@ -204,12 +205,12 @@ for f in config resources bin; do
 	[ $? -eq 0 ] && echo -e "(ok)" || { echo -e "(failed)" ; exit 1 ; }
 done
 echo
-if [ "$FORCEUPDATE" == "yes" ]; then
-echo -ne "Creating forceupdate..."
-echo
-touch "${ADDON_DIR}/forceupdate"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-fi
+ if [ "$FORCEUPDATE" == "yes" ]; then
+	echo -ne "Creating forceupdate..."
+	echo
+	touch "${ADDON_DIR}/forceupdate"
+	[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+ fi
 echo -ne "Moving config files to addon..."
 cp -rf "${TARGET_DIR}/usr/config" "${ADDON_DIR}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -263,6 +264,7 @@ echo -ne "\tadvacemame Config "
 rm -rf "${TARGET_DIR}/usr/share/advance/advmenu.rc"
 mv -v "${TARGET_DIR}/usr/share/advance" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tVLC libs "
 rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -276,6 +278,9 @@ rm "${ADDON_DIR}/bin/reicast.sh"
 rm "${ADDON_DIR}/config/autostart.sh"
 rm "${ADDON_DIR}/config/smb.conf"
 rm -rf "${ADDON_DIR}/config/vlc"
+rm -rf ${ADDON_DIR}/bin/mpg123-*
+rm -rf ${ADDON_DIR}/bin/*png*
+rm -rf "${ADDON_DIR}/bin/cvlc"
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
@@ -428,8 +433,9 @@ DOWNLOADS="downloads"
 RA_PARAMS="--config=\$RA_CONFIG_FILE --menu"
 LOGFILE="/storage/retroarch.log"
 
+sh \$ADDON_DIR/bin/emustation-config
+
  if [ \$ra_es -eq 1 ] ; then
-   sh \$ADDON_DIR/bin/emustation-config
    RA_EXE="\$ADDON_DIR/bin/emulationstation"
    RA_PARAMS=""
    LOGFILE="/storage/emulationstation.log"
@@ -474,6 +480,8 @@ ln -sf libdrm.so.2.4.0 \$ADDON_DIR/lib/libdrm.so.2
 ln -sf libexif.so.12.3.3 \$ADDON_DIR/lib/libexif.so.12
 ln -sf libvorbisidec.so.1.0.3 \$ADDON_DIR/lib/libvorbisidec.so.1
 ln -sf libpng16.so.16.36.0 \$ADDON_DIR/lib/libpng16.so.16
+ln -sf libmpg123.so.0.44.8 \$ADDON_DIR/lib/libmpg123.so.0
+ln -sf libout123.so.0.2.2 \$ADDON_DIR/lib/libout123.so.0
 
 # delete symlinks to avoid doubles
 
@@ -623,6 +631,16 @@ cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/fanart.
 echo -ne "\ticon.png"
 cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/icon.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tdowloading dldrastic.sh"
+wget https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/361ee65fca652d1b3e96abb76d14f90fe3901ddb/dldrastic.sh
+cp dldrastic.sh config/emulationstation/scripts/dldrastic.sh
+rm dldrastic.sh
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo
+echo -ne "Setting permissions..."
+chmod +x ${ADDON_DIR}/bin/* &>>"$LOG"
+chmod +x ${ADDON_DIR}/config/emulationstation/scripts/*.sh &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
 RA_CFG_DIR="\/storage\/\.config\/retroarch"
 RA_CORES_DIR="\/storage\/\.kodi\/addons\/${ADDON_NAME}\/lib\/libretro"
@@ -644,8 +662,13 @@ CFG="bin/sx05reRunEmu.sh"
 sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
+sed -i -e 's,\[\[ $arguments != \*"KEEPMUSIC"\* \]\],[ `echo $arguments | grep -c "KEEPMUSIC"` -eq 0 ],g' $CFG
+sed -i -e 's,\[\[ $arguments != \*"NOLOG"\* \]\],[ `echo $arguments | grep -c "NOLOG"` -eq 0 ],g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-
+echo -ne "Making modifications to BGM.sh..."
+CFG="config/emulationstation/scripts/bgm.sh"
+sed -i -e 's,systemd-run $MUSICPLAYER -r 32000 -Z $BGMPATH,( MPG123_MODDIR="$ADDON_DIR/lib/mpg123" $MUSICPLAYER -r 32000 -Z $BGMPATH ) \&,g' $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "Making modifications to advmame.sh..."
 CFG="bin/advmame.sh"
 sed -i -e "s/\/usr\/share/\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
