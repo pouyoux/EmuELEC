@@ -325,7 +325,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 -			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n\n"
 -			"VISIT EMULATIONSTATION.ORG FOR MORE INFORMATION.";
 +			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n"
-+			"OR INSERT A USB WITH YOUR ROMS AND THE '/roms/sx05reroms' FILE AND RESTART. \n\n  SSH/SFTP IP: " + getShOutput(R"(/usr/bin/ip.sh)")).c_str();
++			"OR INSERT A USB WITH YOUR ROMS AND THE '/roms/sx05reroms' FILE AND RESTART. \n\n  SSH/SFTP IP: " + getShOutput(R"(/storage/.emulationstation/scripts/ip.sh)")).c_str();
  		return false;
  	}
  
