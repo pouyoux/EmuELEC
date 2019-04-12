@@ -278,6 +278,7 @@ rm "${ADDON_DIR}/bin/reicast.sh"
 rm "${ADDON_DIR}/config/autostart.sh"
 rm "${ADDON_DIR}/config/smb.conf"
 rm -rf "${ADDON_DIR}/config/vlc"
+rm -rf "${ADDON_DIR}/config/out123"
 rm -rf ${ADDON_DIR}/bin/mpg123-*
 rm -rf ${ADDON_DIR}/bin/*png*
 rm -rf "${ADDON_DIR}/bin/cvlc"
@@ -433,6 +434,7 @@ DOWNLOADS="downloads"
 RA_PARAMS="--config=\$RA_CONFIG_FILE --menu"
 LOGFILE="/storage/retroarch.log"
 
+# external/usb rom mounting
 sh \$ADDON_DIR/bin/emustation-config
 
  if [ \$ra_es -eq 1 ] ; then
@@ -510,6 +512,10 @@ cp -rf \$ADDON_DIR/config/emulationstation/* /storage/.emulationstation
 cp -rf "\$ADDON_DIR/config/retroarch.cfg" "\$RA_CONFIG_FILE"
 rm "\$ADDON_DIR/forceupdate"
 fi
+
+# Make sure all scripts are executable
+chmod +x /storage/.emulationstation/scripts/*.sh
+chmod +x \$ADDON_DIR/bin/*
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
 
@@ -632,7 +638,7 @@ echo -ne "\ticon.png"
 cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/icon.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tdowloading dldrastic.sh"
-wget https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/361ee65fca652d1b3e96abb76d14f90fe3901ddb/dldrastic.sh
+wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/ 
 cp dldrastic.sh config/emulationstation/scripts/dldrastic.sh
 rm dldrastic.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -667,7 +673,7 @@ sed -i -e 's,\[\[ $arguments != \*"NOLOG"\* \]\],[ `echo $arguments | grep -c "N
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "Making modifications to BGM.sh..."
 CFG="config/emulationstation/scripts/bgm.sh"
-sed -i -e 's,systemd-run $MUSICPLAYER -r 32000 -Z $BGMPATH,( MPG123_MODDIR="$ADDON_DIR/lib/mpg123" $MUSICPLAYER -r 32000 -Z $BGMPATH ) \&,g' $CFG
+sed -i -e 's,systemd-run $MUSICPLAYER -r 32000 -Z $BGMPATH,( MPG123_MODDIR="/storage/.kodi/addons/script.sx05re.launcher/lib/mpg123" $MUSICPLAYER -r 32000 -Z $BGMPATH ) \&,g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "Making modifications to advmame.sh..."
 CFG="bin/advmame.sh"
