@@ -91,4 +91,5 @@ cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
  
   echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
   echo "chmod 4755 $INSTALL/usr/bin/busybox" >> $FAKEROOT_SCRIPT
+  find $INSTALL/usr/ -type f -iname "*.sh" -exec chmod +x {} \;
 } 

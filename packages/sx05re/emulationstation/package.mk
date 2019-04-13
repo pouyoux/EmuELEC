@@ -39,6 +39,7 @@ post_makeinstall_target() {
     chmod +x $INSTALL/usr/config/emulationstation/scripts/*
     chmod +x $INSTALL/usr/config/emulationstation/scripts/configscripts/*
     
+      find $INSTALL/usr/ -type f -iname "*.sh" -exec chmod +x {} \;    
 }
 
 post_install() {  
