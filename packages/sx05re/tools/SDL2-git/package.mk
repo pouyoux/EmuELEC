@@ -56,8 +56,7 @@ pre_configure_target(){
                          -DVIDEO_MALI=ON \
                          -DVIDEO_VULKAN=OFF \
                          -DVIDEO_KMSDRM=OFF \
-                         -DPULSEAUDIO=ON \
-                         -DPULSEAUDIO_SHARED=ON"
+                         -DPULSEAUDIO=OFF"
 }
 
 post_makeinstall_target() {
