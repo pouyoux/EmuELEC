@@ -19,7 +19,7 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
+PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2"
 PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB retropie linux-utils xmlstarlet"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
@@ -27,7 +27,7 @@ PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
 # PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $LIBRETRO_EXTRA_CORES"
 
 # Uncomment to compile other versions of MAME
-# PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET mame2010 mame2014"
+ PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET mame2010 mame2014"
 
 
 make_target() {
@@ -82,4 +82,13 @@ cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
     # link default.target to emuelec.target
    ln -sf emuelec.target $INSTALL/usr/lib/systemd/system/default.target
    enable_service emuelec-autostart.service
+   
+# Thanks to vpeter we can now have bash :) 
+  rm -f $INSTALL/usr/bin/{sh,bash,busybox}
+  cp $(get_build_dir busybox)/.install_pkg/usr/bin/busybox $INSTALL/usr/bin
+  cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
+  ln -sf bash $INSTALL/usr/bin/sh
+ 
+  echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
+  echo "chmod 4755 $INSTALL/usr/bin/busybox" >> $FAKEROOT_SCRIPT
 } 
