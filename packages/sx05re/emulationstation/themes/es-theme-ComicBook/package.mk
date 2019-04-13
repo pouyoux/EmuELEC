@@ -21,6 +21,6 @@ make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/usr/config/emulationstation/themes/$PKG_NAME
-    cp -r * $INSTALL/usr/config/emulationstation/themes/$PKG_NAME
+  mkdir -p $INSTALL/usr/config/emulationstation/themes/ComicBook
+    cp -r * $INSTALL/usr/config/emulationstation/themes/ComicBook
 }
