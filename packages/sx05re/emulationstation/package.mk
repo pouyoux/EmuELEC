@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present CoreELEC (https://coreelec.org)
 
 PKG_NAME="emulationstation"
-PKG_VERSION="e45458dee61037537c07b3bf05b3415955eb073e"
+PKG_VERSION="289d89aad1b6ecdbdc95040ca3cdc1dee76a6ac7"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -23,7 +23,7 @@ GET_HANDLER_SUPPORT="git"
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-crt"
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Chicuelo"
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-pixel"
-PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Retrorama"
+#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Retrorama"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-ComicBook"
 
 post_makeinstall_target() {
@@ -41,16 +41,6 @@ post_makeinstall_target() {
     
 }
 
-
 post_install() {  
-# Thanks to vpeter we can now have bash :) 
-  rm -f $INSTALL/usr/bin/{sh,bash,busybox}
-  cp $(get_build_dir busybox)/.install_pkg/usr/bin/busybox $INSTALL/usr/bin
-  cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
-  ln -sf bash $INSTALL/usr/bin/sh
- 
-  echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
-  echo "chmod 4755 $INSTALL/usr/bin/busybox" >> $FAKEROOT_SCRIPT
-  
   enable_service emustation.service
 }
