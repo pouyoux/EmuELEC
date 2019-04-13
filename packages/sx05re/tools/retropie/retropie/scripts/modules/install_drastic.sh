@@ -14,7 +14,7 @@ function drastic_confirm() {
  }
 
 function drastic_install() {
-LINK="https://github.com/Retro-Arena/binaries/raw/master/odroid-xu4/drastic.tar.gz"
+LINK="https://github.com/shantigilbert/binaries/blob/master/odroid-xu4/drastic.tar.gz"
 ES_FOLDER="/storage/.emulationstation"
 LINKDEST="$ES_FOLDER/scripts/drastic.tar.gz"
 CFG="$ES_FOLDER/es_systems.cfg"
@@ -29,8 +29,8 @@ rm $LINKDEST
 if grep -q '<name>nds</name>' "$CFG"
 then
 	echo 'Drastic is already setup in your es_systems.cfg file'
-	echo 'deleting...nds from es_system.cfg'
-	xmlstarlet ed -L -P -d "/systemList/system[name='nds']" $CFG	
+	echo 'deleting...nd from es_system.cfg'
+	xmlstarlet ed -L -P -d "/systemList/system[name='nds']" $CFG
 fi
 
 	echo 'Adding Drastic to systems list'
