@@ -1,9 +1,9 @@
-# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2018-present 5schatten (https://github.com/5schatten)
 
 PKG_NAME="hatarisa"
-PKG_VERSION="31028b8" #v2.1.0
-PKG_SHA256="3a210cc9ec0ade06bb2cbe0c90f0b2e78175602b329d44d7830f719e55b5fd76"
+PKG_VERSION="7aca27d0bb3c228b2cdbb92e0403df2c08ac9398" #v2.2.1+
+PKG_SHA256="abcbe1a2046ca90b085b3fbd8dba689e5637a52832283caadba51ce4123da378"
 PKG_LICENSE="GPL"
 PKG_SITE="https://hatari.tuxfamily.org/"
 PKG_URL="https://github.com/hatari/hatari/archive/$PKG_VERSION.tar.gz"
@@ -29,13 +29,6 @@ pre_configure_target() {
   cp -R $(get_build_dir capsimg)/LibIPF/* $PKG_BUILD/src/includes/caps5/
   cp -R $(get_build_dir capsimg)/Core/CommonTypes.h $PKG_BUILD/src/includes/caps5/
   cp -R $(get_build_dir capsimg)/libcapsimage.so.5.1 $PKG_BUILD/
- 
-  # libcapsimage 5.1 misses these types that were defined in 4.2
-  sed -i "s/CapsLong/Sint32/g" $PKG_BUILD/src/floppy_ipf.c
-  sed -i "s/CapsULong/Uint32/g" $PKG_BUILD/src/floppy_ipf.c
-
-  # fix headers includes contain __cdecl
-  CFLAGS="$CFLAGS -D__cdecl=''" 
 
   # add library search path for loading libcapsimage library
   LDFLAGS="$LDFLAGS -Wl,-rpath='$PKG_BUILD'"
