@@ -31,7 +31,7 @@ cp -r $PKG_DIR/.version $PKG_BUILD
 make_target() {
 ./autogen.sh
 ./configure --prefix=/usr --datadir=/usr/share/ --datarootdir=/usr/share/ --host=armv8a-libreelec-linux --enable-fb --enable-freetype --with-freetype-prefix=$SYSROOT_PREFIX/usr/ --enable-slang
-make 
+make mame
 }
 
 makeinstall_target() {
