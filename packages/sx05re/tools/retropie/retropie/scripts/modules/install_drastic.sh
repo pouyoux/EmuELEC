@@ -18,7 +18,7 @@ LINK="https://github.com/Retro-Arena/binaries/raw/master/odroid-xu4/drastic.tar.
 ES_FOLDER="/storage/.emulationstation"
 LINKDEST="$ES_FOLDER/scripts/drastic.tar.gz"
 CFG="$ES_FOLDER/es_systems.cfg"
-EXE="$ES_FOLDER/scripts/drastic.sh"
+EXE="/usr/bin/emuelecRunEmu.sh DRASTIC"
 
 mkdir -p "$ES_FOLDER/scripts/"
 
@@ -48,19 +48,9 @@ fi
 read -d '' content <<EOF
 #!/bin/sh
 
-EMUELECLOG="/storage/emuelec.log"
-SPLASH="/storage/.config/splash/loading-game.png" 
-(
-  mpv $SPLASH > /dev/null 2>&1
-)&
-
 cd /storage/.emulationstation/scripts/drastic/
-./drastic "\$1" >> \$EMUELECLOG 2>&1
+./drastic "\$1"
 
-# Terrible hack as a workaround for the screen freezing after returning to ES
- (
-  mpv "/storage/.config/splash/splash-1080.png" > /dev/null 2>&1
- )&
 EOF
 echo "$content" > $ES_FOLDER/scripts/drastic.sh
 chmod +x $ES_FOLDER/scripts/drastic.sh

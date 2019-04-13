@@ -51,6 +51,9 @@ case $1 in
 "ADVMAME")
 	RUNTHIS='/usr/bin/advmame.sh "$2"'
 		;;
+"DRASTIC")
+	RUNTHIS='/storage/.emulationstation/scripts/drastic.sh "$2"'
+		;;
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
    #PPSSPP can run at 32BPP but only with buffered rendering, some games need non-buffered and the only way they work is if I set it to 16BPP
