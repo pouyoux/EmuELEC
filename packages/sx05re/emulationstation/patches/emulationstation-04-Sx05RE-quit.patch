@@ -75,7 +75,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  			Scripting::fireEvent("quit", "reboot");
  			Scripting::fireEvent("reboot");
 -			if (quitES("/tmp/es-sysrestart") != 0)
-+            if (system("systemctl") != 0)
++            if (system("systemctl reboot") != 0)
  				LOG(LogWarning) << "Restart terminated with non-zero result!";
  		}, "NO", nullptr));
  	});
