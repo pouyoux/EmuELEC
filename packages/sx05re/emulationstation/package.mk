@@ -38,8 +38,7 @@ post_makeinstall_target() {
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/emulationstation
     chmod +x $INSTALL/usr/config/emulationstation/scripts/*
     chmod +x $INSTALL/usr/config/emulationstation/scripts/configscripts/*
-    
-      find $INSTALL/usr/ -type f -iname "*.sh" -exec chmod +x {} \;    
+    find $INSTALL/usr/config/emulationstation/scripts/ -type f -exec chmod o+x {} \; 
 }
 
 post_install() {  
