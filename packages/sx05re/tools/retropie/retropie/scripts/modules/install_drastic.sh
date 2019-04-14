@@ -14,7 +14,7 @@ function drastic_confirm() {
  }
 
 function drastic_install() {
-LINK="https://github.com/shantigilbert/binaries/blob/master/odroid-xu4/drastic.tar.gz"
+LINK="https://raw.githubusercontent.com/shantigilbert/binaries/master/odroid-xu4/drastic.tar.gz"
 ES_FOLDER="/storage/.emulationstation"
 LINKDEST="$ES_FOLDER/scripts/drastic.tar.gz"
 CFG="$ES_FOLDER/es_systems.cfg"
