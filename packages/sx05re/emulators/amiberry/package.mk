@@ -19,7 +19,7 @@ pre_configure_target() {
   export SYSROOT_PREFIX=${SYSROOT_PREFIX}
 
   case ${PROJECT} in
-    Amlogic)
+    Amlogic*)
       AMIBERRY_PLATFORM="amlogic"
       ;;
     Rockchip)

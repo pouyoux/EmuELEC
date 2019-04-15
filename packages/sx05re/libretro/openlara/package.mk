@@ -43,7 +43,7 @@ make_target() {
                       -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
       make -C src/platform/libretro GLES=1
       ;;
-    imx6)
+    imx6|Amlogic*)
       CFLAGS="$CFLAGS -DLINUX -DEGL_API_FB"
       CPPFLAGS="$CPPFLAGS -DLINUX -DEGL_API_FB"
       make -C src/platform/libretro
