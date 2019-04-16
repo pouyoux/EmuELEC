@@ -1,22 +1,24 @@
 #!/bin/bash
 
 # This script is based on https://github.com/ToKe79/retroarch-kodi-addon-LibreELEC/blob/master/retroarch-kodi.sh
-# It has been adapted to Sx05RE by Shanti Gilbert and modified to install emulationstation and other emulators.
+# It has been adapted to EmuELEC by Shanti Gilbert and modified to install emulationstation and other emulators.
 
 build_it() {
 REPO_DIR=""
+FORCEUPDATE="yes"
+PROJECT="$1"
 
 [ -z "$SCRIPT_DIR" ] && SCRIPT_DIR=$(pwd)
 
-# make sure you change these lines to point to your Sx05RE git clone
-SX05RE="${SCRIPT_DIR}"
-GIT_BRANCH="Sx05RE"
+# make sure you change these lines to point to your EmuELEC git clone
+EMUELEC="${SCRIPT_DIR}"
+GIT_BRANCH="EmuELEC"
 
-LOG="${SCRIPT_DIR}/sx05re-kodi_`date +%Y%m%d_%H%M%S`.log"
+LOG="${SCRIPT_DIR}/emuelec-kodi_`date +%Y%m%d_%H%M%S`.log"
 
 # Exit if not in the right branch 
-if [ -d "$SX05RE" ] ; then
-	cd "$SX05RE"
+if [ -d "$EMUELEC" ] ; then
+	cd "$EMUELEC"
 	git checkout ${GIT_BRANCH} &>>"$LOG"
 		branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 	if [ $branch != $GIT_BRANCH ]; then 
@@ -26,7 +28,7 @@ if [ -d "$SX05RE" ] ; then
    fi 
 fi 
 
-[ -z "$DISTRO" ] && DISTRO=Sx05RE
+[ -z "$DISTRO" ] && DISTRO=EmuELEC
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
 [ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo"
@@ -40,14 +42,34 @@ PROJECT_DIR="${SCRIPT_DIR}/retroarch_work"
 TARGET_DIR="${PROJECT_DIR}/`date +%Y-%m-%d_%H%M%S`"
 BASE_NAME="$PROVIDER.$DISTRO"
 
-LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-shaders"
+LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-shaders openal-soft"
 
-    # Get cores from Sx05RE options file
+    # Get cores from EmuELEC options file
     OPTIONS_FILE="${SCRIPT_DIR}/distributions/${DISTRO}/options"
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
 
-PACKAGES_Sx05RE="fbida libdrm libexif scraper advancemame PPSSPPSDL reicastsa sx05re empty sixpair joyutils SDL2-git freeimage vlc emulationstation freetype es-theme-ComicBook bash"
+PKG_EMUS="emulationstation advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
+PACKAGES_Sx05RE="$PKG_EMUS \
+				mpv \
+				emuelec \
+				empty \
+				sixpair \
+				joyutils \
+				SDL2-git \
+				freeimage \
+				vlc \
+				freetype \
+				es-theme-ComicBook \
+				bash \
+				libretro-bash-launcher \
+				SDL_GameControllerDB
+				libvorbisidec \
+				gl4es \
+				python-evdev \
+				libpng16 \
+				mpg123-compat"
+				
 LIBRETRO_CORES_LITE="fbalpha gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
 if [ "$1" = "lite" ]; then
@@ -68,17 +90,17 @@ fi
 	ADDON_NAME=${BASE_NAME}.${PROJECT}_${ARCH}
 	RA_NAME_SUFFIX=${PROJECT}.${ARCH}
 
-ADDON_NAME="script.sx05re.launcher"
+ADDON_NAME="script.emuelec.${PROJECT}.launcher"
 ADDON_DIR="${PROJECT_DIR}/${ADDON_NAME}"
 
 if [ "$1" = "lite" ] ; then
-  ARCHIVE_NAME="${ADDON_NAME}-${VERSION}-lite.zip"
+  ARCHIVE_NAME="${ADDON_NAME}-${VERSION}-${PROJECT}-lite.zip"
 else
-  ARCHIVE_NAME="${ADDON_NAME}-${VERSION}.zip"
+  ARCHIVE_NAME="${ADDON_NAME}-${VERSION}-${PROJECT}.zip"
 fi
 
 read -d '' message <<EOF
-Building Sx05RE KODI add-on for CoreELEC:
+Building EmuELEC KODI add-on for CoreELEC:
 
 DISTRO=${DISTRO}
 PROJECT=${PROJECT}
@@ -99,11 +121,11 @@ echo
 # make sure the old add-on is deleted
 if [ -d ${REPO_DIR} ] && [ "$1" != "lite" ] ; then
 echo "Removing old add-on at ${REPO_DIR}"
-rm -rf ${REPO_DIR}
+rm -rf ${REPO_DIR}/${ADDON_NAME}
 fi
 
 if [ -d ${PROJECT_DIR} ] && [ "$1" != "lite" ] ; then
-echo "Removing old add-on at ${REPO_DIR}"
+echo "Removing old project add-on at ${PROJECT_DIR}"
 rm -rf ${PROJECT_DIR}
 fi
 
@@ -113,8 +135,8 @@ for folder in ${REPO_DIR} ${REPO_DIR}/${ADDON_NAME} ${REPO_DIR}/${ADDON_NAME}/re
 done
 echo
 
-if [ -d "$SX05RE" ] ; then
-	cd "$SX05RE"
+if [ -d "$EMUELEC" ] ; then
+	cd "$EMUELEC"
 	echo "Building packages:"
 	for package in $PACKAGES_ALL ; do
 		echo -ne "\t$package "
@@ -163,7 +185,7 @@ if [ -d "$SX05RE" ] ; then
 
 	echo
 else
-	echo "Folder '$SX05RE' does not exist! Aborting!" >&2
+	echo "Folder '$EMUELEC' does not exist! Aborting!" >&2
 	exit 1
 fi
 if [ -f "$ADDON_DIR" ] ; then
@@ -178,24 +200,31 @@ mkdir -p "${ADDON_DIR}" &>>"$LOG"
 echo
 cd "${ADDON_DIR}"
 echo "Creating folder structure..."
-for f in config resources ; do
+for f in config resources bin; do
 	echo -ne "\t$f "
 	mkdir -p $f &>>"$LOG"
 	[ $? -eq 0 ] && echo -e "(ok)" || { echo -e "(failed)" ; exit 1 ; }
 done
 echo
-echo "Moving files to addon..."
-echo -ne "\tSplash Screen "
-mv -v "${TARGET_DIR}/usr/config/splash" "${ADDON_DIR}/config/" &>>"$LOG"
+ if [ "$FORCEUPDATE" == "yes" ]; then
+	echo -ne "Creating forceupdate..."
+	echo
+	touch "${ADDON_DIR}/forceupdate"
+	[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+ fi
+echo -ne "Moving config files to addon..."
+cp -rf "${TARGET_DIR}/usr/config" "${ADDON_DIR}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tretroarch.cfg "
-mv -v "${TARGET_DIR}/usr/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
+mv -v "${ADDON_DIR}/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tcreating empty joypads dir"
 mkdir -p "${ADDON_DIR}/resources/joypads" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tbinaries "
 mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
+rm -rf "${ADDON_DIR}/bin/assets"
+mv -v "${ADDON_DIR}/config/ppsspp/assets" "${ADDON_DIR}/bin" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tlibraries and cores "
 mv -v "${TARGET_DIR}/usr/lib" "${ADDON_DIR}/" &>>"$LOG"
@@ -236,26 +265,24 @@ echo -ne "\tadvacemame Config "
 rm -rf "${TARGET_DIR}/usr/share/advance/advmenu.rc"
 mv -v "${TARGET_DIR}/usr/share/advance" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tPPSSPP Config "
-mv -v "${TARGET_DIR}/usr/config/ppsspp" "${ADDON_DIR}/config" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tVLC Config "
+echo -ne "\tVLC libs "
 rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tES Config "
-mv -v "${TARGET_DIR}/usr/config/emulationstation" "${ADDON_DIR}/config" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tReicast Config "
-mv -v "${TARGET_DIR}/usr/config/reicast" "${ADDON_DIR}/config" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tRemoving unneeded binaries "
+echo -ne "\tRemoving unneeded files "
 rm "${ADDON_DIR}/bin/startfe.sh"
 rm "${ADDON_DIR}/bin/killkodi.sh"
 rm "${ADDON_DIR}/bin/emulationstation.sh"
 rm "${ADDON_DIR}/bin/emustation-config"
 rm "${ADDON_DIR}/bin/clearconfig.sh"
 rm "${ADDON_DIR}/bin/reicast.sh"
+rm "${ADDON_DIR}/config/autostart.sh"
+rm "${ADDON_DIR}/config/smb.conf"
+rm -rf "${ADDON_DIR}/config/vlc"
+rm -rf "${ADDON_DIR}/config/out123"
+rm -rf ${ADDON_DIR}/bin/mpg123-*
+rm -rf ${ADDON_DIR}/bin/*png*
+rm -rf "${ADDON_DIR}/bin/cvlc"
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
@@ -307,11 +334,11 @@ read -d '' content <<EOF
 
 oe_setup_addon ${ADDON_NAME}
 
-systemd-run \$ADDON_DIR/bin/sx05re.start
+systemd-run \$ADDON_DIR/bin/emuelec.start
 EOF
-echo "$content" > bin/sx05re.sh
+echo "$content" > bin/emuelec.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-chmod +x bin/sx05re.sh
+chmod +x bin/emuelec.sh
 echo -ne "\temustation-config "
 read -d '' content <<EOF
 #!/bin/sh
@@ -339,7 +366,7 @@ if [[ -z "\${FULLPATHTOROMS}" ]]; then
        PATHTOROMS=\${FULLPATHTOROMS%\$ROMFILE}
 
        #we create the symlink to the roms in our USB
-       ln -sf \$PATHTOROMS /storage/roms
+       ln -sTf \$PATHTOROMS /storage/roms
  fi
 
 exit 0
@@ -355,9 +382,39 @@ read -d '' content <<EOF
   <inputAction type="onfinish">
     <command>/storage/.kodi/addons/${ADDON_NAME}/bin/bash /storage/.emulationstation/scripts/inputconfiguration.sh</command>
   </inputAction>
+  <inputConfig type="joystick" deviceName="Sony PLAYSTATION(R)3 Controller">
+	<input name="a" type="button" id="13" value="1" />
+	<input name="b" type="button" id="14" value="1" />
+	<input name="down" type="button" id="6" value="1" />
+	<input name="hotkeyenable" type="button" id="16" value="1" />
+	<input name="left" type="button" id="7" value="1" />
+	<input name="leftanalogdown" type="axis" id="1" value="1" />
+	<input name="leftanalogleft" type="axis" id="0" value="-1" />
+	<input name="leftanalogright" type="axis" id="0" value="1" />
+	<input name="leftanalogup" type="axis" id="1" value="-1" />
+	<input name="leftshoulder" type="button" id="10" value="1" />
+	<input name="leftthumb" type="button" id="1" value="1" />
+	<input name="lefttrigger" type="button" id="8" value="1" />
+	<input name="right" type="button" id="5" value="1" />
+	<input name="rightanalogdown" type="axis" id="3" value="1" />
+	<input name="rightanalogleft" type="axis" id="2" value="-1" />
+	<input name="rightanalogright" type="axis" id="2" value="1" />
+	<input name="rightanalogup" type="axis" id="3" value="-1" />
+	<input name="rightshoulder" type="button" id="11" value="1" />
+	<input name="rightthumb" type="button" id="2" value="1" />
+	<input name="righttrigger" type="button" id="9" value="1" />
+	<input name="select" type="button" id="0" value="1" />
+	<input name="start" type="button" id="3" value="1" />
+	<input name="up" type="button" id="4" value="1" />
+	<input name="x" type="button" id="12" value="1" />
+	<input name="y" type="button" id="15" value="1" />
+</inputConfig>
 </inputList>
 EOF
 echo "$content" > config/emulationstation/es_input.cfg
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tPS3 Gamepad Workaround "
+cp "${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/Sony PLAYSTATION(R)3 Controller.cfg"  resources/joypads/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsx05re.start "
 read -d '' content <<EOF
@@ -378,8 +435,10 @@ DOWNLOADS="downloads"
 RA_PARAMS="--config=\$RA_CONFIG_FILE --menu"
 LOGFILE="/storage/retroarch.log"
 
+# external/usb rom mounting
+sh \$ADDON_DIR/bin/emustation-config
+
  if [ \$ra_es -eq 1 ] ; then
-   sh \$ADDON_DIR/bin/emustation-config
    RA_EXE="\$ADDON_DIR/bin/emulationstation"
    RA_PARAMS=""
    LOGFILE="/storage/emulationstation.log"
@@ -415,15 +474,20 @@ fi
 # ln -sf libvdpau.so.1.0.0 \$ADDON_DIR/lib/libvdpau.so.1
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
-# ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
+ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
 ln -sf libSDL2-2.0.so.0.9.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
 ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
 ln -sf libdrm.so.2.4.0 \$ADDON_DIR/lib/libdrm.so.2
 ln -sf libexif.so.12.3.3 \$ADDON_DIR/lib/libexif.so.12
+ln -sf libvorbisidec.so.1.0.3 \$ADDON_DIR/lib/libvorbisidec.so.1
+ln -sf libpng16.so.16.36.0 \$ADDON_DIR/lib/libpng16.so.16
+ln -sf libmpg123.so.0.44.8 \$ADDON_DIR/lib/libmpg123.so.0
+ln -sf libout123.so.0.2.2 \$ADDON_DIR/lib/libout123.so.0
 
-# delete symlink from older version
+# delete symlinks to avoid doubles
+
 if [ -L /storage/.emulationstation ]; then
 rm /storage/.emulationstation
 fi 
@@ -432,13 +496,27 @@ if [ -L /tmp/joypads ]; then
 rm /tmp/joypads
 fi
 
-ln -sf \$ADDON_DIR/resources/joypads/ /tmp/joypads
+mkdir -p /storage/.local/lib/
 
+ln -sTf \$ADDON_DIR/resources/joypads/ /tmp/joypads
+ln -sTf \$ADDON_DIR/lib/python2.7 /storage/.local/lib/python2.7
 
 #  Check if configuration for ES is copied to storage
-if [ ! -L "/storage/.emulationstation" ]; then
-ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+if [ ! -e "/storage/.emulationstation" ]; then
+#ln -sf \$ADDON_DIR/config/emulationstation /storage/.emulationstation
+mkdir /storage/.emulationstation
+cp -rf \$ADDON_DIR/config/emulationstation/* /storage/.emulationstation
 fi
+
+if [ -f "\$ADDON_DIR/forceupdate" ]; then
+cp -rf \$ADDON_DIR/config/emulationstation/* /storage/.emulationstation
+cp -rf "\$ADDON_DIR/config/retroarch.cfg" "\$RA_CONFIG_FILE"
+rm "\$ADDON_DIR/forceupdate"
+fi
+
+# Make sure all scripts are executable
+chmod +x /storage/.emulationstation/scripts/*.sh
+chmod +x \$ADDON_DIR/bin/*
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
 
@@ -462,13 +540,13 @@ fi
 
 exit 0
 EOF
-echo "$content" > bin/sx05re.start
+echo "$content" > bin/emuelec.start
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-chmod +x bin/sx05re.start
+chmod +x bin/emuelec.start
 echo -ne "\taddon.xml "
 read -d '' addon <<EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="${ADDON_NAME}" name="Sx05RE (${VERSION})" version="${VERSION}" provider-name="${PROVIDER}">
+<addon id="${ADDON_NAME}" name="EmuELEC (${VERSION})" version="${VERSION}" provider-name="${PROVIDER}">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>
@@ -476,8 +554,8 @@ read -d '' addon <<EOF
 		<provides>executable</provides>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<summary lang="en">Sx05RE addon. Provides binary, cores and basic settings to launch it</summary>
-		<description lang="en">Sx05RE addon is based on ToKe79 Retroarch/Lakka addon. Provides binary, cores and basic settings to launch Sx05RE. </description>
+		<summary lang="en">EmuELEC addon. Provides binary, cores and basic settings to launch it</summary>
+		<description lang="en">EmuELEC addon is based on ToKe79 Retroarch/Lakka addon. Provides binary, cores and basic settings to launch EmuELEC. </description>
 		<disclaimer lang="en">This is an unofficial add-on. Please don't ask for support in CoreELEC,Lakka or ToKe79 github, forums or irc channels.</disclaimer>
 		<platform>linux</platform>
 		<assets>
@@ -496,7 +574,7 @@ import os
 import util
 
 dialog = xbmcgui.Dialog()
-dialog.notification('Sx05RE', 'Launching....', xbmcgui.NOTIFICATION_INFO, 5000)
+dialog.notification('EmuELEC', 'Launching....', xbmcgui.NOTIFICATION_INFO, 5000)
 
 ADDON_ID = '${ADDON_NAME}'
 
@@ -517,7 +595,7 @@ import os, xbmc, xbmcaddon
 
 ADDON_ID = '${ADDON_NAME}'
 BIN_FOLDER="bin"
-RETROARCH_EXEC="sx05re.sh"
+RETROARCH_EXEC="emuelec.sh"
 
 addon = xbmcaddon.Addon(id=ADDON_ID)
 
@@ -534,8 +612,8 @@ read -d '' content <<EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
 	<category label="General">
-		<setting id="ra_stop_kodi" label="Stop KODI (free memory) before launching Sx05RE" type="enum" default="1" values="No|Yes" />
-		<setting id="ra_log" label="Logging of Sx05RE output" type="enum" default="0" values="No|Yes" />
+		<setting id="ra_stop_kodi" label="Stop KODI (free memory) before launching EmuELEC" type="enum" default="1" values="No|Yes" />
+		<setting id="ra_log" label="Logging of EmuELEC output" type="enum" default="0" values="No|Yes" />
 		<setting id="ra_verbose" label="Verbose logging (for debugging)" type="enum" default="0" values="No|Yes" />
 		<setting id="ra_es" label="Run Emulationstation instead of Retroarch" type="enum" default="1" values="No|Yes" />
 	</category>
@@ -555,10 +633,20 @@ EOF
 echo "$content"  > settings-default.xml
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tfanart.png"
-cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/fanart.png" resources/
+cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/fanart.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\ticon.png"
-cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/icon.png" resources/
+cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/icon.png" resources/
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo -ne "\tdowloading dldrastic.sh"
+wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/ 
+cp dldrastic.sh config/emulationstation/scripts/dldrastic.sh
+rm dldrastic.sh
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo
+echo -ne "Setting permissions..."
+chmod +x ${ADDON_DIR}/bin/* &>>"$LOG"
+chmod +x ${ADDON_DIR}/config/emulationstation/scripts/*.sh &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
 RA_CFG_DIR="\/storage\/\.config\/retroarch"
@@ -576,13 +664,18 @@ CFG="config/emulationstation/scripts/inputconfiguration.sh"
 sed -i -e "s/\/usr\/bin\/bash/\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin\/bash/" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
-echo -ne "Making modifications to sx05reRunEmu.sh..."
-CFG="bin/sx05reRunEmu.sh"
-sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
+echo -ne "Making modifications to emuelecRunEmu.sh..."
+CFG="bin/emuelecRunEmu.sh"
+sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
+sed -i -e 's,\[\[ $arguments != \*"KEEPMUSIC"\* \]\],[ `echo $arguments | grep -c "KEEPMUSIC"` -eq 0 ],g' $CFG
+sed -i -e 's,\[\[ $arguments != \*"NOLOG"\* \]\],[ `echo $arguments | grep -c "NOLOG"` -eq 0 ],g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-
+echo -ne "Making modifications to BGM.sh..."
+CFG="config/emulationstation/scripts/bgm.sh"
+sed -i -e 's,systemd-run $MUSICPLAYER -r 32000 -Z $BGMPATH,( MPG123_MODDIR="/storage/.kodi/addons/script.emuelec.launcher/lib/mpg123" $MUSICPLAYER -r 32000 -Z $BGMPATH ) \&,g' $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "Making modifications to advmame.sh..."
 CFG="bin/advmame.sh"
 sed -i -e "s/\/usr\/share/\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
@@ -592,9 +685,13 @@ sed -i -e "s/device_alsa_device default/device_alsa_device sdl/" "config/advance
 
 echo -ne "Making modifications to ppsspp.sh..."
 CFG="bin/ppsspp.sh"
-sed -i -e "s/\/usr\/bin\/setres.sh/#/" $CFG
+sed -i -e "s|/usr/bin/setres.sh|/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh|" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-
+echo -ne "Making modifications to openbor.sh..."
+CFG="bin/openbor.sh"
+sed -i -e "s|/usr/bin/setres.sh|/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh|" $CFG
+sed -i -e "s|/storage/.config/openbor/master.cfg|/storage/.kodi/addons/${ADDON_NAME}/config/openbor/master.cfg|" $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo "Making modifications to retroarch.cfg..."
 CFG="config/retroarch.cfg"
 echo -ne "\toverlays "
@@ -661,10 +758,10 @@ ln -vsf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/${ADDON_NAME}-LATEST.zip" &
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 fi
 echo -ne "\ticon.png "
-cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/icon.png" "${REPO_DIR}/${ADDON_NAME}/resources/icon.png"
+cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/icon.png" "${REPO_DIR}/${ADDON_NAME}/resources/icon.png"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tfanart.png "
-cp "${TARGET_DIR}/usr/share/kodi/addons/script.emulationstation.launcher/fanart.png" "${REPO_DIR}/${ADDON_NAME}/resources/fanart.png"
+cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/fanart.png" "${REPO_DIR}/${ADDON_NAME}/resources/fanart.png"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\taddon.xml "
 echo "$addon" > "${REPO_DIR}/${ADDON_NAME}/addon.xml"
@@ -684,5 +781,5 @@ echo
 
 } 
 
-build_it 
-# build_it "lite"
+build_it Amlogic
+build_it Amlogic-ng
