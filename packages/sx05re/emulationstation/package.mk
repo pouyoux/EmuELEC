@@ -15,6 +15,11 @@ PKG_SHORTDESC="Emulationstation emulator frontend"
 PKG_BUILD_FLAGS="-gold"
 GET_HANDLER_SUPPORT="git"
 
+if [ ${PROJECT} = "Amlogic-ng" ]; then
+  PKG_PATCH_DIRS="${PROJECT}"
+fi
+
+
 # themes for Emulationstation
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-simple-dark"
 #PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-carbon"

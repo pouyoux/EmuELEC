@@ -32,7 +32,7 @@ EMU=$(sed -n "$PAT" "$CFG")
 echo "EmuELEC Run Log" > $EMUELECLOG
 
 # if the emulator is in es_settings this is the line that will run 
-RUNTHIS='/usr/bin/retroarch -L /tmp/cores/${EMU}_libretro.so "$2"'
+RUNTHIS='/usr/bin/retroarch -v -L /tmp/cores/${EMU}_libretro.so "$2"'
 
 # Else, read the first argument to see if its LIBRETRO, REICAST, MAME or PSP
 case $1 in
@@ -43,7 +43,7 @@ case $1 in
 	RUNTHIS='bash /retropie/scripts/fbterm.sh "$2"'
 		;;
 "LIBRETRO")
-	RUNTHIS='/usr/bin/retroarch -L /tmp/cores/$2_libretro.so "$3"'
+	RUNTHIS='/usr/bin/retroarch -v -L /tmp/cores/$2_libretro.so "$3"'
 		;;
 "REICAST")
 	RUNTHIS='/usr/bin/reicast.sh "$2"'
@@ -73,7 +73,7 @@ eval echo  ${RUNTHIS} >> $EMUELECLOG
 
 # TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
-	killall mpg123 
+	killall -9 mpg123 
 fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
@@ -89,10 +89,15 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
 
 	if [ "$DEFE" == "true" ]; then
-	killall mpg123
+	killall -9 mpg123
 	/storage/.emulationstation/scripts/bgm.sh
 	fi 
 fi
 
 # Return to default mode
 /usr/bin/setres.sh
+
+# Only run resetfb if it exists, mainly for N2
+if [ -f "/usr/bin/resetfb.sh" ]; then
+/usr/bin/resetfb.sh
+fi

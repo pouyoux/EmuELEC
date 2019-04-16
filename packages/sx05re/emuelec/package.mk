@@ -46,6 +46,10 @@ makeinstall_target() {
   mkdir -p $INSTALL/usr/bin/
     cp $PKG_DIR/bin/* $INSTALL/usr/bin/
     chmod +x $INSTALL/usr/bin/*
+    
+    if [ "$PROJECT" != "Amlogic-ng" ]; then
+    rm $INSTALL/usr/bin/resetfb.sh
+    fi 
 
   mkdir -p $INSTALL/usr/share/retroarch-overlays
     cp -r $PKG_DIR/overlay/* $INSTALL/usr/share/retroarch-overlays

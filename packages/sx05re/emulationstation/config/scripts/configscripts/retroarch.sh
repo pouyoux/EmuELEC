@@ -153,10 +153,10 @@ function map_retroarch_joystick() {
     local keys
     case "$input_name" in
         up)
-            keys=("input_up")
+            keys=("input_up" "input_volume_up_btn")
             ;;
         down)
-            keys=("input_down")
+            keys=("input_down" "input_volume_down_btn")
             ;;
         left)
             keys=("input_left" "input_state_slot_decrease")
