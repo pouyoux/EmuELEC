@@ -26,7 +26,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 -			row.makeAcceptInputHandler([window] {
 -				window->pushGui(new GuiMsgBox(window, "REALLY QUIT?", "YES",
 -					[] {
-+    row.makeAcceptInputHandler([window] {
++    /* row.makeAcceptInputHandler([window] {
 +				window->pushGui(new GuiMsgBox(window, "QUIT TO KODI? ", "YES",
 + 					[] {
 +					remove("/var/lock/start.games");
@@ -38,7 +38,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  			});
 -			row.addElement(std::make_shared<TextComponent>(window, "QUIT EMULATIONSTATION", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
 +			row.addElement(std::make_shared<TextComponent>(window, "START KODI", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
-+			s->addRow(row); 
++			s->addRow(row); */
 +
 +			row.elements.clear();
 +			row.makeAcceptInputHandler([window] {
