@@ -26,6 +26,7 @@ export CFLAGS=`echo $CFLAGS | sed -e "s|-O.|-O2|g"`
 
 post_unpack() {
 cp -r $PKG_DIR/.version $PKG_BUILD
+cp -r $PKG_DIR/joverride/joverride.dat $PKG_BUILD/advance/linux/joverride.dat
 }
 
 make_target() {
