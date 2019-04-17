@@ -15,6 +15,9 @@ PKG_TOOLCHAIN="manual"
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib
     cp -p lib/eabihf/gondul/r12p0/fbdev/libMali.so $INSTALL/usr/lib
+    
+     mkdir -p $SYSROOT_PREFIX/usr/lib
+  cp -p lib/eabihf/gondul/r12p0/fbdev/libMali.so $SYSROOT_PREFIX/usr/lib
 
    ln -sf /usr/lib/libMali.so $INSTALL/usr/lib/libmali.so
    ln -sf /usr/lib/libMali.so $INSTALL/usr/lib/libmali.so.0
