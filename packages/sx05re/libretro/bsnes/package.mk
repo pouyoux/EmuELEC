@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="bsnes"
-PKG_VERSION="c6e90ddcdfdc5ca1b56319df662912b3c026d78f"
-PKG_SHA256="8dd4f8d5d963134b98d014f190c6ee7a8d101f52eeb685aff2461d5c1063726f"
+PKG_VERSION="74d752eaf6e75c70d883a0962463b19cf9692fbc"
+PKG_SHA256="462466fd449cc3b26ef926d91ea58e7492e35a7ac87f3f734d5a376375005541"
 PKG_REV="1"
 PKG_ARCH="x86_64 i386"
 PKG_LICENSE="GPLv3"
