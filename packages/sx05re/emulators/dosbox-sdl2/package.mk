@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present 5schatten (https://github.com/5schatten)
 
 PKG_NAME="dosbox-sdl2"
-PKG_VERSION="8f8d0c579ca889a64dac32128d3b18129631b0bd"
-PKG_SHA256="8afd7946cedda8a2ca719fd5e70897b44153bb03a721d394bbfdca28a63d582d"
+PKG_VERSION="d4380b09810f5d07bd86328b9da6b6a82d8e583b"
+PKG_SHA256="ceda5ea24ee42dad1867236144d2e3a3f242ee7fc2aef634f4ac9bce9008a809"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/duganchen/dosbox"
 PKG_URL="https://github.com/duganchen/dosbox/archive/$PKG_VERSION.tar.gz"
