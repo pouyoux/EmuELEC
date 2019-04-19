@@ -54,5 +54,6 @@ makeinstall_target() {
                           --with-serialization \
                           --with-system \
                           --with-thread \
+                          --with-locale \
                           install
 }
