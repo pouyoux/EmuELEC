@@ -15,40 +15,6 @@ rp_module_licence="MIT https://raw.githubusercontent.com/sselph/scraper/master/L
 rp_module_section="opt"
 rp_module_flags="nobin"
 
-function depends_scraper() {
-    rp_callModule golang install_bin
-}
-
-function sources_scraper() {
-    local goroot="$(_get_goroot_golang)"
-    GOPATH="$md_build" GOROOT="$goroot" "$goroot/bin/go" get -u github.com/sselph/scraper
-}
-
-function build_scraper() {
-    local goroot="$(_get_goroot_golang)"
-    GOPATH="$md_build" GOROOT="$goroot" "$goroot/bin/go" build github.com/sselph/scraper
-}
-
-function install_scraper() {
-    md_ret_files=(
-        'scraper'
-        'src/github.com/sselph/scraper/LICENSE'
-        'src/github.com/sselph/scraper/README.md'
-        'src/github.com/sselph/scraper/hash.csv'
-    )
-}
-
-function remove_scraper() {
-    rp_callModule golang remove
-}
-
-function get_ver_scraper() {
-    [[ -f "$md_inst/scraper" ]] && "$md_inst/scraper" -version 2>/dev/null
-}
-
-function latest_ver_scraper() {
-    wget -qO- https://api.github.com/repos/sselph/scraper/releases/latest | grep -m 1 tag_name | cut -d\" -f4
-}
 
 function list_systems_scraper() {
     find -L "$romdir" -mindepth 1 -maxdepth 1 -type d | sort
@@ -135,14 +101,14 @@ function scrape_scraper() {
 
     # trap ctrl+c and return if pressed (rather than exiting retropie-setup etc)
     trap 'trap 2; return 1' INT
-    sudo -u $user "$md_inst/scraper" ${params[@]}
+    "/usr/bin/scraper" ${params[@]}
     trap 2
 }
 
 function scrape_all_scraper() {
     local system
     while read system; do
-        system=${system/$romdir\//}
+        system=$(basename $system)
         scrape_scraper "$system" "$@" || return 1
     done < <(list_systems_scraper)
 }
@@ -152,7 +118,7 @@ function scrape_chosen_scraper() {
     local system
     local i=1
     while read system; do
-        system=${system/$romdir\//}
+        system=$(basename $system)
         options+=($i "$system" OFF)
         ((i++))
     done < <(list_systems_scraper)
@@ -191,7 +157,7 @@ function _load_config_scraper() {
 }
 
 function gui_scraper() {
-    if pgrep "emulationsssstatio" >/dev/null; then
+    if pgrep "emulationstation" >/dev/null; then
         printMsgs "dialog" "This scraper must not be run while Emulation Station is running or the scraped data will be overwritten. \n\nPlease quit from Emulation Station, and run RetroPie-Setup from the terminal"
         return
     fi
@@ -273,7 +239,6 @@ function gui_scraper() {
         options+=(W "Max image width ($max_width)")
         options+=(H "Max image height ($max_height)")
 
-        options+=(U "Update scraper to the latest version")
         local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
         if [[ -n "$choice" ]]; then
             default="$choice"

@@ -14,40 +14,6 @@ rp_module_desc="Scraper for EmulationStation by Lars Muldjord"
 rp_module_licence="GPLv3.0 https://raw.githubusercontent.com/muldjord/skyscraper/master/LICENSE"
 rp_module_section="exp"
 
-function depends_skyscraper() {
-    getDepends qt5-default p7zip-full
-}
-
-function sources_skyscraper() {
-    gitPullOrClone "$md_build" "https://github.com/muldjord/skyscraper" "$(_latest_ver_skyscraper)"
-}
-
-function build_skyscraper() {
-    qmake
-    make
-    md_ret_require="$md_build/Skyscraper"
-}
-
-function install_skyscraper() {
-    md_ret_files=(
-        'Skyscraper'
-        'LICENSE'
-        'README.md'
-        'config.ini.example'
-        'artwork.xml'
-        'artwork.xml.example1'
-        'artwork.xml.example2'
-        'artwork.xml.example3'
-        'artwork.xml.example4'
-        'tgdb_developers.json'
-        'tgdb_publishers.json'
-        'mameMap.csv'
-        'aliasMap.csv'
-        'hints.txt'
-        'import'
-        'resources'
-    )
-}
 
 # Get the location of the cached resources folder. In v3+, this changed to 'cache'.
 # Note: the cache folder might be unavailable during first time installations
@@ -129,7 +95,7 @@ function _latest_ver_skyscraper() {
 
 # List any non-empty systems found in the ROM folder
 function _list_systems_skyscraper() {
-    find -L "$romdir/" -mindepth 1 -maxdepth 1 -type d -not -empty | sort -u
+    find -L "$romdir" -mindepth 1 -maxdepth 1 -type d | sort
 }
 
 function remove_skyscraper() {
@@ -184,7 +150,7 @@ function configure_skyscraper() {
 }
 
 function _init_config_skyscraper() {
-    local md_conf_dir="$configdir/all/skyscraper"
+    local md_conf_dir="/storage/.skyscraper"
 
     # Make sure the `artwork.xml` and other conf file(s) are present, but don't overwrite them on upgrades
     local f_conf
@@ -281,7 +247,7 @@ function _scrape_skyscraper() {
 
     # trap ctrl+c and return if pressed (rather than exiting retropie-setup etc)
     trap 'trap 2; return 1' INT
-        sudo -u "$user" stdbuf -o0  "$md_inst/Skyscraper" "${params[@]}"
+        "/usr/bin/Skyscraper" "${params[@]}"
         echo -e "\nCOMMAND LINE USED:\n $md_inst/Skyscraper" "${params[@]}"
         sleep 2
     trap 2
@@ -294,7 +260,7 @@ function _scrape_chosen_skyscraper() {
     local i=1
 
     while read system; do
-        system=${system/$romdir\//}
+        system=$(basename $system)
         options+=($i "$system" OFF)
         ((i++))
     done < <(_list_systems_skyscraper)
@@ -331,7 +297,7 @@ function _generate_chosen_skyscraper() {
     local i=1
 
     while read system; do
-        system=${system/$romdir\//}
+        system=$(basename $system)
         options+=($i "$system" OFF)
         ((i++))
     done < <(_list_systems_skyscraper)
@@ -358,7 +324,7 @@ function _generate_chosen_skyscraper() {
 function _load_config_skyscraper() {
     echo "$(loadModuleConfig \
         'rom_name=0' \
-        'use_rom_folder=0' \
+        'use_rom_folder=1' \
         'download_videos=0' \
         'cache_marquees=1' \
         'cache_covers=1' \
@@ -374,12 +340,9 @@ function _load_config_skyscraper() {
 function _open_editor_skyscraper() {
     local editor
 
-    if [[ -n $(command -v sensible-editor) ]]; then
-        sudo -u "$user" sensible-editor "$1" > /dev/tty < /dev/tty
-    else
-        editor="${EDITOR:-nano}"
-        sudo -u "$user" $editor "$1" > /dev/tty < /dev/tty
-    fi
+    
+        nano "$1" > /dev/tty < /dev/tty
+    
 }
 
 function _gui_advanced_skyscraper() {
@@ -411,15 +374,15 @@ function _gui_advanced_skyscraper() {
             case "$choice" in
 
                 E)
-                    _open_editor_skyscraper "$configdir/all/skyscraper/config.ini"
+                    _open_editor_skyscraper "/storage/.skyscraper/config.ini"
                     ;;
 
                 F)
-                    _open_editor_skyscraper "$configdir/all/skyscraper/artwork.xml"
+                    _open_editor_skyscraper "/storage/.skyscraper/artwork.xml"
                     ;;
 
                 G)
-                    _open_editor_skyscraper "$configdir/all/skyscraper/aliasMap.csv"
+                    _open_editor_skyscraper "/storage/.skyscraper/aliasMap.csv"
                     ;;
 
                 HELP*)
@@ -622,16 +585,6 @@ function gui_skyscraper() {
 
                 A)
                     _gui_advanced_skyscraper
-                    ;;
-
-                U)
-                    # Update to lastest release or check for update
-                    if [[ -n "$latest_ver" ]] && compareVersions "$latest_ver" gt "$ver" ; then
-                        rp_callModule "$md_id"
-                    else 
-                        latest_ver=$(_latest_ver_skyscraper)
-                        printMsgs "dialog" "Skyscraper latest released version is $latest_ver"
-                    fi
                     ;;
 
                 HELP*)
