@@ -20,7 +20,7 @@ PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
 PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2 m64p mupen64plus-nx fba4arm"
-PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB retropie linux-utils xmlstarlet"
+PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB retropie linux-utils xmlstarlet CoreELEC-Debug-Scripts"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
