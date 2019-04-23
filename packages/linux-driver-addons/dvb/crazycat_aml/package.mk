@@ -45,6 +45,7 @@ make_target() {
   echo "obj-y += video_dev/" >> "$PKG_BUILD/linux/drivers/media/platform/meson/Makefile"
   echo "obj-y += dvb/" >> "$PKG_BUILD/linux/drivers/media/platform/meson/Makefile"
   echo 'source "drivers/media/platform/meson/dvb/Kconfig"' >>  "$PKG_BUILD/linux/drivers/media/platform/Kconfig"
+  sed -e 's/ && RC_CORE//g' -i $PKG_BUILD/linux/drivers/media/usb/dvb-usb/Kconfig
  
   # make config all
   kernel_make VER=$KERNEL_VER SRCDIR=$(kernel_path) allyesconfig
@@ -53,7 +54,6 @@ make_target() {
   sed '/CONFIG_VIDEO_S5C73M3=m/d' -i $PKG_BUILD/v4l/.config
 
   # enable AML drivers
-  echo "CONFIG_IR_MESON=m" >> $PKG_BUILD/v4l/.config
   echo "CONFIG_V4L_AMLOGIC_VIDEO=m" >> $PKG_BUILD/v4l/.config
   echo "CONFIG_VIDEOBUF_RESOURCE=m" >> $PKG_BUILD/v4l/.config
 
