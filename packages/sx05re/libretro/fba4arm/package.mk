@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
 
 PKG_NAME="fba4arm"
-PKG_VERSION="abf4335db670096dfe7ebbc8dfff873613db465d"
-PKG_SHA256=""
+PKG_VERSION="a07e33f59657691561f7f488b16a94478b72df4d"
+PKG_SHA256="85d25963f6d59fdfa57a784d727206f676dd12af88c3a4a065429673724c1543"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="Non-commercial"
