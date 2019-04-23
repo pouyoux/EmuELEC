@@ -13,26 +13,26 @@ PKG_PATCH_DIRS="$KODI_VENDOR"
 
 case $KODI_VENDOR in
   amlogic-4.9)
-    PKG_VERSION="9602067d12755a98820e7324aa674d6665e70714"
-    PKG_SHA256="4f7f72542d32d327d58a6bd5f81fac2a6499d8534f9a362ed6ded0c0de6ce5ac"
+    PKG_VERSION="ef3b1dacba6240698ba2cebe93d20a28a2d3250c"
+    PKG_SHA256="c2a6a0b66db428775b92eca186f7975ee7bc882d1618d1388db933d62d9ae33a"
     PKG_URL="https://github.com/CoreELEC/xbmc/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="kodi-$PKG_VERSION.tar.gz"
     ;;
   raspberrypi)
-    PKG_VERSION="newclock5_18.2rc1-Leia"
-    PKG_SHA256="05ed821ae667b93876279fa556405976b854763c9859a3fed2c6eeb1ad51d915"
+    PKG_VERSION="newclock5_18.2-Leia"
+    PKG_SHA256="ff3f1770dd7a3223fb1f9441c0abf028bb4c3d406c5d9ba6fe202872b7237ee5"
     PKG_URL="https://github.com/popcornmix/xbmc/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="kodi-$KODI_VENDOR-$PKG_VERSION.tar.gz"
     ;;
   rockchip)
-    PKG_VERSION="rockchip_18.2rc1-Leia"
-    PKG_SHA256="e3275c17164f120d8b66bab5e8d62d3e5215af5e88c7bea3e391ac560e6a3e28"
+    PKG_VERSION="rockchip_18.2-Leia"
+    PKG_SHA256="437b3608bb4ddb4703cc2ee86acb0a4065846244b84fe555d9f4c7b74a49b263"
     PKG_URL="https://github.com/kwiboo/xbmc/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="kodi-$KODI_VENDOR-$PKG_VERSION.tar.gz"
     ;;
   *)
-    PKG_VERSION="18.2rc1-Leia"
-    PKG_SHA256="da9f4b9be427031665ac736319aa60d4463b9cb8b27daf35c11d91fb16761422"
+    PKG_VERSION="18.2-Leia"
+    PKG_SHA256="07b8cffc396473523a51354dc95dfffb54a6a456b82cda7ad67dc2c052d99f64"
     PKG_URL="https://github.com/xbmc/xbmc/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="kodi-$PKG_VERSION.tar.gz"
     ;;
@@ -193,6 +193,10 @@ configure_package() {
     KODI_ARCH="-DWITH_ARCH=$TARGET_ARCH"
   fi
 
+  if [ "$DEVICE" = "Amlogic" -o "$DEVICE" = "Amlogic-ng" ]; then
+    PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET amlogic-displayinfo-addon"
+  fi
+
   if [ "$DEVICE" = "Slice" -o "$DEVICE" = "Slice3" ]; then
     PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET led_tools"
   fi
@@ -338,17 +342,12 @@ post_makeinstall_target() {
     xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.program.driverselect" $ADDON_MANIFEST
   fi
 
-  if [ "$DEVICE" = "Slice" -o "$DEVICE" = "Slice3" ]; then
-    xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "service.slice" $ADDON_MANIFEST
+  if [ "$PROJECT" = "Amlogic-ng" -o "$PROJECT" = "Amlogic" ]; then
+    xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "script.amlogic.displayinfo" $ADDON_MANIFEST
   fi
 
-  if [ -d $ROOT/addons ]; then
-    mkdir -p $INSTALL/usr/share/kodi/addons
-    for i in `ls $ROOT/addons | grep zip`
-    do
-      unzip $ROOT/addons/$i -d $INSTALL/usr/share/kodi/addons
-      xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "`unzip -p $ROOT/addons/$i */addon.xml | awk -F= '/addon\ id=/ { print $2 }' | awk -F'"' '{ print $2 }'`" $ADDON_MANIFEST
-    done
+  if [ "$DEVICE" = "Slice" -o "$DEVICE" = "Slice3" ]; then
+    xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "service.slice" $ADDON_MANIFEST
   fi
 
   # more binaddons cross compile badness meh
