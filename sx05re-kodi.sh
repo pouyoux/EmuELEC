@@ -351,22 +351,22 @@ ROMFILE="sx05reroms"
 FULLPATHTOROMS="\$(find /media/*/roms/ -name \$ROMFILE -maxdepth 1)"
 
 if [[ -z "\${FULLPATHTOROMS}" ]]; then
-# echo "can't find roms"
-
-    if [ ! -e /storage/roms ]; then
-      rm /storage/roms
-      mv /storage/roms2 /storage/roms
+# echo "can't find roms marker file"
+    if [[ ! -e /storage/roms && /storage/roms2 ]]; then
+        mv /storage/roms2 /storage/roms
     fi
-    else
-      mv /storage/roms /storage/roms2
-      #echo "move the roms folder"
+else
+    mv /storage/roms /storage/roms2
+    # echo "move the roms folder"
  
-       # we strip the name of the file.
-       PATHTOROMS=\${FULLPATHTOROMS%\$ROMFILE}
+    # we strip the name of the file.
+    PATHTOROMS=\${FULLPATHTOROMS%\$ROMFILE}
 
-       #we create the symlink to the roms in our USB
-       ln -sTf \$PATHTOROMS /storage/roms
- fi
+    # we create the symlink to the roms in our USB
+    ln -sTf \$PATHTOROMS /storage/roms
+    # now we can move the marker file as we don't want to create recursive links
+    mv \$PATHTOROMS \$PATHTOROMS.bak
+fi
 
 exit 0
 EOF
