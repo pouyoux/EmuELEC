@@ -2,47 +2,54 @@
 
 # Kodi seems to set its own FB settings for 720p, so we revert them to one that work on ES, I use all resolutions just in case :)
 /usr/bin/setres.sh
-SPLASH="/usr/config/splash/splash-1080.png"
-(
-  mpv $SPLASH > /dev/null 2>&1
-)&
 
-sleep 2
-# Lets try and find some roms on a mounted USB drive
 # Since the ROMS folder is not getting created at boot, we check if it exists, if it doesn't then we create it.
 if [ ! -d "/storage/roms" ] && [ ! -d "/storage/roms2" ]; then
   mkdir /storage/roms
-
-all_roms="atari2600,atari5200,atari7800,atarilynx,BGM,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,tg16,tg16cd,videopac,zxspectrum"
-
+  all_roms="atari2600,atari5200,atari7800,atarilynx,BGM,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,tg16,tg16cd,videopac,zxspectrum"
 for romfolder in $(echo $all_roms | tr "," " "); do
   mkdir -p /storage/roms/$romfolder
 done
-
 fi
 
+# Lets try and find some roms on a mounted USB drive
 # name of the file we need to put in the roms folder in your USB or SDCARD
 ROMFILE="emuelecroms"
 
-# we look for the file in the rompath
-FULLPATHTOROMS="$(find /media/*/roms/ -maxdepth 1 -name $ROMFILE)"
+# Only run the USB check if the ROMFILE does not exists in /storage/roms, this can help for manually created symlinks or network shares
+# or if you want to skip the USB rom mount for whatever reason
+if  [ ! -f "/storage/roms/$ROMFILE" ]; then
+
+# if the file is not present then we look for the file in connected USB media
+FULLPATHTOROMS="$(find /media/*/roms/ -name $ROMFILE -maxdepth 1)"
 
 if [[ -z "${FULLPATHTOROMS}" ]]; then
-# echo "can't find roms on USB"
-
-    if [ ! -e /storage/roms ]; then
+# Can't find the ROMFILE, if the symlink exists, then remove it and restore the backup if it exists
+  if [ -L "/storage/roms" ]; then
       rm /storage/roms
+     if [ -d "/storage/roms2" ]; then
       mv /storage/roms2 /storage/roms
- fi
-    else
-      mv /storage/roms /storage/roms2
-      #echo "move the roms folder"
+     fi 
+  fi
+else
 
-       # we strip the name of the file.
-       PATHTOROMS=${FULLPATHTOROMS%$ROMFILE}
+# We back up the roms folder just in case
+  mv /storage/roms /storage/roms2
+# we strip the name of the file.
+  PATHTOROMS=${FULLPATHTOROMS%$ROMFILE}
 
-       #we create the symlink to the roms in our USB
-       ln -sf $PATHTOROMS /storage/roms
- fi
+# this might be overkill but we need to double check that there is no symlink to roms folder already
+# only delete the symlink if the ROMFILE is found.
+# this could be bad if you manually create the symlink, but if you do that, then you know how to edit this file :) 
+# but we need to find a better way
+       
+if  [ -L "/storage/roms" ]; then
+ rm /storage/roms
+fi 
+   
+# All the sanity checks have passed, we have a ROMFILE so we create the symlink to the roms in our USB
+    ln -sTf "$PATHTOROMS" /storage/roms
+  fi 
+fi 
 
 exit 0
