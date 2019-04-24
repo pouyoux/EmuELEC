@@ -5,7 +5,7 @@ ConditionPathExists=/var/lock/start.games
 [Service]
 Environment=HOME=/storage
 ExecStartPre=/usr/bin/emustation-config
-ExecStartPre=/usr/bin/killkodi.sh
+ExecStartPre=/usr/bin/killes.sh
 ExecStart=/usr/bin/emulationstation
 KillMode=process
 TimeoutStopSec=3
