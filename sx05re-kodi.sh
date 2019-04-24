@@ -344,29 +344,42 @@ read -d '' content <<EOF
 
 /storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh
 
-#name of the file we need to put in the roms folder in your USB or SDCARD 
+# Name of the file we need to put in the roms folder in your USB or SDCARD 
 ROMFILE="sx05reroms"
 
-# we look for the file in the rompath
+# Only run the USB check if the ROMFILE does not exists in /storage/roms, this can help for manually created symlinks or network shares
+# or if you want to skip the USB rom mount for whatever reason
+if  [ ! -f "/storage/roms/\$ROMFILE" ]; then
+
+# if the file is not present then we look for the file in connected USB media
 FULLPATHTOROMS="\$(find /media/*/roms/ -name \$ROMFILE -maxdepth 1)"
 
 if [[ -z "\${FULLPATHTOROMS}" ]]; then
-# echo "can't find roms marker file"
-    if [[ ! -e /storage/roms && /storage/roms2 ]]; then
-        mv /storage/roms2 /storage/roms
-    fi
-else
-    mv /storage/roms /storage/roms2
-    # echo "move the roms folder"
- 
-    # we strip the name of the file.
-    PATHTOROMS=\${FULLPATHTOROMS%\$ROMFILE}
+# "can't find the ROMFILE", if the symlink exists, then remove it and restore the backup if it exists
 
-    # we create the symlink to the roms in our USB
+  if [ -L "/storage/roms" ]; then
+      rm /storage/roms
+     if [ -d "/storage/roms2" ]; then
+      mv /storage/roms2 /storage/roms
+     fi 
+  fi
+    else
+      # we back up the roms folder just in case
+      mv /storage/roms /storage/roms2
+      
+       # we strip the name of the file.
+        PATHTOROMS=\${FULLPATHTOROMS%\$ROMFILE}
+
+	# this might be overkill but we need to double check that there is no symlink to roms folder already
+	# only delete the symlink if the ROMFILE is found.
+	# We could probably find a better way 
+        if  [ -L "/storage/roms" ]; then
+         rm /storage/roms
+        fi 
+    # All the sanity checks have passed, we have a ROMFILE so we create the symlink to the roms in our USB
     ln -sTf \$PATHTOROMS /storage/roms
-    # now we can move the marker file as we don't want to create recursive links
-    mv \$PATHTOROMS \$PATHTOROMS.bak
-fi
+  fi 
+fi 
 
 exit 0
 EOF
