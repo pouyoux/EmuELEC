@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="easyrpg"
-PKG_VERSION="279f3f3e278781672f453accc9bd6e91fdad9591"
-PKG_SHA256="ac25490d4df61bbc2ae0739fc9f6ec2b0f6891c0d0e380c51c117ae3c58535cd"
+PKG_VERSION="b53bdb118925dd81ae462cc30d97382d13ee55da"
+PKG_SHA256="295c49f3a405784ec66b3bf5c6db10f67d399c7c102877acd050ddaa510c8d08"
 PKG_REV="2"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv3"
