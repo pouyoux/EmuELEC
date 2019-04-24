@@ -251,7 +251,12 @@ EOF
   mcopy "${TARGET_IMG}/${IMAGE_NAME}.system" ::/SYSTEM
   mcopy "${RELEASE_DIR}/target/KERNEL.md5" "::/${KERNEL_NAME}.md5"
   mcopy "${RELEASE_DIR}/target/SYSTEM.md5" ::/SYSTEM.md5
-
+  
+  # add wifi.txt for auto connection script
+  echo "ssid:password" > "${RELEASE_DIR}/wifi.txt"
+  mcopy "${RELEASE_DIR}/wifi.txt" ::/wifi.txt
+  rm "${RELEASE_DIR}/wifi.txt"
+   
 elif [ "${BOOTLOADER}" = "u-boot" ]; then
   echo "to make an image using u-boot UBOOT_SYSTEM must be set"
   cleanup
