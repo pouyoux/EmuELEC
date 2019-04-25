@@ -54,6 +54,21 @@ case $1 in
 "DRASTIC")
 	RUNTHIS='/storage/.emulationstation/scripts/drastic.sh "$2"'
 		;;
+"N64")
+    if [ "$EMU" = "M64P" ]; then
+	RUNTHIS='bash /usr/bin/m64p.start "$2"'
+	fi
+		;;
+"AMIGA")
+    if [ "$EMU" = "AMIBERRY" ]; then
+	RUNTHIS='bash /usr/bin/amiberry.start "$2"'
+	fi
+		;;
+"DOSBOX")
+    if [ "$EMU" = "DOSBOXSDL2" ]; then
+	RUNTHIS='bash /usr/bin/dosbox.start "$2"'
+	fi
+		;;		
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
    #PPSSPP can run at 32BPP but only with buffered rendering, some games need non-buffered and the only way they work is if I set it to 16BPP

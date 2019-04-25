@@ -11,7 +11,7 @@ case "$1" in
 	echo "PPSSPPSA,ppsspp"
 	;;
 "n64")
-	echo "mupen64plus,parallel_n64"
+	echo "mupen64plus,parallel_n64,mupen64plus_next,M64P"
 	;;
 "nes")
 	echo "nestopia,fceumm,quicknes"
@@ -27,5 +27,11 @@ case "$1" in
 	;;
 "gbc")
 	echo "gambatte,gearboy,tgbdual"
+	;;
+"amiga")
+	echo "AMIBERRY,puae"
+	;;
+"dosbox")
+	echo "dosbox,DOSBOXSDL2"
 	;;
 esac

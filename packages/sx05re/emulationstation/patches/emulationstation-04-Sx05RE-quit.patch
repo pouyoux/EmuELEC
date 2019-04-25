@@ -1,7 +1,7 @@
 diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 --- a/es-app/src/guis/GuiMenu.cpp	Thu Jun 08 07:58:22 2017
 +++ b/es-app/src/guis/GuiMenu.cpp	Thu Jun 08 16:55:16 2017
-@@ -707,42 +707,52 @@
+@@ -470,42 +931,52 @@
  	Window* window = mWindow;
  
  	ComponentListRow row;
@@ -79,7 +79,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  				LOG(LogWarning) << "Restart terminated with non-zero result!";
  		}, "NO", nullptr));
  	});
-@@ -755,7 +765,7 @@
+@@ -518,7 +989,7 @@
  			[] {
  			Scripting::fireEvent("quit", "shutdown");
  			Scripting::fireEvent("shutdown");
