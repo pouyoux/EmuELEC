@@ -14,6 +14,8 @@ PKG_TOOLCHAIN="manual"
 
 pre_configure_target() {
   sed -i "s|cpp -include jpeglib.h|$CPP -include $SYSROOT_PREFIX/usr/include/jpeglib.h|" GNUmakefile
+  sed -i "s|LIRC||" GNUmakefile
+  
 
   CFLAGS="$CFLAGS -I$(get_build_dir libepoxy)/include"
 }
