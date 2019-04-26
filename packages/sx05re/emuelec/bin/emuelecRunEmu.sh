@@ -28,7 +28,7 @@ case $1 in
 	RUNTHIS='/usr/bin/openbor.sh "$2"'
 		;;
 "RETROPIE")
-	RUNTHIS='bash /retropie/scripts/fbterm.sh "$2"'
+	RUNTHIS='bash /emuelec/scripts/fbterm.sh "$2"'
 		;;
 "LIBRETRO")
 	RUNTHIS='/usr/bin/retroarch -v -L /tmp/cores/$2_libretro.so "$3"'
