@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Kodi seems to set its own FB settings for 720p, so we revert them to one that work on ES, I use all resolutions just in case :)
-/usr/bin/setres.sh
+/emuelec/scripts/setres.sh
 
 # Since the ROMS folder is not getting created at boot, we check if it exists, if it doesn't then we create it.
 if [ ! -d "/storage/roms" ] && [ ! -d "/storage/roms2" ]; then

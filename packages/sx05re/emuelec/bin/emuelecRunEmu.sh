@@ -1,6 +1,5 @@
 #!/bin/sh
 
-hdmimode=`cat /sys/class/display/mode`;
 arguments="$@"
 
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
@@ -9,18 +8,7 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	fi
 fi
 
-# Set framebuffer geometry to match the resolution, splash should change according to the resolution. 
-case $hdmimode in
-  480*)            X=720  Y=480  SPLASH="/storage/.config/splash/loading-game.png" ;;
-  576*)            X=720  Y=576  SPLASH="/storage/.config/splash/loading-game.png" ;;
-  720p*)           X=1280 Y=720  SPLASH="/storage/.config/splash/loading-game.png" ;;
-  *)               X=1920 Y=1080 SPLASH="/storage/.config/splash/loading-game.png" ;;
-esac
-
-# Splash screen, not sure if this is the best way to do it, but it works so far, but not as good as I want it too with PPSSPPSDL and advmame :(
-(
-  mpv $SPLASH > /dev/null 2>&1
-)&
+/emuelec/scripts/show_splash.sh
 
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
@@ -56,7 +44,7 @@ case $1 in
 		;;
 "N64")
     if [ "$EMU" = "M64P" ]; then
-	RUNTHIS='bash /usr/bin/m64p.start "$2"'
+	RUNTHIS='bash /usr/bin/m64p.sh "$2"'
 	fi
 		;;
 "AMIGA")
@@ -72,7 +60,7 @@ case $1 in
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
    #PPSSPP can run at 32BPP but only with buffered rendering, some games need non-buffered and the only way they work is if I set it to 16BPP
-   /usr/bin/setres.sh 16
+	/emuelec/scripts/setres.sh 16
    RUNTHIS='/usr/bin/ppsspp.sh "$2"'
       fi
         ;;
@@ -110,9 +98,9 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 fi
 
 # Return to default mode
-/usr/bin/setres.sh
+/emuelec/scripts/setres.sh
 
 # Only run resetfb if it exists, mainly for N2
-if [ -f "/usr/bin/resetfb.sh" ]; then
-/usr/bin/resetfb.sh
+if [ -f "/emuelec/scripts/resetfb.sh" ]; then
+/emuelec/scripts/resetfb.sh
 fi

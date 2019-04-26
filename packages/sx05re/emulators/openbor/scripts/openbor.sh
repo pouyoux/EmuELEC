@@ -5,6 +5,8 @@
 # after you set up your gamne, copy the /storage/.config/openbor/Saves/{gamename}.cfg file to /storage/.config/openbor/master.cfg
 # master.cfg will only be copied the first time you run that particular game.
 
+/emuelec/scripts/setres.sh 16
+
 pakname=$(basename "$1")
 pakname="${pakname%.*}"
 
@@ -27,3 +29,5 @@ echo $pakname
 
 # Delete Pak from temp folder
 	rm -rf /storage/.config/openbor/Paks/*
+
+/emuelec/scripts/setres.sh

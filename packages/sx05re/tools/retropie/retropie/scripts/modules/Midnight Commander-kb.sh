@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /retropie/scripts/env.sh
+source /emuelec/scripts/env.sh
 joy2keyStart
 
 mc -a

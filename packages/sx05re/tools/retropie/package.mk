@@ -20,8 +20,8 @@ PKG_TOOLCHAIN="manual"
 
 make_target() {
    
-  mkdir -p $INSTALL/usr/config/retropie/
-    cp -rf $PKG_DIR/retropie/* $INSTALL/usr/config/retropie/
-    ln -sf /storage/.config/retropie $INSTALL/retropie
-    find $INSTALL/usr/config/retropie/ -type f -exec chmod o+x {} \;
+  mkdir -p $INSTALL/usr/config/emuelec/
+    cp -rf $PKG_DIR/retropie/* $INSTALL/usr/config/emuelec/
+    ln -sf /storage/.config/emuelec $INSTALL/emuelec
+    find $INSTALL/usr/config/emuelec/ -type f -exec chmod o+x {} \;
    }

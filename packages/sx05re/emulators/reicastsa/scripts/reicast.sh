@@ -1,5 +1,7 @@
 #!/bin/sh
 
+/emuelec/scripts/setres.sh 16
+
 #set reicast BIOS dir to point to /storage/roms/bios/dc
 if [ ! -L /storage/.local/share/reicast/data ]; then
 	mkdir -p /storage/.local/share/reicast 
@@ -32,4 +34,5 @@ done
 
 /usr/bin/reicast "$1"
 
+/emuelec/scripts/setres.sh
  

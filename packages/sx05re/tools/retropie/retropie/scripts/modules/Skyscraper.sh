@@ -4,7 +4,7 @@ if [ ! -L "/storage/.skyscraper" ]
 ln -sTf /storage/.config/skyscraper /storage/.skyscraper
 fi
 
-source /retropie/scripts/env.sh
+source /emuelec/scripts/env.sh
 source "$scriptdir/scriptmodules/supplementary/skyscraper.sh"
 rp_registerAllModules
 
@@ -17,7 +17,7 @@ function scrape_confirm() {
  }
 
 function start_skyscraper() {
-systemd-run bash /retropie/scripts/fbterm.sh /retropie/scripts/modules/Skyscraper.start
+systemd-run bash /emuelec/scripts/fbterm.sh /emuelec/scripts/modules/Skyscraper.start
 systemctl stop emustation
 }
 

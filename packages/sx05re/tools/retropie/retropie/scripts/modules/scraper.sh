@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /retropie/scripts/env.sh
+source /emuelec/scripts/env.sh
 source "$scriptdir/scriptmodules/supplementary/esthemes.sh"
 rp_registerAllModules
 
@@ -13,7 +13,7 @@ function scrape_confirm() {
  }
 
 function start_scraper() {
-systemd-run bash /retropie/scripts/fbterm.sh /retropie/scripts/modules/scraper.start
+systemd-run bash /emuelec/scripts/fbterm.sh /emuelec/scripts/modules/scraper.start
 systemctl stop emustation
 }
 

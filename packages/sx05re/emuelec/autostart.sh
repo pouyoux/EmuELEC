@@ -1,5 +1,7 @@
 #!/bin/sh
 
+/emuelec/scripts/setres.sh
+
 # It seems some slow SDcards have a problem creating the symlink on time :/
 CONFIG_DIR="/storage/.emulationstation"
 CONFIG_DIR2="/storage/.config/emulationstation"
@@ -8,10 +10,7 @@ if [ ! -L "$CONFIG_DIR" ]; then
 ln -sf $CONFIG_DIR2 $CONFIG_DIR
 fi
 
-SPLASH="/usr/config/splash/splash-1080.png"
-(
-  mpv $SPLASH > /dev/null 2>&1
-)&
+/emuelec/scripts/show_splash.sh intro
 
 # Clean cache garbage when boot up.
 rm -rf /storage/.cache/cores/*
@@ -67,7 +66,7 @@ case "$DEFE" in
 	systemctl start retroarch
 	;;
 *)
-	/usr/bin/startfe.sh &
+	/emuelec/scripts/startfe.sh &
 	;;
 esac
 

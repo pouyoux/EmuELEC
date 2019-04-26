@@ -7,9 +7,6 @@ if [ ! -d "$CONFIG_DIR" ]; then
  cp -rf /usr/share/advance/* $CONFIG_DIR/
 fi
 
-
-
-
 ARG=$(echo basename $1 | sed 's/\.[^.]*$//')
 ARG="$(echo $1 | sed 's=.*/==;s/\.[^.]*$//')"         
 

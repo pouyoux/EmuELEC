@@ -14,7 +14,7 @@
 
 ### global vars ###
 
-source /retropie/scripts/env.sh
+source /emuelec/scripts/env.sh
 source "$scriptdir/scriptmodules/supplementary/esthemes.sh"
 rp_registerAllModules
 

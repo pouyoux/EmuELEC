@@ -39,7 +39,7 @@ function depends_bluetooth() {
 
 function get_script_bluetooth() {
     name="$1"
-    name="/retropie/scriptmodules/supplementary/bluetooth/$name"
+    name="/emuelec/scriptmodules/supplementary/bluetooth/$name"
     echo "$name"
 }
 

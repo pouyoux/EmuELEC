@@ -27,11 +27,11 @@ makeinstall_target() {
   cp $(get_build_dir mupen64plus-video-glide64mk2)/data/* $INSTALL/usr/config/mupen64plus
 
   # Install libs
-  cp $(get_build_dir mupen64plus-v20-gliden64)/libGLideN64.so $INSTALL/usr/lib/mupen64plus/mupen64plus-video-gliden64.so
+  cp $(get_build_dir mupen64plus-v20-gliden64)/libmupen64plus-video-GLideN64.so $INSTALL/usr/lib/mupen64plus
   cp $(get_build_dir mupen64plus-video-glide64mk2)/*-video-glide64mk2.so $INSTALL/usr/lib/mupen64plus
   cp $(get_build_dir mupen64plus-audio-sdl2)/*.so  $INSTALL/usr/lib/mupen64plus
   cp -P $(get_build_dir mupen64plus-core)/*.so*    $INSTALL/usr/lib/mupen64plus
   cp $(get_build_dir mupen64plus-input-sdl)/*.so   $INSTALL/usr/lib/mupen64plus
   cp $(get_build_dir mupen64plus-rsp-hle)/*.so     $INSTALL/usr/lib/mupen64plus
-  # cp $PKG_DIR/batocera/mupen64plus-video-gliden64.so $INSTALL/usr/lib/mupen64plus
+  cp $PKG_DIR/batocera/mupen64plus-video-gliden64.so $INSTALL/usr/lib/mupen64plus
     }

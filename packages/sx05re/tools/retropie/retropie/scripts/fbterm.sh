@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/retropie/lib
-export PATH=$PATH:/retropie/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/emuelec/lib
+export PATH=$PATH:/emuelec/bin
 
-source /retropie/scriptmodules/helpers.sh
+source /emuelec/scriptmodules/helpers.sh
 
 fbterm "$1" -s 24 < /dev/tty1
 

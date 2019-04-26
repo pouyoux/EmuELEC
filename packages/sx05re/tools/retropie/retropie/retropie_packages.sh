@@ -14,7 +14,7 @@ __version="4.4.9"
 [[ "$__debug" -eq 1 ]] && set -x
 
 # main retropie install location
-rootdir="/retropie"
+rootdir="/emuelec"
 
 # if __user is set, try and install for that user, else use SUDO_USER
 if [[ -n "$__user" ]]; then
@@ -29,7 +29,7 @@ else
 fi
 
 home="/storage"
-datadir="$home/.config/retropie/RetroPie"
+datadir="$home/.config/emuelec/RetroPie"
 romdir="$home/roms"
 biosdir="$romdir/BIOS"
 emudir="$rootdir/emulators"

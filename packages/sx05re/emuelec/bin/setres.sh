@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Read the video output mode and set it for emuelec to avoid video flicking.
 MODE=`cat /sys/class/display/mode`;
 
@@ -10,7 +12,12 @@ case "$1" in
 	;;
 esac
 
-	BPP=32
+#if [ -e /proc/device-tree/mali@d00c0000/compatible ]; then
+ BPP=32
+#elif [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
+#  BPP=16
+#fi
+
 case "$MODE" in
 "480p60hz")
 	fbset -fb /dev/fb0 -g 720 480 720 960 $BPP

@@ -20,7 +20,7 @@ PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
 PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2 m64p mupen64plus-nx fba4arm"
-PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher mpv SDL_GameControllerDB retropie linux-utils xmlstarlet CoreELEC-Debug-Scripts"
+PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher fbida mpv SDL_GameControllerDB retropie linux-utils xmlstarlet CoreELEC-Debug-Scripts"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
@@ -43,11 +43,23 @@ makeinstall_target() {
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/
     cp $PKG_DIR/autostart.sh $INSTALL/usr/config/autostart.sh
  
-  mkdir -p $INSTALL/usr/bin/
-    cp $PKG_DIR/bin/* $INSTALL/usr/bin/
-    chmod +x $INSTALL/usr/bin/*
+    mkdir -p $INSTALL/usr/config/emuelec/scripts
+    cp $PKG_DIR/bin/* $INSTALL/usr/config/emuelec/scripts
+    chmod +x $INSTALL/usr/config/emuelec/scripts/*
     
+    mkdir -p $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/clearconfig.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/emuelecRunEmu.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/emulationstation.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/emustation-config $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/gamelist-cleaner.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/killes.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/resetfb.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/setres.sh $INSTALL/usr/bin/
+    ln -sf /storage/.config/emuelec/scripts/startfe.sh $INSTALL/usr/bin/
+
     if [ "$PROJECT" != "Amlogic-ng" ]; then
+    rm $INSTALL/usr/config/emuelec/scripts/resetfb.sh
     rm $INSTALL/usr/bin/resetfb.sh
     fi 
 
