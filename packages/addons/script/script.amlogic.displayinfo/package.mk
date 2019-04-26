@@ -19,6 +19,7 @@ PKG_IS_ADDON="yes"
 PKG_ADDON_NAME="CoreELEC Display Info"
 PKG_ADDON_TYPE="xbmc.python.script"
 PKG_ADDON_PROJECTS="Amlogic Amlogic-ng"
+PKG_MAINTAINER="roidy"
 
 addon() {
  :
