@@ -425,11 +425,11 @@ function rp_registerModuleDir() {
 }
 
 function rp_registerAllModules() {
-    rp_registerModuleDir 100 "emulators"
-    rp_registerModuleDir 200 "libretrocores"
+  # rp_registerModuleDir 100 "emulators"
+  # rp_registerModuleDir 200 "libretrocores"
     rp_registerModuleDir 300 "ports"
     rp_registerModuleDir 800 "supplementary"
-    rp_registerModuleDir 900 "admin"
+  # rp_registerModuleDir 900 "admin"
 }
 
 function rp_getIdxFromId() {

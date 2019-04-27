@@ -1,7 +1,5 @@
-################################################################################
-#      This file is part of emuelec
-#      no copyright, do as you please :)
-################################################################################
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
 
 PKG_NAME="retropie"
 PKG_VERSION=""
