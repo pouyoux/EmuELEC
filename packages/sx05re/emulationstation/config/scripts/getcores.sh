@@ -4,6 +4,9 @@ case "$1" in
 "fba")
 	echo "fbalpha,mame2003_plus"
 	;;
+"arcade")
+	echo "mame2003_plus,mame2003,mame2003-midway,AdvanceMame,mame2010,mame2014"
+	;;
 "mame")
 	echo "mame2003_plus,mame2003,mame2003-midway,AdvanceMame,mame2010,mame2014"
 	;;
@@ -33,5 +36,8 @@ case "$1" in
 	;;
 "dosbox")
 	echo "dosbox,DOSBOXSDL2"
+	;;
+"dreamcast")
+	echo "REICASTSA,reicast"
 	;;
 esac

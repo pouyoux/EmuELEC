@@ -34,10 +34,13 @@ case $1 in
 	RUNTHIS='/usr/bin/retroarch -v -L /tmp/cores/$2_libretro.so "$3"'
 		;;
 "REICAST")
+    if [ "$EMU" = "REICASTSA" ]; then
 	RUNTHIS='/usr/bin/reicast.sh "$2"'
-		;;
-"ADVMAME")
+	fi	;;
+"MAME"|"ARCADE")
+	if [ "$EMU" = "AdvanceMame" ]; then
 	RUNTHIS='/usr/bin/advmame.sh "$2"'
+	fi
 		;;
 "DRASTIC")
 	RUNTHIS='/storage/.emulationstation/scripts/drastic.sh "$2"'

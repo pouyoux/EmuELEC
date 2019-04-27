@@ -124,38 +124,38 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +		});
 +	
 +	 /* END CHOICE */
-+	     	/* CHOICE 	
++	     	/* CHOICE */	
 +	
-+	auto emuelec_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "MAME EMULATOR", false);
++	auto emuelec_dreamcast_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "DREAMCAST EMULATOR", false);
 +         emuchoices.clear();  
-+    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh mame)")); getline(ss, a, ','); )
++    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh dreamcast)")); getline(ss, a, ','); )
 +        emuchoices.push_back(a);
 +    
 +		for (auto it = emuchoices.cbegin(); it != emuchoices.cend(); it++)
-+		emuelec_mame_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_MAME_CORE") == *it);
-+		s->addWithLabel("MAME EMULATOR", emuelec_mame_def);
-+		s->addSaveFunc([emuelec_mame_def] {
-+			if (Settings::getInstance()->getString("EmuELEC_MAME_CORE") != emuelec_mame_def->getSelected())
-+				Settings::getInstance()->setString("EmuELEC_MAME_CORE", emuelec_mame_def->getSelected());
++		emuelec_dreamcast_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_DC_CORE") == *it);
++		s->addWithLabel("DREAMCAST EMULATOR", emuelec_dreamcast_def);
++		s->addSaveFunc([emuelec_dreamcast_def] {
++			if (Settings::getInstance()->getString("EmuELEC_DC_CORE") != emuelec_dreamcast_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_DC_CORE", emuelec_dreamcast_def->getSelected());
 +		});
 +	
-+	 END CHOICE */
-+	     	/* CHOICE 	
++	/* END CHOICE */
++	     	/* CHOICE */
 +	
-+	auto emuelec_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "MAME EMULATOR", false);
++	auto emuelec_arcade_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "ARCADE EMULATOR", false);
 +         emuchoices.clear();  
-+    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh mame)")); getline(ss, a, ','); )
++    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh arcade)")); getline(ss, a, ','); )
 +        emuchoices.push_back(a);
 +    
 +		for (auto it = emuchoices.cbegin(); it != emuchoices.cend(); it++)
-+		emuelec_mame_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_MAME_CORE") == *it);
-+		s->addWithLabel("MAME EMULATOR", emuelec_mame_def);
-+		s->addSaveFunc([emuelec_mame_def] {
-+			if (Settings::getInstance()->getString("EmuELEC_MAME_CORE") != emuelec_mame_def->getSelected())
-+				Settings::getInstance()->setString("EmuELEC_MAME_CORE", emuelec_mame_def->getSelected());
++		emuelec_arcade_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_ARCADE_CORE") == *it);
++		s->addWithLabel("ARCADE EMULATOR", emuelec_arcade_def);
++		s->addSaveFunc([emuelec_arcade_def] {
++			if (Settings::getInstance()->getString("EmuELEC_ARCADE_CORE") != emuelec_arcade_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_ARCADE_CORE", emuelec_arcade_def->getSelected());
 +		});
 +	
-+	 END CHOICE */
++	/* END CHOICE */
 +	     	/* CHOICE 	
 +	
 +	auto emuelec_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "MAME EMULATOR", false);
