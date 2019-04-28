@@ -10,6 +10,7 @@ export scriptdir="/emuelec"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/emuelec/lib
 export PATH=$PATH:/emuelec/bin
 
+user="root"
 rootdir="/emuelec"
 home="/storage"
 datadir="$home/.config/emuelec/RetroPie"
