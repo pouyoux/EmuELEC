@@ -167,7 +167,9 @@ if [ -d "$EMUELEC" ] ; then
 			echo -ne "\t$package "
 			SRC="$(find ${PACKAGES_SUBDIR} -wholename ${PACKAGES_SUBDIR}/*/${package}/package.mk -print -quit)"
 			if [ -f "$SRC" ] ; then
-				PKG_VERSION=`cat $SRC | grep -oP 'PKG_VERSION="\K[^"]+'`
+				#PKG_VERSION=`cat $SRC | grep -oP 'PKG_VERSION="\K[^"]+'`
+				# its better to just source the package.mk completeley to deal with the conditional bits
+				source $SRC
 			else
 				echo "(failed- no package.mk)"
 				exit 1
@@ -225,6 +227,8 @@ echo -ne "\tbinaries "
 mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
 rm -rf "${ADDON_DIR}/bin/assets"
 mv -v "${ADDON_DIR}/config/ppsspp/assets" "${ADDON_DIR}/bin" &>>"$LOG"
+cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/scripts/*.sh "${ADDON_DIR}/bin" &>>"$LOG"
+rm -rf "${ADDON_DIR}/config/emuelec"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tlibraries and cores "
 mv -v "${TARGET_DIR}/usr/lib" "${ADDON_DIR}/" &>>"$LOG"
