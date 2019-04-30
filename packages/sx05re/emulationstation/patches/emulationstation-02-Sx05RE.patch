@@ -132,11 +132,11 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +        emuchoices.push_back(a);
 +    
 +		for (auto it = emuchoices.cbegin(); it != emuchoices.cend(); it++)
-+		emuelec_dreamcast_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_DC_CORE") == *it);
++		emuelec_dreamcast_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_REICAST_CORE") == *it);
 +		s->addWithLabel("DREAMCAST EMULATOR", emuelec_dreamcast_def);
 +		s->addSaveFunc([emuelec_dreamcast_def] {
-+			if (Settings::getInstance()->getString("EmuELEC_DC_CORE") != emuelec_dreamcast_def->getSelected())
-+				Settings::getInstance()->setString("EmuELEC_DC_CORE", emuelec_dreamcast_def->getSelected());
++			if (Settings::getInstance()->getString("EmuELEC_REICAST_CORE") != emuelec_dreamcast_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_REICAST_CORE", emuelec_dreamcast_def->getSelected());
 +		});
 +	
 +	/* END CHOICE */
@@ -440,7 +440,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	row.makeAcceptInputHandler([window] {
 +		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL EMULATOR CONFIGS!!!!!!!!!! RESET EmuELEC EMULATORS TO DEFAULT AND RESTART?", "YES",
 +				[] { 
-+				runSystemCommand("/usr/bin/clearconfig.sh EMUS");
++				runSystemCommand("systemd-run /emuelec/scripts/clearconfig.sh EMUS");
 +				}, "NO", nullptr));
 +	});
 +	row.addElement(std::make_shared<TextComponent>(window, "RESET EmuELEC EMULATORS TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
@@ -460,7 +460,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	row.makeAcceptInputHandler([window] {
 +		window->pushGui(new GuiMsgBox(window, "!!!!!!WARNING THIS WILL DELETE ALL CONFIGS/ADDONS!!!!!!!!!! RESET SYSTEM TO DEFAULT CONFIG AND RESTART?", "YES",
 +				[] { 
-+				runSystemCommand("/usr/bin/clearconfig.sh ALL");
++				runSystemCommand("systemd-run /emuelec/scripts/clearconfig.sh ALL");
 +				}, "NO", nullptr));
 +	});
 +	row.addElement(std::make_shared<TextComponent>(window, "RESET SYSTEM TO DEFAULT CONFIG", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
@@ -571,3 +571,64 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  	}
  
  	//run the command line scraper then quit
+--- a/es-core/src/Settings.cpp
++++ b/es-core/src/Settings.cpp
+@@ -56,6 +56,40 @@
+ 	mBoolMap.clear();
+ 	mIntMap.clear();
+ 
++/* emuELEC default settings */
++	mBoolMap["SSH"] = true;
++	mBoolMap["BGM"] = false;
++	mStringMap["EmuELEC_BGM_BOOT"] = "No";
++	mStringMap["EmuELEC_BOOT"] = "Emulationstation";
++	mStringMap["EmuELEC_FBA_CORE"] = "fbalpha";
++	mStringMap["EmuELEC_GBA_CORE"] = "mgba";
++	mStringMap["EmuELEC_GBC_CORE"] = "gambatte";
++	mStringMap["EmuELEC_GEN_CORE"] = "genesis_plus_gx";
++	mStringMap["EmuELEC_MAME_CORE"] = "mame2003_plus";
++	mStringMap["EmuELEC_ARCADE_CORE"] = "mame2003_plus";
++	mStringMap["EmuELEC_N64_CORE"] = "mupen64plus_next";
++	mStringMap["EmuELEC_NES_CORE"] = "nestopia";
++	mStringMap["EmuELEC_PSP_CORE"] = "PPSSPPSA";
++	mStringMap["EmuELEC_SNES_CORE"] = "snes9x";
++	mStringMap["EmuELEC_DOSBOX_CORE"] = "dosbox";
++	mStringMap["EmuELEC_AMIGA_CORE"] = "puae";
++	mStringMap["EmuELEC_REICAST_CORE"] = "REICASTSA";
++/* space for other settings in the future 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++ * 
++/* end emuELEC default settings */
++
+ 	mBoolMap["BackgroundJoystickInput"] = false;
+ 	mBoolMap["ParseGamelistOnly"] = false;
+ 	mBoolMap["ShowHiddenFiles"] = false;
+@@ -69,7 +103,7 @@
+ 
+ 	mBoolMap["VSync"] = true;
+ 
+-	mBoolMap["EnableSounds"] = true;
++	mBoolMap["EnableSounds"] = false;
+ 	mBoolMap["ShowHelpPrompts"] = true;
+ 	mBoolMap["ScrapeRatings"] = true;
+ 	mBoolMap["IgnoreGamelist"] = false;
+@@ -138,7 +172,7 @@
+ 	#ifdef _RPI_
+ 		mStringMap["AudioDevice"] = "PCM";
+ 	#else
+-		mStringMap["AudioDevice"] = "Master";
++		mStringMap["AudioDevice"] = "PCM";
+ 	#endif
+ 
+ 	mStringMap["AudioCard"] = "default";
