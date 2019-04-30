@@ -44,6 +44,10 @@ post_makeinstall_target() {
     chmod +x $INSTALL/usr/config/emulationstation/scripts/*
     chmod +x $INSTALL/usr/config/emulationstation/scripts/configscripts/*
     find $INSTALL/usr/config/emulationstation/scripts/ -type f -exec chmod o+x {} \; 
+	
+	if [ ${PROJECT} = "Amlogic-ng" ]; then    
+	sed -i "s|-r 32000 -Z|-Z|" $INSTALL/usr/config/emulationstation/scripts/bgm.sh
+	fi
 }
 
 post_install() {  

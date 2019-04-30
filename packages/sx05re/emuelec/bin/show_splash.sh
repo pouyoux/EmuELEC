@@ -37,9 +37,9 @@ SPLASH="/storage/.config/splash/loading-game.png"
 fi 
 
 (
-if [ -e /proc/device-tree/mali@d00c0000/compatible ]; then
-  mpv $SPLASH > /dev/null 2>&1
-elif [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
-  fbi $SPLASH -noverbose > /dev/null 2>&1
+if [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
+	fbi $SPLASH -noverbose > /dev/null 2>&1
+else
+	mpv $SPLASH > /dev/null 2>&1
 fi
 )&
