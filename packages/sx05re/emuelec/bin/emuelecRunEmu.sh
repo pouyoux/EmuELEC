@@ -4,14 +4,19 @@ arguments="$@"
 
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	if  pgrep mpg123 >/dev/null ; then
-	/storage/.emulationstation/scripts/bgm.sh 
+    # TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
+	killall -9 mpg123 
+   #/storage/.emulationstation/scripts/bgm.sh 
 	fi
 fi
 
-/emuelec/scripts/show_splash.sh
+/emuelec/scripts/bezels.sh $1 $2 $3 $4
+/emuelec/scripts/show_splash.sh $1 $2 $3 $4
 
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
+LOGEMU="Yes"
+VERBOSE="-v"
 EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
@@ -19,8 +24,14 @@ EMU=$(sed -n "$PAT" "$CFG")
 # Clear the log file
 echo "EmuELEC Run Log" > $EMUELECLOG
 
+# if there was a NOLOG included in the arguments, dissable the emulator log output. TODO: this should be handled in ES 
+if [[ $arguments != *"NOLOG"* ]]; then
+LOGEMU="Yes"
+VERBOSE=""
+fi
+
 # if the emulator is in es_settings this is the line that will run 
-RUNTHIS='/usr/bin/retroarch -v -L /tmp/cores/${EMU}_libretro.so "$2"'
+RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/${EMU}_libretro.so "$2"'
 
 # Else, read the first argument to see if its LIBRETRO, REICAST, MAME or PSP
 case $1 in
@@ -31,11 +42,12 @@ case $1 in
 	RUNTHIS='bash /emuelec/scripts/fbterm.sh "$2"'
 		;;
 "LIBRETRO")
-	RUNTHIS='/usr/bin/retroarch -v -L /tmp/cores/$2_libretro.so "$3"'
+	RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/$2_libretro.so "$3"'
 		;;
 "REICAST")
     if [ "$EMU" = "REICASTSA" ]; then
 	RUNTHIS='/usr/bin/reicast.sh "$2"'
+	LOGEMU="No"
 	fi	;;
 "MAME"|"ARCADE")
 	if [ "$EMU" = "AdvanceMame" ]; then
@@ -83,7 +95,7 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
-if [[ $arguments != *"NOLOG"* ]]; then
+if [[ $LOGEMU == "No" ]]; then
    echo "Emulator Output is:" >> $EMUELECLOG
    eval ${RUNTHIS} >> $EMUELECLOG 2>&1
 else
