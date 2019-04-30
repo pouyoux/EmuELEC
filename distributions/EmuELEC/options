@@ -15,9 +15,9 @@
 
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
   GREETING0="##############################################"
-  GREETING1="#                 EmuELEC	             #"
-  GREETING2="#    Retro emulation for Amlogic Devices	  #"
-  GREETING3="#            Based on CoreELEC               #"
+  GREETING1="#                 EmuELEC                    #"
+  GREETING2="#     Retro emulation for Amlogic Devices    #"
+  GREETING3="#             Based on CoreELEC              #"
   GREETING4="##############################################"
 
 # Root password to integrate in the target system
