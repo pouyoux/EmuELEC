@@ -7,6 +7,12 @@ if [ ! -d "$CONFIG_DIR" ]; then
  cp -rf /usr/share/advance/* $CONFIG_DIR/
 fi
 
+if [[ "$1" = *"roms/arcade"* ]]; then 
+sed -i "s|/roms/mame|/roms/arcade|g" $CONFIG_DIR/advmame.rc
+ else
+sed -i "s|/roms/arcade|/roms/mame|g" $CONFIG_DIR/advmame.rc
+fi 
+
 ARG=$(echo basename $1 | sed 's/\.[^.]*$//')
 ARG="$(echo $1 | sed 's=.*/==;s/\.[^.]*$//')"         
 
