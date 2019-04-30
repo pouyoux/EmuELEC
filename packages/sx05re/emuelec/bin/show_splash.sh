@@ -22,7 +22,7 @@ elif [ -f $SPLASH2 ]; then
 elif [ -f $SPLASH3 ]; then
 	SPLASH=$SPLASH3
 else
-	SPLASH="/storage/.config/splash/splash-1080.png"
+	SPLASH="/storage/.config/splash/loading-game.png"
 fi
 
 # hdmimode=`cat /sys/class/display/mode`;
@@ -33,7 +33,7 @@ fi
 #  *)               X=1920 Y=1080 SPLASH="/storage/.config/splash/loading-game.png" ;;
 # esac
 
-#SPLASH="/storage/.config/splash/loading-game.png"
+SPLASH="/storage/.config/splash/loading-game.png"
 fi 
 
 (

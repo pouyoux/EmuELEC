@@ -10,8 +10,8 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	fi
 fi
 
-/emuelec/scripts/bezels.sh $1 $2 $3 $4
-/emuelec/scripts/show_splash.sh $1 $2 $3 $4
+# /emuelec/scripts/bezels.sh $1 $2 $3 $4 # very WIP
+/emuelec/scripts/show_splash.sh $1 $2 $3 $4 
 
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
