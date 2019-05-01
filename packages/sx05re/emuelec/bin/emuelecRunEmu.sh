@@ -95,7 +95,7 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
-if [[ $LOGEMU == "No" ]]; then
+if [[ $LOGEMU == "Yes" ]]; then
    echo "Emulator Output is:" >> $EMUELECLOG
    eval ${RUNTHIS} >> $EMUELECLOG 2>&1
 else
