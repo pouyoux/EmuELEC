@@ -28,3 +28,12 @@ source "$scriptdir/scriptmodules/system.sh"
 source "$scriptdir/scriptmodules/helpers.sh"
 source "$scriptdir/scriptmodules/inifuncs.sh"
 source "$scriptdir/scriptmodules/packages.sh"
+
+# hack/workaround for the S912
+if [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
+#	/emuelec/scripts/setres.sh 32
+	/emuelec/scripts/setres.sh 16
+	joy2keyStart
+	for i in {1..10}; do cat /etc/motd; done
+fi
+
