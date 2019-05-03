@@ -15,8 +15,8 @@ fi
 
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
-LOGEMU="Yes"
-VERBOSE="-v"
+LOGEMU="No"
+VERBOSE=""
 EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
@@ -24,10 +24,10 @@ EMU=$(sed -n "$PAT" "$CFG")
 # Clear the log file
 echo "EmuELEC Run Log" > $EMUELECLOG
 
-# if there was a NOLOG included in the arguments, dissable the emulator log output. TODO: this should be handled in ES 
+# if there wasn't a NOLOG included in the arguments, enable the emulator log output. TODO: this should be handled in ES 
 if [[ $arguments != *"NOLOG"* ]]; then
 LOGEMU="Yes"
-VERBOSE=""
+VERBOSE="-v"
 fi
 
 # if the emulator is in es_settings this is the line that will run 
