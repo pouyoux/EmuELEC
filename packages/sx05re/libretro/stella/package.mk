@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="stella"
-PKG_VERSION="b0b63615fc2c7a30470fc1ac31ffdc18fdf4518b"
-PKG_SHA256="b16263ff91018f9c9b06d4ed1d7c1ec083a7552d1ac0ffcfb0f22e2a2b206c0f"
+PKG_VERSION="a7acf2246cc721202b204ef57bc15eddb1f9949f"
+PKG_SHA256="4af0b637a8ba832d344cc44080f567bca501f1692b071b658bf0288b50133e45"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -38,5 +38,5 @@ PKG_AUTORECONF="no"
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp stella_libretro.so $INSTALL/usr/lib/libretro/
+  cp stella2014_libretro.so $INSTALL/usr/lib/libretro/
 }

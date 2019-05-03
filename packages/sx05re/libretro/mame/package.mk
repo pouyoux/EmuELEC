@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="mame"
-PKG_VERSION="453dfe2a5c3c19d8cddb87fb4e31ce5f7c4af1d5"
-PKG_SHA256="ceacfdd9334e3101cd5af66a22e9002f57e7cf8d77a28910aefb4f8bcf1a61f1"
+PKG_VERSION="47c241e4f528f663a36ae82a3bbaa789d929e282"
+PKG_SHA256="7a690637384c64bec5f0db26452edd083bc22619aaffe7ec049eafe78e78444c"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
