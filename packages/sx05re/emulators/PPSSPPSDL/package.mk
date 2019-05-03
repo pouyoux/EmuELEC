@@ -3,7 +3,7 @@
 # Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="f6fe917615681e2d9d391c8138e4aee896494ce0"
+PKG_VERSION="54bb78fd464ff5d4573101fe714ca827dd4411e1"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
