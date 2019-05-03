@@ -19,7 +19,7 @@ fi
 y=1
 
 
-for D in `find /dev/input/by-id/ | grep event-joystick`; do
+for D in `find /dev/input/by-id/ | grep -e event-joystick -e amepad`; do
   str=$(ls -la $D)
   i=$((${#str}-1))
   DEVICE=$(echo "${str:$i:1}")
