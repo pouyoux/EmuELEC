@@ -1,23 +1,6 @@
-################################################################################
-#      This file is part of LibreELEC - http://www.libreelec.tv
-#      Copyright (C) 2016 Team LibreELEC
-#
-#  LibreELEC is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  LibreELEC is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
-#https://nightlies.videolan.org/build/source/vlc-3.0.0-20170220-0237-git.tar.xz
-#https://download.videolan.org/pub/videolan/vlc/3.0.6/vlc-3.0.6.tar.xz
 PKG_NAME="vlc"
 PKG_VERSION="3.0.6"
 PKG_REV="20180209-0230"

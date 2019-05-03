@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
-# Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
-# https://invisible-mirror.net/archives/dialog/dialog-1.3-20190211.tgz
 PKG_NAME="dialog"
 PKG_VERSION="1.3-20190211"
 PKG_SHA256=""

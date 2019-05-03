@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="fba4arm"
 PKG_VERSION="a07e33f59657691561f7f488b16a94478b72df4d"

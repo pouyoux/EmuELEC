@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2018-present CoreELEC (https://coreelec.org)
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="es-theme-ComicBook"
 PKG_VERSION="9a68f104b609f5bd7c7a782090817ebe48e9a197"

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
+
 # OpenBOR only works with Pak files, if you have an extracted game you will need to create a pak first.
 # If master.cfg does not work, sound is weird or controller not working, you will need to use a keyboard to set your gamepad
 # after you set up your gamne, copy the /storage/.config/openbor/Saves/{gamename}.cfg file to /storage/.config/openbor/master.cfg

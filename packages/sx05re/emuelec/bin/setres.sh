@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
+
 # Read the video output mode and set it for emuelec to avoid video flicking.
 MODE=`cat /sys/class/display/mode`;
 

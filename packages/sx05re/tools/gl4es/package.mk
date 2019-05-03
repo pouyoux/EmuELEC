@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2019-present CoreELEC (https://coreelec.org)
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="gl4es"
 PKG_VERSION="7ece2d8c61fd40416208e6305eb6ea939200ca39"

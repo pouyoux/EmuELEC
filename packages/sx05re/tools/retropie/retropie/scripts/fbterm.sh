@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/emuelec/lib
-export PATH=$PATH:/emuelec/bin
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 source /emuelec/scriptmodules/helpers.sh
 

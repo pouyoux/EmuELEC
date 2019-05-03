@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2019-present CoreELEC (https://coreelec.org)
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="libvorbisidec"
 PKG_VERSION="a76e41f6ece93d10deac5f9ef3a84dce5b9c2a84"

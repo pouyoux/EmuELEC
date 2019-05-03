@@ -71,6 +71,13 @@ mkdir -p $BASEDIR/$LOGDIR
      [ -f ${EE_LOG_DIR}/${i} ] && getlog_cmd cat ${EE_LOG_DIR}/$i
   done
 
+EE_LOG_DIR=/storage/.config/retroarch
+  LOGFILE="01_RETROARCH.log"
+  for i in retroarch.cfg; do
+     [ -f ${EE_LOG_DIR}/${i} ] && getlog_cmd cat ${EE_LOG_DIR}/$i
+  done
+
+
 # System.log
   LOGFILE="02_System.log"
   getlog_cmd dmesg

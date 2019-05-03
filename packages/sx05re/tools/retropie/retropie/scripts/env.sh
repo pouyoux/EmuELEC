@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
+
+
 export TERM="linux"
 export TERMINFO="/usr/share/terminfo"
 export TERMINFO_DIRS=$TERMINFO
@@ -7,8 +11,6 @@ export HOME="/storage"
 export romdir="/storage/roms/"
 export configdir="/storage/.config/emuelec/configs"
 export scriptdir="/emuelec"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/emuelec/lib
-export PATH=$PATH:/emuelec/bin
 
 user="root"
 rootdir="/emuelec"

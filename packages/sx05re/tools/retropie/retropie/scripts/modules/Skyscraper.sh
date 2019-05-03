@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
+
 if [ ! -L "/storage/.skyscraper" ]
 ln -sTf /storage/.config/skyscraper /storage/.skyscraper
 fi

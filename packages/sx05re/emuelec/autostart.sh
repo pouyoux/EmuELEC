@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
+
 /emuelec/scripts/setres.sh
 
 # It seems some slow SDcards have a problem creating the symlink on time :/

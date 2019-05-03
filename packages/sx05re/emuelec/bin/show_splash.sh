@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present SumavisionQ5 (https://github.com/SumavisionQ5)
+# Modifications by Shanti Gilbert (https://github.com/shantigilbert)
+
 if [ "$1" == "intro" ]; then
 	SPLASH="/storage/.config/splash/splash-1080.png"
 else

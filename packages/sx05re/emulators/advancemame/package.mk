@@ -1,7 +1,5 @@
-################################################################################
-#      This file is part of emuelec
-#      no copyright, do as you please :)
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="advancemame"
 PKG_VERSION="0038b8d3fc0976576b550eebad5295033d306ab5"

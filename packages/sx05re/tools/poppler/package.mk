@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
+
 PKG_NAME="poppler"
 PKG_VERSION="0.74.0"
 PKG_SHA256="92e09fd3302567fd36146b36bb707db43ce436e8841219025a82ea9fb0076b2f"
