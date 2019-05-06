@@ -41,9 +41,12 @@ SPLASH="/storage/.config/splash/loading-game.png"
 fi 
 
 (
-if [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
+
+# it seems the Odroid N2 does not like mpv either...
+
+#if [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
 	fbi $SPLASH -noverbose > /dev/null 2>&1
-else
-	mpv $SPLASH > /dev/null 2>&1
-fi
+#else
+	#mpv $SPLASH > /dev/null 2>&1
+#fi
 )&

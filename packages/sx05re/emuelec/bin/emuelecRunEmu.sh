@@ -118,6 +118,8 @@ fi
 # Return to default mode
 /emuelec/scripts/setres.sh
 
+/emuelec/scripts/show_splash.sh intro
+
 # Only run resetfb if it exists, mainly for N2
 if [ -f "/emuelec/scripts/resetfb.sh" ]; then
 /emuelec/scripts/resetfb.sh

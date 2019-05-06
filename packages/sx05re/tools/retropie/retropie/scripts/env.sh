@@ -35,7 +35,12 @@ source "$scriptdir/scriptmodules/packages.sh"
 if [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
 #	/emuelec/scripts/setres.sh 32
 	/emuelec/scripts/setres.sh 16
-	joy2keyStart
 	for i in {1..10}; do cat /etc/motd; done
+else 
+cat /etc/motd
+echo "Loading...Please Wait!"
+	if [ -f "/emuelec/bin/fbfix" ]; then
+		fbfix
+	fi
 fi
 

@@ -29,11 +29,20 @@ PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
 
 
 make_target() {
-  : not
+	if [ "$PROJECT" == "Amlogic-ng" ]; then
+	cd $PKG_DIR/fbfix
+	$CC -g -O2 fbfix.c -o fbfix
+	fi
 }
 
 makeinstall_target() {
    
+	if [ "$PROJECT" == "Amlogic-ng" ]; then
+	mkdir -p $INSTALL/usr/config/emuelec/bin
+	cp $PKG_DIR/fbfix/fbfix $INSTALL/usr/config/emuelec/bin
+	rm $PKG_DIR/fbfix/fbfix
+	fi
+
   mkdir -p $INSTALL/etc/samba
    cp $PKG_DIR/config/smb.conf $INSTALL/etc/samba
 
