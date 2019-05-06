@@ -19,22 +19,15 @@ if [ ${PROJECT} = "Amlogic-ng" ]; then
   PKG_PATCH_DIRS="${PROJECT}"
 fi
 
-
 # themes for Emulationstation
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-simple-dark"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-carbon"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-nes-mini"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-tronkyfran"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-crt"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Chicuelo"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-pixel"
-#PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-Retrorama"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET es-theme-ComicBook"
 
 post_makeinstall_target() {
 
-  mkdir -p $INSTALL/usr/bin/resources
-    cp -rf $PKG_BUILD/resources/* $INSTALL/usr/bin/resources/
+  mkdir -p $INSTALL/usr/config/emulationstation/resources
+    cp -rf $PKG_BUILD/resources/* $INSTALL/usr/config/emulationstation/resources/
+    ln -sf /storage/.config/emulationstation/resources $INSTALL/usr/bin/resources
+    
 
    mkdir -p $INSTALL/etc/emulationstation/
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
