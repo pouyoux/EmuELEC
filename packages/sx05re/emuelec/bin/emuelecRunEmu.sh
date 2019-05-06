@@ -1,20 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
+# This whole file has become very hacky, I am sure there is a better way to do all of this, but for now, this works.
+
 arguments="$@"
 
+# TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	if  pgrep mpg123 >/dev/null ; then
-    # TEMP: I need to figure out how to mix sounds, but for now make sure BGM is killed completely to free up the soundcard
-	killall -9 mpg123 
+    killall -9 mpg123 
    #/storage/.emulationstation/scripts/bgm.sh 
 	fi
 fi
 
-# /emuelec/scripts/bezels.sh $1 $2 $3 $4 # very WIP
-/emuelec/scripts/show_splash.sh $1 $2 $3 $4 
+# Extract the platform from the arguments in order to show the correct bezel/splash
+if [[ "$arguments" == *"-P"* ]]; then
+	PLATFORM="${arguments##*-P}"  # read from -P onwards
+	PLATFORM="${PLATFORM%% *}"  # until a space is found
+else
+# if no -P was set, read the first argument as platform
+	PLATFORM="$1"
+fi
 
 # Set the variables
 CFG="/storage/.emulationstation/es_settings.cfg"
@@ -24,11 +32,8 @@ EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
 
-# Clear the log file
-echo "EmuELEC Run Log" > $EMUELECLOG
-
-# if there wasn't a NOLOG included in the arguments, enable the emulator log output. TODO: this should be handled in ES 
-if [[ $arguments != *"NOLOG"* ]]; then
+# if there wasn't a --NOLOG included in the arguments, enable the emulator log output. TODO: this should be handled in ES menu
+if [[ $arguments != *"--NOLOG"* ]]; then
 LOGEMU="Yes"
 VERBOSE="-v"
 fi
@@ -36,7 +41,20 @@ fi
 # if the emulator is in es_settings this is the line that will run 
 RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/${EMU}_libretro.so "$2"'
 
-# Else, read the first argument to see if its LIBRETRO, REICAST, MAME or PSP
+# very WIP {
+# These two will be handled in ES
+SHOW_BEZELS="No"  
+SHOW_SPLASH="Yes"
+
+[ "$SHOW_BEZELS" == "Yes" ] && /emuelec/scripts/bezels.sh $PLATFORM $2
+[ "$SHOW_SPLASH" == "Yes" ] && /emuelec/scripts/show_splash.sh $PLATFORM $2
+
+# } very WIP 
+
+# Clear the log file
+echo "EmuELEC Run Log" > $EMUELECLOG
+
+# Read the first argument in order to set the right emulator
 case $1 in
 "OPENBOR")
 	RUNTHIS='/usr/bin/openbor.sh "$2"'
@@ -50,7 +68,7 @@ case $1 in
 "REICAST")
     if [ "$EMU" = "REICASTSA" ]; then
 	RUNTHIS='/usr/bin/reicast.sh "$2"'
-	LOGEMU="No"
+	LOGEMU="No" # ReicastSA outputs a LOT of text, only enable for debugging.
 	fi	;;
 "MAME"|"ARCADE")
 	if [ "$EMU" = "AdvanceMame" ]; then
@@ -85,10 +103,11 @@ case $1 in
 esac
 
 # Write the command to the log file.
-echo "1st parameter: $1" >> $EMUELECLOG 
-echo "2nd Parameter: $2" >> $EMUELECLOG 
-echo "3rd Parameter: $3" >> $EMUELECLOG 
-echo "4th Parameter: $4" >> $EMUELECLOG 
+echo "PLATFORM: $PLATFORM" >> $EMUELECLOG 
+echo "1st Argument: $1" >> $EMUELECLOG 
+echo "2nd Argument: $2" >> $EMUELECLOG
+echo "3rd Argument: $3" >> $EMUELECLOG 
+echo "4th Argument: $4" >> $EMUELECLOG 
 echo "Run Command is:" >> $EMUELECLOG 
 eval echo  ${RUNTHIS} >> $EMUELECLOG 
 
@@ -106,21 +125,20 @@ else
    eval ${RUNTHIS}
 fi 
 
-if [[ $arguments != *"KEEPMUSIC"* ]]; then
-	DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' /storage/.emulationstation/es_settings.cfg)
-
-	if [ "$DEFE" == "true" ]; then
-	killall -9 mpg123
-	/storage/.emulationstation/scripts/bgm.sh
-	fi 
-fi
-
-# Return to default mode
-/emuelec/scripts/setres.sh
-
-/emuelec/scripts/show_splash.sh intro
-
 # Only run resetfb if it exists, mainly for N2
 if [ -f "/emuelec/scripts/resetfb.sh" ]; then
 /emuelec/scripts/resetfb.sh
 fi
+
+/emuelec/scripts/show_splash.sh intro
+
+if [[ $arguments != *"KEEPMUSIC"* ]]; then
+	DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' $CFG)
+ if [ "$DEFE" == "true" ]; then
+	killall -9 mpg123
+	/storage/.emulationstation/scripts/bgm.sh
+ fi 
+fi
+
+# Return to default mode
+/emuelec/scripts/setres.sh

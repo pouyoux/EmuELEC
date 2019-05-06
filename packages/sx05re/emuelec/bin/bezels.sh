@@ -4,18 +4,15 @@
 # Copyright (C) 2019-present SumavisionQ5 (https://github.com/SumavisionQ5)
 # Modifications by Shanti Gilbert (https://github.com/shantigilbert)
 
-#ZIPDIR="$2"
-#ROMNAME="${2##*/}"
-#ROMNAME="${ROMNAME%.*}"
 ROMNAME=$(basename ${2%.*})
 RACONFIG="/storage/.config/retroarch/retroarch.cfg"
 OPACITY="1.000000"
 AR_INDEX="23"
 BEZELDIR="/storage/overlays/bezels"
-INIFILE="$BEZELDIR/setting.ini"
-
+INIFILE="/emuelec/bezels/settings.ini"
 # bezelmap.cfg in $BEZELDIR/ is to share bezels between arcade clones and parent. 
-BEZELMAP="$BEZELDIR/bezelmap.cfg"
+BEZELMAP="/emuelec/bezels/arcademap.cfg"
+
 BZLNAME=$(sed -n "/"$1"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
