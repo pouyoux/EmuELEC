@@ -29,10 +29,10 @@ PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
 
 
 make_target() {
-	if [ "$PROJECT" == "Amlogic-ng" ]; then
+if [ "$PROJECT" == "Amlogic-ng" ]; then
 	cd $PKG_DIR/fbfix
-	$CC -g -O2 fbfix.c -o fbfix
-	fi
+	$CC -O2 fbfix.c -o fbfix
+fi
 }
 
 makeinstall_target() {
