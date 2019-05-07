@@ -1,10 +1,28 @@
-CoreELEC CHANGELOG
+EmuELEC CHANGELOG
 ==================
 
-To view recent changes/commits to the project (master branch) please visit:
+2.5.1
 
-https://github.com/CoreELEC/CoreELEC/commits/master
+* Fixed logging, use emueleclogs.sh to create a support log file
+* Fixed Reicast in S912/Pk7
+* Fixed Retropie scripts for S912/Pk7
+* Fixed DOSBOX Rom path
+* Improved reicast.sh gamepad search
+* Fix for ES crashing when no es_settings.cfg was found
+* Move ES resources folder to /storage/.emulationstation/resources for easy editing
+* Fix Odroid N2 framebuffer issues with scripts and some emus, however if you load a game directly in RA the problem still persists.
+* Updated some Libretro Cores
+* Bumped PPSSPPSDL, Skyscraper
+* Removed pocketcdg and melonds
+* Bezels are still WIP but they should work if you use your own
+* Fixed a bug that prevented the mounting of USB roms if there were multiple "emuelecrom" files
+* New platform: Neo-Geo CD. ROMS should go into /storage/roms/neocd and bios into /storage/roms/bios
 
-To compare commits between versions use a formatted URL like:
+2.5 
 
-https://github.com/CoreELEC/CoreELEC/compare/8.90.1...8.90.2
+Initial EmuELEC release
+
+Sx05RE is now EmuELEC, a pure emulation build that does not include Kodi or anything else related to Kodi in order to free resources and space.
+The main goal of EmuELEC is to be the best and easiest wat to emulate retro games on Amlogic hardware.
+
+However if you still like to have Kodi on the same installation, you can also use the Kodi Add-on version. But keep in mind it will have less features than EmuELEC
