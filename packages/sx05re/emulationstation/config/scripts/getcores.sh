@@ -8,10 +8,10 @@ case "$1" in
 	echo "fbalpha,mame2003_plus"
 	;;
 "arcade")
-	echo "mame2003_plus,mame2003,mame2003-midway,AdvanceMame,mame2010,mame2014"
+	echo "mame2003_plus,AdvanceMame,mame2010,mame2015,fbalpha"
 	;;
 "mame")
-	echo "mame2003_plus,mame2003,mame2003-midway,AdvanceMame,mame2010,mame2014"
+	echo "AdvanceMame,mame2003_plus,mame2010,mame2015,fbalpha"
 	;;
 "psp")
 	echo "PPSSPPSA,ppsspp"
