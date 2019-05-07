@@ -10,14 +10,22 @@ OPACITY="1.000000"
 AR_INDEX="23"
 BEZELDIR="/storage/overlays/bezels"
 INIFILE="/emuelec/bezels/settings.ini"
+PLATFORM="$1"
+
+case $PLATFORM in
+  "ARCADE"|"FBA"|"NEOGEO"|"MAME")
+  PLATFORM="ARCADE"
+  ;;
+ esac
+
 # bezelmap.cfg in $BEZELDIR/ is to share bezels between arcade clones and parent. 
 BEZELMAP="/emuelec/bezels/arcademap.cfg"
-BZLNAME=$(sed -n "/"$1"_"$ROMNAME" = /p" "$BEZELMAP")
+BZLNAME=$(sed -n "/"$PLATFORM"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
 echo $ROMNAME
-OVERLAYDIR1=$(find $BEZELDIR/$1 -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
-[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$1 -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
+OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
+[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
 
 echo $OVERLAYDIR1
 echo $OVERLAYDIR2
@@ -84,8 +92,8 @@ case $hdmimode in
   ;;
   720p*)
 	
-	check_overlay_dir $1
-	case "$1" in
+	check_overlay_dir "$PLATFORM"
+	case "$PLATFORM" in
    "GBA")
 		set_bezel "467" "316" "405" "190" "false"
 		;;
@@ -118,7 +126,7 @@ case $hdmimode in
   ;;
   # For Amlogic TV box, the following resolution is 1080p/i.
   *)
-    check_overlay_dir $1
+    check_overlay_dir "$PLATFORM"
 	case "$1" in
    "GBA")
 		set_bezel "960" "640" "0" "0" "true"
@@ -152,7 +160,7 @@ case $hdmimode in
 esac
 
 # If we disable bezel in setting.ini for certain platform, we just delete bezel config.
-Bezel=$(sed -n "/"$1"_Bezel = /p" $INIFILE)
+Bezel=$(sed -n "/"$PLATFORM"_Bezel = /p" $INIFILE)
 Bezel="${Bezel#*\"}"
 Bezel="${Bezel%\"*}"
 if [ "$Bezel" = "OFF" ]; then

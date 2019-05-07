@@ -4,19 +4,27 @@
 # Copyright (C) 2019-present SumavisionQ5 (https://github.com/SumavisionQ5)
 # Modifications by Shanti Gilbert (https://github.com/shantigilbert)
 
-if [ "$1" == "intro" ]; then
+PLATFORM="$1"
+
+case "$PLATFORM" in
+  "ARCADE"|"FBA"|"NEOGEO"|"MAME")
+  PLATFORM="ARCADE"
+  ;;
+ esac
+
+if [ "$PLATFORM" == "intro" ]; then
 	SPLASH="/storage/.config/splash/splash-1080.png"
 else
 	SPLASHDIR="/storage/overlays/splash"
 	ROMNAME=$(basename "${2%.*}")
 	SPLMAP="/emuelec/bezels/arcademap.cfg"
-	SPLNAME=$(sed -n "/`echo ""$1"_"${ROMNAME}" = "`/p" "$SPLMAP")
+	SPLNAME=$(sed -n "/`echo ""$PLATFORM"_"${ROMNAME}" = "`/p" "$SPLMAP")
 	REALSPL="${SPLNAME#*\"}"
 	REALSPL="${REALSPL%\"*}"
-[ ! -z "$REALSPL" ] && SPLASH1=$(find $SPLASHDIR/$1 -iname "$REALSPL".png -maxdepth 1 | head -n 1)
-[ ! -z "$ROMNAME" ] && SPLASH2=$(find $SPLASHDIR/$1 -iname "$ROMNAME"*.png -maxdepth 1 | head -n 1)
+[ ! -z "$REALSPL" ] && SPLASH1=$(find $SPLASHDIR/$PLATFORM -iname "$REALSPL".png -maxdepth 1 | head -n 1)
+[ ! -z "$ROMNAME" ] && SPLASH2=$(find $SPLASHDIR/$PLATFORM -iname "$ROMNAME"*.png -maxdepth 1 | head -n 1)
 	
-	SPLASH3="$SPLASHDIR/$1/splash.png"
+	SPLASH3="$SPLASHDIR/$PLATFORM/splash.png"
 	
 if [ -f "$SPLASH1" ]; then
 	SPLASH=$SPLASH1
