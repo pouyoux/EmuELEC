@@ -40,7 +40,7 @@ else
 cat /etc/motd
 echo "Loading...Please Wait!"
 	if [ -f "/emuelec/bin/fbfix" ]; then
-		fbfix
+		/emuelec/bin/fbfix
 	fi
 fi
 
