@@ -15,11 +15,14 @@ rm -rf /storage/.config/ppsspp*
 rm -rf /storage/.config/reicast*
 rm -rf /storage/.config/retroarch*
 rm -rf /storage/.advance*
+sync
 systemctl reboot
   ;;
 "ALL")
 systemctl stop emustation
 rm -rf /storage/.*
+rm -rf /storage/*
+sync
 systemctl reboot
   ;;
 esac
