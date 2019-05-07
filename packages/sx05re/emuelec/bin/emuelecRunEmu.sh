@@ -100,6 +100,11 @@ case $1 in
    RUNTHIS='/usr/bin/ppsspp.sh "$2"'
       fi
         ;;
+"NEOCD")
+      if [ "$EMU" = "fbalpha" ]; then
+      RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/fbalpha_libretro.so --subsystem neocd "$2"'
+      fi
+        ;;
 esac
 
 # Write the command to the log file.

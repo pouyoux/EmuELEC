@@ -156,22 +156,22 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +		});
 +	
 +	/* END CHOICE */
-+	     	/* CHOICE 	
++	     	/* CHOICE */	
 +	
-+	auto emuelec_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "MAME EMULATOR", false);
++	auto emuelec_neocd_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "NEOCD EMULATOR", false);
 +         emuchoices.clear();  
-+    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh mame)")); getline(ss, a, ','); )
++    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh neocd)")); getline(ss, a, ','); )
 +        emuchoices.push_back(a);
 +    
 +		for (auto it = emuchoices.cbegin(); it != emuchoices.cend(); it++)
-+		emuelec_mame_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_MAME_CORE") == *it);
-+		s->addWithLabel("MAME EMULATOR", emuelec_mame_def);
-+		s->addSaveFunc([emuelec_mame_def] {
-+			if (Settings::getInstance()->getString("EmuELEC_MAME_CORE") != emuelec_mame_def->getSelected())
-+				Settings::getInstance()->setString("EmuELEC_MAME_CORE", emuelec_mame_def->getSelected());
++		emuelec_neocd_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_NEOCD_CORE") == *it);
++		s->addWithLabel("NEOCD EMULATOR", emuelec_neocd_def);
++		s->addSaveFunc([emuelec_neocd_def] {
++			if (Settings::getInstance()->getString("EmuELEC_NEOCD_CORE") != emuelec_neocd_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_NEOCD_CORE", emuelec_neocd_def->getSelected());
 +		});
 +	
-+	 END CHOICE */
++	/*END CHOICE */
 +	     	/* CHOICE 	
 +	
 +	auto emuelec_mame_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "MAME EMULATOR", false);
@@ -595,8 +595,8 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	mStringMap["EmuELEC_DOSBOX_CORE"] = "dosbox";
 +	mStringMap["EmuELEC_AMIGA_CORE"] = "puae";
 +	mStringMap["EmuELEC_REICAST_CORE"] = "REICASTSA";
++   mStringMap["EmuELEC_NEOCD_CORE"] = "libneocd";
 +/* space for other settings in the future 
-+ * 
 + * 
 + * 
 + * 

@@ -43,4 +43,7 @@ case "$1" in
 "dreamcast")
 	echo "REICASTSA,reicast"
 	;;
+"neocd")
+	echo "libneocd,fbalpha"
+	;;
 esac
