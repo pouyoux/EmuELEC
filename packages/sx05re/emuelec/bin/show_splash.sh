@@ -26,7 +26,6 @@ else
 	SPLASH="/storage/.config/splash/loading-game.png"
 fi
 
-SPLASH="/storage/.config/splash/loading-game.png"
 fi 
 
 (
