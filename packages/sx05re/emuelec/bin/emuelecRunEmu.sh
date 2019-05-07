@@ -46,8 +46,8 @@ RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/${EMU}_libretro.so "$2"'
 SHOW_BEZELS="Yes"  
 SHOW_SPLASH="Yes"
 
-[ "$SHOW_BEZELS" = "Yes" ] && /emuelec/scripts/bezels.sh $PLATFORM $2
-[ "$SHOW_SPLASH" = "Yes" ] && /emuelec/scripts/show_splash.sh $PLATFORM $2
+[ "$SHOW_BEZELS" = "Yes" ] && /emuelec/scripts/bezels.sh "$PLATFORM" "$2"
+[ "$SHOW_SPLASH" = "Yes" ] && /emuelec/scripts/show_splash.sh "$PLATFORM" "$2"
 
 # } very WIP 
 

@@ -8,31 +8,26 @@ if [ "$1" == "intro" ]; then
 	SPLASH="/storage/.config/splash/splash-1080.png"
 else
 	SPLASHDIR="/storage/overlays/splash"
-	ROMNAME=$(basename ${2%.*})
+	ROMNAME=$(basename "${2%.*}")
 	SPLMAP="/emuelec/bezels/arcademap.cfg"
 	SPLNAME=$(sed -n "/`echo ""$1"_"${ROMNAME}" = "`/p" "$SPLMAP")
 	REALSPL="${SPLNAME#*\"}"
 	REALSPL="${REALSPL%\"*}"
-	SPLASH1="$SPLASHDIR/$1/$REALSPL.png"
-	SPLASH2="$SPLASHDIR/$1/$ROMNAME.png"
+[ ! -z "$REALSPL" ] && SPLASH1=$(find $SPLASHDIR/$1 -iname "$REALSPL".png -maxdepth 1 | head -n 1)
+[ ! -z "$ROMNAME" ] && SPLASH2=$(find $SPLASHDIR/$1 -iname "$ROMNAME"*.png -maxdepth 1 | head -n 1)
+	
 	SPLASH3="$SPLASHDIR/$1/splash.png"
-if [ -f $SPLASH1 ]; then
+	
+if [ -f "$SPLASH1" ]; then
 	SPLASH=$SPLASH1
-elif [ -f $SPLASH2 ]; then
+elif [ -f "$SPLASH2" ]; then
 	SPLASH=$SPLASH2
-elif [ -f $SPLASH3 ]; then
+elif [ -f "$SPLASH3" ]; then
 	SPLASH=$SPLASH3
 else
 	SPLASH="/storage/.config/splash/loading-game.png"
 fi
-
 fi 
-
 (
-# it seems the Odroid N2 does not like mpv either...
-#if [ -e /proc/device-tree/t82x@d00c0000/compatible ]; then
 	fbi $SPLASH -noverbose > /dev/null 2>&1
-#else
-	#mpv $SPLASH > /dev/null 2>&1
-#fi
 )&

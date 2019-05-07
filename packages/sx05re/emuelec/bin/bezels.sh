@@ -4,7 +4,7 @@
 # Copyright (C) 2019-present SumavisionQ5 (https://github.com/SumavisionQ5)
 # Modifications by Shanti Gilbert (https://github.com/shantigilbert)
 
-ROMNAME=$(basename ${2%.*})
+ROMNAME=$(basename "${2%.*}")
 RACONFIG="/storage/.config/retroarch/retroarch.cfg"
 OPACITY="1.000000"
 AR_INDEX="23"
@@ -12,15 +12,15 @@ BEZELDIR="/storage/overlays/bezels"
 INIFILE="/emuelec/bezels/settings.ini"
 # bezelmap.cfg in $BEZELDIR/ is to share bezels between arcade clones and parent. 
 BEZELMAP="/emuelec/bezels/arcademap.cfg"
-
 BZLNAME=$(sed -n "/"$1"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
-OVERLAYDIR1="$BEZELDIR/$1/$ROMNAME.cfg"
-OVERLAYDIR2="$BEZELDIR/$1/$BZLNAME.cfg"
+echo $ROMNAME
+OVERLAYDIR1=$(find $BEZELDIR/$1 -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
+[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$1 -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
 
-sed -i '/input_overlay_opacity/d' $RACONFIG
-sed -i "\$i input_overlay_opacity = \"${OPACITY}\"\n" $RACONFIG
+echo $OVERLAYDIR1
+echo $OVERLAYDIR2
 
 clear_bezel() { 
 		sed -i '/aspect_ratio_index = "/d' $RACONFIG
@@ -29,8 +29,9 @@ clear_bezel() {
 		sed -i '/custom_viewport_x = "/d' $RACONFIG
 		sed -i '/custom_viewport_y = "/d' $RACONFIG
 		sed -i '/video_scale_integer = "/d' $RACONFIG
-		sed -i 'video_scale_integer = "false"' $RACONFIG
-	}
+		echo 'video_scale_integer = "false"' >> $RACONFIG
+
+		}
 
 set_bezel() {
 # $OPACITY: input_overlay_opacity
@@ -59,10 +60,10 @@ check_overlay_dir() {
 # 2.$OVERLAYDIR2 will be used, if it does not exist, then
 # 3.default bezel as "$BEZELDIR/$1/default.cfg\" will be used.
 
-	if [ -f $OVERLAYDIR1 ]; then
+	if [ -f "$OVERLAYDIR1" ]; then
 		sed -i '/input_overlay = "/d' $RACONFIG
 		echo -e "input_overlay = \""$OVERLAYDIR1"\"\n" >> $RACONFIG
-	elif [ -f $OVERLAYDIR2 ]; then
+	elif [ -f "$OVERLAYDIR2" ]; then
 		sed -i '/input_overlay = "/d' $RACONFIG
 		echo -e "input_overlay = \""$OVERLAYDIR2"\"\n" >> $RACONFIG
 	else
@@ -72,7 +73,7 @@ check_overlay_dir() {
 }
 
 # Only 720P and 1080P can use bezels. For 480p/i and 576p/i we just delete bezel config.
-hdmimode=$(`cat /sys/class/display/mode`)
+hdmimode=$(cat /sys/class/display/mode)
 
 case $hdmimode in
   480*)
