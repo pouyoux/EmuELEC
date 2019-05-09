@@ -3,21 +3,28 @@ EmuELEC CHANGELOG
 
 2.5.1
 
-* Fixed logging, use emueleclogs.sh to create a support log file
-* Fixed Reicast in S912/Pk7
-* Fixed Retropie scripts for S912/Pk7
+All platforms
 * Fixed DOSBOX Rom path
-* Improved reicast.sh gamepad search
 * Fix for ES crashing when no es_settings.cfg was found
+* Fixed a bug that prevented the mounting of USB roms if there were multiple "emuelecrom" files
+* Improved logging, use emueleclogs.sh to create a support log file.
+* Improved reicast.sh gamepad search
 * Move ES resources folder to /storage/.emulationstation/resources for easy editing
-* Fix Odroid N2 framebuffer issues with scripts and some emus, however if you load a game directly in RA the problem still persists.
+* Removed pocketcdg and melonds
+* New platform: Neo-Geo CD. ROMS should go into /storage/roms/neocd and bios into /storage/roms/bios
+* Retroarch has been upgraded to 1.7.7
 * Updated some Libretro Cores
 * Bumped PPSSPPSDL, Skyscraper
-* Removed pocketcdg and melonds
-* Bezels are still WIP but they should work if you use your own
-* Fixed a bug that prevented the mounting of USB roms if there were multiple "emuelecrom" files
-* New platform: Neo-Geo CD. ROMS should go into /storage/roms/neocd and bios into /storage/roms/bios
+* Bezels & Splash screens are still WIP but they should work if you use your own.
 
+Odroid N2
+* Fix Odroid N2 framebuffer issues with scripts, retroarch and some emus.
+
+S912
+* Fixed Reicast in S912/Pk7
+* Fixed Retropie scripts for S912/Pk7
+
+-------------------------------
 2.5 
 
 Initial EmuELEC release
