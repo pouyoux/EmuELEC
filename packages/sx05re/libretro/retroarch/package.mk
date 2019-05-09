@@ -19,11 +19,11 @@
 ################################################################################
 
 PKG_NAME="retroarch"
-PKG_VERSION="a7abd77141e492422a099d4add409a6a04ad4913"
+PKG_VERSION="5a9c0da282546b58621b3030d028d60481374f44"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="https://github.com/libretro/RetroArch.git"
-PKG_DEPENDS_TARGET="toolchain alsa-lib freetype zlib retroarch-assets retroarch-overlays core-info ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty $OPENGLES samba avahi nss-mdns freetype openal-soft"
+PKG_DEPENDS_TARGET="toolchain alsa-lib openssl freetype zlib retroarch-assets retroarch-overlays core-info ffmpeg libass libvdpau libxkbfile xkeyboard-config libxkbcommon joyutils sixpair empty $OPENGLES samba avahi nss-mdns freetype openal-soft"
 PKG_LONGDESC="Reference frontend for the libretro API."
 GET_HANDLER_SUPPORT="git"
 
@@ -36,7 +36,6 @@ pre_configure_target() {
 TARGET_CONFIGURE_OPTS=""
 PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            --disable-sdl \
-                           --disable-ssl \
                            --enable-opengles \
                            --disable-kms \
                            --disable-x11 \
@@ -47,13 +46,13 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-vg \
                            --enable-freetype \
 			               --disable-discord \
 			               --disable-opengl1 \
-			               --disable-opengl_core "
+			               --disable-opengl_core"
 cd $PKG_BUILD
 }
 
 make_target() {
-  make HAVE_SX05RE=1
-[ $? -eq 0 ] && echo "(retroarch ok)" || { echo "(retroarch failed)" ; exit 1 ; }
+  make HAVE_UPDATE_ASSETS=1 HAVE_LIBRETRODB=1 HAVE_NETWORKING=1 HAVE_LAKKA=1 HAVE_ZARCH=0 HAVE_QT=0
+  [ $? -eq 0 ] && echo "(retroarch ok)" || { echo "(retroarch failed)" ; exit 1 ; }
   make -C gfx/video_filters compiler=$CC extra_flags="$CFLAGS"
 [ $? -eq 0 ] && echo "(video filters ok)" || { echo "(video filters failed)" ; exit 1 ; }
   make -C libretro-common/audio/dsp_filters compiler=$CC extra_flags="$CFLAGS"
@@ -151,6 +150,7 @@ makeinstall_target() {
   sed -i -e "s/# menu_show_core_updater = true/menu_show_core_updater = false/" $INSTALL/etc/retroarch.cfg
   sed -i -e "s/# menu_show_online_updater = true/menu_show_online_updater = true/" $INSTALL/etc/retroarch.cfg
   sed -i -e "s/# input_overlay_opacity = 1.0/input_overlay_opacity = 0.15/" $INSTALL/etc/retroarch.cfg
+  echo "user_language = \"0\"" >> $INSTALL/etc/retroarch.cfg
 
   mkdir -p $INSTALL/usr/config/retroarch/
   mv $INSTALL/etc/retroarch.cfg $INSTALL/usr/config/retroarch/

@@ -121,33 +121,33 @@ diff -Naur a/intl/msg_hash_es.h b/intl/msg_hash_es.h
 diff -Naur a/intl/msg_hash_fr.h b/intl/msg_hash_fr.h
 --- a/intl/msg_hash_fr.h	2019-01-15 12:55:14.000000000 -0600
 +++ b/intl/msg_hash_fr.h	2019-01-28 22:00:41.332468768 -0600
-@@ -833,7 +833,7 @@
-       "Overlay suivant")
- MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_META_PAUSE_TOGGLE,
-       "Pause")
+@@ -1342,7 +1342,7 @@
+          MENU_ENUM_LABEL_VALUE_INPUT_META_PAUSE_TOGGLE,
+          "Mettre en pause/reprendre"
+          )
 -#ifdef HAVE_LAKKA
 +#ifndef HAVE_LAKKA
- MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY,
-       "Redémarrer RetroArch")
- #else
-@@ -1174,7 +1174,7 @@
-       "Présent")
- MSG_HASH(MENU_ENUM_LABEL_VALUE_PRIVACY_SETTINGS,
-       "Confidentialité")
+ MSG_HASH(
+          MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY,
+          "Redémarrer RetroArch"
+@@ -2141,7 +2141,7 @@
+          MENU_ENUM_LABEL_VALUE_MIDI_SETTINGS,
+          "MIDI"
+          )
 -#ifdef HAVE_LAKKA
 +#ifndef HAVE_LAKKA
- MSG_HASH(MENU_ENUM_LABEL_VALUE_QUIT_RETROARCH,
-       "Redémarrer RetroArch")
- #else
-@@ -3196,7 +3196,7 @@
-       "Afficher l'aide")
- MSG_HASH(MENU_ENUM_SUBLABEL_MENU_SHOW_HELP,
-       "Afficher/cacher l'option 'Afficher l'aide'.")
+ MSG_HASH(
+          MENU_ENUM_LABEL_VALUE_QUIT_RETROARCH,
+          "Redémarrer RetroArch"
+@@ -5384,7 +5384,7 @@
+          MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION,
+          "Affiche les informations spécifiques à l'appareil."
+          )
 -#ifdef HAVE_LAKKA
 +#ifndef HAVE_LAKKA
- MSG_HASH(MENU_ENUM_LABEL_VALUE_MENU_SHOW_QUIT_RETROARCH,
-       "Afficher Redémarrer RetroArch")
- MSG_HASH(MENU_ENUM_SUBLABEL_MENU_SHOW_QUIT_RETROARCH,
+ MSG_HASH(
+          MENU_ENUM_SUBLABEL_QUIT_RETROARCH,
+          "Redémarrer le programme."
 diff -Naur a/intl/msg_hash_ko.h b/intl/msg_hash_ko.h
 --- a/intl/msg_hash_ko.h	2019-01-24 22:31:24.000000000 -0600
 +++ b/intl/msg_hash_ko.h	2019-01-28 22:00:41.392467736 -0600
