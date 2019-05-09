@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="dosbox-svn"
-PKG_VERSION="2e452f632522d938aaf59eb975d62519556e9dae"
-PKG_SHA256="98923159370bd314b8e504911d954137ce4cab249fd259b2785bdca3223a2144"
+PKG_VERSION="0870c65069280fe892ee04ffb1347e4f1a4d61bd"
+PKG_SHA256="f05263cbc163ef175482fa3b02db664888464019927a0b3f3ae4d14db0d9d6ab"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
