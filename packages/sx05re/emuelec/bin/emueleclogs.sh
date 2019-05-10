@@ -75,14 +75,14 @@ EE_LOG_DIR=/storage/.config/retroarch
   
 LOGFILE="01_RETROARCH.log"
   for i in retroarch*.cfg; do
-     [ -f ${EE_LOG_DIR}/${i} ] && getlog_cmd cat ${EE_LOG_DIR}/$i
+     [ -f "$EE_LOG_DIR/$i" ] && getlog_cmd cat "$EE_LOG_DIR/$i"
   done
 
 EE_LOG_DIR=/tmp/joypads
   
 LOGFILE="01_JOYPADS.log"
   for i in *.cfg; do
-     [ -f "${EE_LOG_DIR}/${i}" ] && getlog_cmd cat "${EE_LOG_DIR}/$i"
+     [ -f "$EE_LOG_DIR/$i" ] && getlog_cmd cat "$EE_LOG_DIR/$i"
   done
 
 # System.log
