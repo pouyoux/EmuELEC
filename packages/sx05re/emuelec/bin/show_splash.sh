@@ -6,11 +6,15 @@
 
 PLATFORM="$1"
 
-case "$PLATFORM" in
-  "ARCADE"|"FBA"|"NEOGEO"|"MAME")
-  PLATFORM="ARCADE"
+case $PLATFORM in
+ "ARCADE"|"FBA"|"NEOGEO"|"MAME")
+   PLATFORM="ARCADE"
   ;;
- esac
+ "RETROPIE")
+   # fbterm does not like the splash screen 
+   exit 0
+  ;;
+esac
 
 if [ "$PLATFORM" == "intro" ]; then
 	SPLASH="/storage/.config/splash/splash-1080.png"
@@ -37,5 +41,9 @@ else
 fi
 fi 
 (
-	fbi $SPLASH -noverbose > /dev/null 2>&1
+if [ ! -e /proc/device-tree/t82x@d00c0000/compatible ] || [ -f "/emuelec/bin/fbfix" ]; then
+	mpv $SPLASH > /dev/null 2>&1
+  else
+    fbi $SPLASH t 1 -noverbose > /dev/null 2>&1
+fi 
 )&

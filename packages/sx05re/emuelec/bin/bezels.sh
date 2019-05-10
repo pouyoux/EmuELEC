@@ -4,19 +4,24 @@
 # Copyright (C) 2019-present SumavisionQ5 (https://github.com/SumavisionQ5)
 # Modifications by Shanti Gilbert (https://github.com/shantigilbert)
 
+PLATFORM="$1"
+
+case $PLATFORM in
+ "ARCADE"|"FBA"|"NEOGEO"|"MAME")
+   PLATFORM="ARCADE"
+  ;;
+ "RETROPIE")
+   # fbterm does not need bezels 
+   exit 0
+  ;;
+esac
+
 ROMNAME=$(basename "${2%.*}")
 RACONFIG="/storage/.config/retroarch/retroarch.cfg"
 OPACITY="1.000000"
 AR_INDEX="23"
 BEZELDIR="/storage/overlays/bezels"
 INIFILE="/emuelec/bezels/settings.ini"
-PLATFORM="$1"
-
-case $PLATFORM in
-  "ARCADE"|"FBA"|"NEOGEO"|"MAME")
-  PLATFORM="ARCADE"
-  ;;
- esac
 
 # bezelmap.cfg in $BEZELDIR/ is to share bezels between arcade clones and parent. 
 BEZELMAP="/emuelec/bezels/arcademap.cfg"
