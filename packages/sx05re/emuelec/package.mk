@@ -17,16 +17,13 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2 m64p mupen64plus-nx fba4arm"
-PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher fbida mpv SDL_GameControllerDB linux-utils xmlstarlet CoreELEC-Debug-Scripts"
+PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2 m64p mupen64plus-nx fba4arm mame2010 mame2015"
+PKG_RETROPIE_DEP="bash pyudev dialog six fbterm git dbus-python pygobject coreutils"
+PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher fbida mpv SDL_GameControllerDB linux-utils xmlstarlet CoreELEC-Debug-Scripts $PKG_RETROPIE_DEP"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
 # You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
 # PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $LIBRETRO_EXTRA_CORES"
-
-# Uncomment to compile other versions of MAME
- PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET mame2010 mame2015"
-
 
 make_target() {
 if [ "$PROJECT" == "Amlogic-ng" ]; then
