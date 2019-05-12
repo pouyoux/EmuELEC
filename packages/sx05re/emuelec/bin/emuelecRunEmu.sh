@@ -96,8 +96,8 @@ case $1 in
 "PSP")
       if [ "$EMU" = "PPSSPPSA" ]; then
    #PPSSPP can run at 32BPP but only with buffered rendering, some games need non-buffered and the only way they work is if I set it to 16BPP
-	/emuelec/scripts/setres.sh 16
-   RUNTHIS='/usr/bin/ppsspp.sh "$2"'
+   # /emuelec/scripts/setres.sh 16 # This was only needed for S912, but PPSSPP does not work on S912 
+    RUNTHIS='/usr/bin/ppsspp.sh "$2"'
       fi
         ;;
 "NEOCD")
@@ -135,7 +135,10 @@ if [ -f "/emuelec/scripts/resetfb.sh" ]; then
 /emuelec/scripts/resetfb.sh
 fi
 
+if [ ! -e /proc/device-tree/t82x@d00c0000/compatible ]; then
+# Yet even more hacks to get S912 to play nice, don't display a splash on S912 after quiting a game
 /emuelec/scripts/show_splash.sh intro
+fi
 
 if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	DEFE=$(sed -n 's|\s*<bool name="BGM" value="\(.*\)" />|\1|p' $CFG)
