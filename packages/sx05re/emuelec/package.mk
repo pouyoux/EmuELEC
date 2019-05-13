@@ -47,25 +47,21 @@ makeinstall_target() {
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/
     cp $PKG_DIR/autostart.sh $INSTALL/usr/config/autostart.sh
  
-    mkdir -p $INSTALL/usr/config/emuelec/scripts
-    cp $PKG_DIR/bin/* $INSTALL/usr/config/emuelec/scripts
+  mkdir -p $INSTALL/usr/config/emuelec/scripts
+    cp $PKG_DIR/scripts/* $INSTALL/usr/config/emuelec/scripts
     chmod +x $INSTALL/usr/config/emuelec/scripts/*
     
-    mkdir -p $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/clearconfig.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/emuelecRunEmu.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/emulationstation.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/emustation-config $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/gamelist-cleaner.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/killes.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/resetfb.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/setres.sh $INSTALL/usr/bin/
-    ln -sf /storage/.config/emuelec/scripts/startfe.sh $INSTALL/usr/bin/
-
-    if [ "$PROJECT" != "Amlogic-ng" ]; then
+  mkdir -p $INSTALL/usr/bin/
+    
+  if [ "$PROJECT" != "Amlogic-ng" ]; then
     rm $INSTALL/usr/config/emuelec/scripts/resetfb.sh
-    rm $INSTALL/usr/bin/resetfb.sh
-    fi 
+  fi
+
+  FILES=$INSTALL/usr/config/emuelec/scripts/*
+		for f in $FILES
+  do
+		ln -sf "/storage/.config/emuelec/scripts/$f" $INSTALL/usr/bin/
+  done
 
   mkdir -p $INSTALL/usr/share/retroarch-overlays
     cp -r $PKG_DIR/overlay/* $INSTALL/usr/share/retroarch-overlays
@@ -73,10 +69,10 @@ makeinstall_target() {
   mkdir -p $INSTALL/usr/share/common-shaders
     cp -r $PKG_DIR/shaders/* $INSTALL/usr/share/common-shaders
     
-    mkdir -p $INSTALL/usr/share/libretro-database
+  mkdir -p $INSTALL/usr/share/libretro-database
      touch $INSTALL/usr/share/libretro-database/dummy
      
-    mkdir -p $INSTALL/usr/config/emuelec/
+  mkdir -p $INSTALL/usr/config/emuelec/
     cp -rf $PKG_DIR/retropie/* $INSTALL/usr/config/emuelec/
     ln -sf /storage/.config/emuelec $INSTALL/emuelec
     find $INSTALL/usr/config/emuelec/ -type f -exec chmod o+x {} \;
@@ -84,22 +80,14 @@ makeinstall_target() {
 
 post_install() {
 # Remove unnecesary Retroarch Assets and overlays
-rm -rf "$INSTALL/usr/share/retroarch-assets/branding"
-rm -rf "$INSTALL/usr/share/retroarch-assets/glui"
-rm -rf "$INSTALL/usr/share/retroarch-assets/nuklear"
-rm -rf "$INSTALL/usr/share/retroarch-assets/nxrgui"
-rm -rf "$INSTALL/usr/share/retroarch-assets/ozone"
-rm -rf "$INSTALL/usr/share/retroarch-assets/pkg"
-rm -rf "$INSTALL/usr/share/retroarch-assets/switch"
-rm -rf "$INSTALL/usr/share/retroarch-assets/wallpapers"
-rm -rf "$INSTALL/usr/share/retroarch-assets/zarch"
 
-rm -rf "$INSTALL/usr/share/retroarch-overlays/borders"
-rm -rf "$INSTALL/usr/share/retroarch-overlays/effects"
-rm -rf "$INSTALL/usr/share/retroarch-overlays/gamepads"
-rm -rf "$INSTALL/usr/share/retroarch-overlays/ipad"
-rm -rf "$INSTALL/usr/share/retroarch-overlays/keyboards"
-rm -rf "$INSTALL/usr/share/retroarch-overlays/misc"
+  for i in branding glui nuklear nxrgui ozone pkg switch wallpapers zarch; do
+    rm -rf "$INSTALL/usr/share/retroarch-assets/$i"
+  done
+  
+  for i in borders effects gamepads ipad keyboards misc; do
+    rm -rf "$INSTALL/usr/share/retroarch-overlays/$i"
+  done
 
 mkdir -p $INSTALL/etc/retroarch-joypad-autoconfig
 cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
@@ -107,8 +95,8 @@ cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
     # link default.target to emuelec.target
    ln -sf emuelec.target $INSTALL/usr/lib/systemd/system/default.target
    enable_service emuelec-autostart.service
-   
-# Thanks to vpeter we can now have bash :) 
+  
+   # Thanks to vpeter we can now have bash :) 
   rm -f $INSTALL/usr/bin/{sh,bash,busybox}
   cp $(get_build_dir busybox)/.install_pkg/usr/bin/busybox $INSTALL/usr/bin
   cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
