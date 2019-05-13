@@ -1,6 +1,20 @@
 EmuELEC CHANGELOG
 ==================
 
+2.5.2
+
+All platforms
+
+* Fix scripts not displaying correctly
+* Fix PPSSPP render error
+* Added custom_scripts directory, any .sh script that is put in here will automatically appear in "Retropie" menu in ES
+
+S912
+
+* Disabled splash screen after quitting a game, it was causing rendering/resolution issues
+
+-------------------------------
+
 2.5.1
 
 All platforms
