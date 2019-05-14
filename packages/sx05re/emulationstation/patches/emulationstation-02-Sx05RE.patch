@@ -11,7 +11,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  		addEntry("SCRAPER", 0x777777FF, true, [this] { openScraperSettings(); });
  
  	addEntry("SOUND SETTINGS", 0x777777FF, true, [this] { openSoundSettings(); });
-@@ -47,6 +50,460 @@
+@@ -47,6 +50,484 @@
  	addVersionInfo();
  	setSize(mMenu.getSize());
  	setPosition((Renderer::getScreenWidth() - mSize.x()) / 2, Renderer::getScreenHeight() * 0.15f);
@@ -81,7 +81,31 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +			if (Settings::getInstance()->getString("EmuELEC_BOOT") != emuelec_boot_def->getSelected())
 +				Settings::getInstance()->setString("EmuELEC_BOOT", emuelec_boot_def->getSelected());
 +		});
-+		
++       
++       auto bezels_enabled = std::make_shared<SwitchComponent>(mWindow);
++		bezels_enabled->setState(Settings::getInstance()->getBool("EmuELEC_BEZELS"));
++		s->addWithLabel("ENABLE RA BEZELS", bezels_enabled);
++		s->addSaveFunc([bezels_enabled] {
++			/* if (bezels_enabled->getState() == false) {
++				runSystemCommand("/emuelec/scripts/enable.sh bezels disable"); 
++				} else { 
++				runSystemCommand("/emuelec/scripts/enable.sh bezels enable"); 
++			} */
++                Settings::getInstance()->setBool("EmuELEC_BEZELS", bezels_enabled->getState());
++			});	
++       
++       auto splash_enabled = std::make_shared<SwitchComponent>(mWindow);
++		splash_enabled->setState(Settings::getInstance()->getBool("EmuELEC_SPLASH"));
++		s->addWithLabel("ENABLE RA SPLASH", splash_enabled);
++		s->addSaveFunc([splash_enabled] {
++		/*	if (splash_enabled->getState() == false) {
++				runSystemCommand("/emuelec/scripts/enable.sh splash disable"); 
++				} else { 
++				runSystemCommand("/emuelec/scripts/enable.sh splash enable"); 
++			} */
++                Settings::getInstance()->setBool("EmuELEC_SPLASH", splash_enabled->getState());
++			});
++
 +	ComponentListRow row;
 +	
 +	row.addElement(std::make_shared<TextComponent>(mWindow, "                                   EMULATOR CHOICES", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
@@ -472,25 +496,6 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
  }
  
  void GuiMenu::openScraperSettings()
-@@ -114,6 +571,9 @@
- 		audio_cards.push_back("hw");
- 		audio_cards.push_back("plughw");
- 		audio_cards.push_back("null");
-+		audio_cards.push_back("alsa:hw:0,0");
-+		audio_cards.push_back("alsa:hw:1,0");
-+		/*audio_cards.push_back("hdmi");*/
- 		if (Settings::getInstance()->getString("AudioCard") != "") {
- 			if(std::find(audio_cards.begin(), audio_cards.end(), Settings::getInstance()->getString("AudioCard")) == audio_cards.end()) {
- 				audio_cards.push_back(Settings::getInstance()->getString("AudioCard"));
-@@ -136,6 +596,7 @@
- 		transitions.push_back("Master");
- 		transitions.push_back("Digital");
- 		transitions.push_back("Analogue");
-+		transitions.push_back("HDMI");
- 		if (Settings::getInstance()->getString("AudioDevice") != "") {
- 			if(std::find(transitions.begin(), transitions.end(), Settings::getInstance()->getString("AudioDevice")) == transitions.end()) {
- 				transitions.push_back(Settings::getInstance()->getString("AudioDevice"));
-
 --- a/es-app/src/guis/GuiMenu.h	2018-03-09 12:11:38.000000000 -0600
 +++ b/es-app/src/guis/GuiMenu.h	2018-03-16 01:20:44.411257304 -0600
 @@ -26,6 +26,7 @@
@@ -596,9 +601,9 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	mStringMap["EmuELEC_AMIGA_CORE"] = "puae";
 +	mStringMap["EmuELEC_REICAST_CORE"] = "REICASTSA";
 +   mStringMap["EmuELEC_NEOCD_CORE"] = "libneocd";
++	mBoolMap["EmuELEC_BEZELS"] = false;
++	mBoolMap["EmuELEC_SPLASH"] = false;
 +/* space for other settings in the future 
-+ * 
-+ * 
 + * 
 + * 
 + * 

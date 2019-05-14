@@ -42,9 +42,13 @@ fi
 RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/${EMU}_libretro.so "$2"'
 
 # very WIP {
-# These two will be handled in ES
-SHOW_BEZELS="Yes"  
-SHOW_SPLASH="Yes"
+
+PAT="s|\s*<string name=\"EmuELEC_BEZELS\" value=\"\(.*\)\" />|\1|p"
+BEZ=$(sed -n "$PAT" "$CFG")
+[ "$BEZ" == "true" ] && SHOW_BEZELS="Yes" || SHOW_BEZELS="No"
+PAT="s|\s*<string name=\"EmuELEC_SPLASH\" value=\"\(.*\)\" />|\1|p"
+SPL=$(sed -n "$PAT" "$CFG")
+[ "$SPL" == "true" ] && SHOW_SPLASH="Yes" || SHOW_SPLASH="No"
 
 [ "$SHOW_BEZELS" = "Yes" ] && /emuelec/scripts/bezels.sh "$PLATFORM" "$2"
 [ "$SHOW_SPLASH" = "Yes" ] && /emuelec/scripts/show_splash.sh "$PLATFORM" "$2"
