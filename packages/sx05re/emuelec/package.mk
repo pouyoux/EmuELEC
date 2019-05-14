@@ -46,6 +46,7 @@ makeinstall_target() {
   mkdir -p $INSTALL/usr/config/
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/
     cp $PKG_DIR/autostart.sh $INSTALL/usr/config/autostart.sh
+    cp $PKG_DIR/custom_start.sh $INSTALL/usr/config/custom_start.sh
  
   mkdir -p $INSTALL/usr/config/emuelec/scripts
     cp $PKG_DIR/scripts/* $INSTALL/usr/config/emuelec/scripts
@@ -81,7 +82,6 @@ makeinstall_target() {
 
 post_install() {
 # Remove unnecesary Retroarch Assets and overlays
-
   for i in branding glui nuklear nxrgui ozone pkg switch wallpapers zarch; do
     rm -rf "$INSTALL/usr/share/retroarch-assets/$i"
   done
@@ -93,11 +93,11 @@ post_install() {
 mkdir -p $INSTALL/etc/retroarch-joypad-autoconfig
 cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
 
-    # link default.target to emuelec.target
+# link default.target to emuelec.target
    ln -sf emuelec.target $INSTALL/usr/lib/systemd/system/default.target
    enable_service emuelec-autostart.service
   
-   # Thanks to vpeter we can now have bash :) 
+# Thanks to vpeter we can now have bash :) 
   rm -f $INSTALL/usr/bin/{sh,bash,busybox}
   cp $(get_build_dir busybox)/.install_pkg/usr/bin/busybox $INSTALL/usr/bin
   cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin

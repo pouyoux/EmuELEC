@@ -3,6 +3,18 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
+
+# merge es_systems.cfg with the custom_systems.cfg file if this exists 
+
+if [ -f "/storage/.emulationstation/custom_systems.cfg" ]; then 
+	cp -rf "/usr/config/emulationstation/es_systems.cfg" "/storage/.emulationstation/es_systems.cfg"
+	sed -i '/</systemList>/d' "/storage/.emulationstation/es_systems.cfg"
+	cat "/storage/.emulationstation/custom_systems.cfg" >> "/storage/.emulationstation/es_systems.cfg"
+	echo "</systemList>" >> "/storage/.emulationstation/es_systems.cfg"
+else
+	cp -rf "/usr/config/emulationstation/es_systems.cfg" "/storage/.emulationstation/es_systems.cfg"
+fi
+
 # Kodi seems to set its own FB settings for 720p, so we revert them to one that work on ES, I use all resolutions just in case :)
 /emuelec/scripts/setres.sh
 
