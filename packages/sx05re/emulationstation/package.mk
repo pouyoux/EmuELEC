@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="emulationstation"
-PKG_VERSION="9d793dbbc40f0aa700cc77eb58c0f3fc72a25415"
+PKG_VERSION="3fdaa2aafbd17eb51dba141dcbedce3c37e034e7"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -27,7 +27,6 @@ post_makeinstall_target() {
   mkdir -p $INSTALL/usr/config/emulationstation/resources
     cp -rf $PKG_BUILD/resources/* $INSTALL/usr/config/emulationstation/resources/
     ln -sf /storage/.config/emulationstation/resources $INSTALL/usr/bin/resources
-    
 
    mkdir -p $INSTALL/etc/emulationstation/
    ln -sf /storage/.config/emulationstation/themes $INSTALL/etc/emulationstation/
