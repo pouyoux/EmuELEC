@@ -117,10 +117,10 @@ case $hdmimode in
     "NGPC")
 		set_bezel "460" "428" "407" "145" "false"
 		;;
-	"WS")
+	"WONDERSWAN")
 		set_bezel "645" "407" "325" "150" "false"
 		;;
-	"WSC")
+	"WONDERSWANCOLOR")
 		set_bezel "643" "405" "325" "150" "false"
 		;;
 	*)
@@ -151,10 +151,10 @@ case $hdmimode in
 	"NGPC")
 		set_bezel "700" "640" "610" "215" "false"
 		;;
-	"WS")
+	"WONDERSWAN")
 		set_bezel "950" "605" "490" "225" "false"
 		;;
-	"WSC")
+	"WONDERSWANCOLOR")
 		set_bezel "950" "605" "490" "225" "false"
 		;;
 	*)
