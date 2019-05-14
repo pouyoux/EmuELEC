@@ -3,6 +3,11 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
+# DO NOT modify this file, if you need to use autostart please use /storage/.config/custom_start.sh 
+
+# Check if we have unsynched update files
+/usr/config/emuelec/scripts/force_update.sh
+
 /emuelec/scripts/setres.sh
 
 # It seems some slow SDcards have a problem creating the symlink on time :/

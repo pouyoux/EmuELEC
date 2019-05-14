@@ -58,9 +58,10 @@ makeinstall_target() {
   fi
 
   FILES=$INSTALL/usr/config/emuelec/scripts/*
-		for f in $FILES
-  do
-		ln -sf "/storage/.config/emuelec/scripts/$f" $INSTALL/usr/bin/
+	for f in $FILES 
+	do
+	FI=$(basename $f)
+	ln -sf "/storage/.config/emuelec/scripts/$FI" $INSTALL/usr/bin/
   done
 
   mkdir -p $INSTALL/usr/share/retroarch-overlays
@@ -105,4 +106,35 @@ cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
   echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
   echo "chmod 4755 $INSTALL/usr/bin/busybox" >> $FAKEROOT_SCRIPT
   find $INSTALL/usr/ -type f -iname "*.sh" -exec chmod +x {} \;
+  
+# Generate force_update.sh script based on the files that need to be updated
+OIFS="$IFS"
+IFS=$'\n'
+  FILES=$(find $INSTALL/usr/config/emuelec -type f)
+for f in $FILES 
+	do
+		FI=$(echo "$f" | sed "s|$INSTALL/usr/config/emuelec/||")
+	if  [[ "$FI" != *"ports"* ]]; then
+		echo "cp -rf \"/usr/config/emuelec/$FI\" \"/emuelec/$FI\"" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+	fi
+done
+echo " " >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+echo "# emulationstation " >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+echo " " >> $INSTALL/usr/config/emuelec/scripts/force_update.sh   
+  
+  FILES=$(find $INSTALL/usr/config/emulationstation/scripts -type f)
+		for f in $FILES 
+		do
+		FI=$(echo "$f" | sed "s|$INSTALL/usr/config/emulationstation/scripts/||")
+	echo "cp -rf \"/usr/config/emuelec/scripts/$FI\" \"/storage/.emulationstation/scripts/$FI\"" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+  done
+
+echo "cp -rf /usr/config/EE_VERSION /storage/.config/EE_VERSION" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+echo "cp -rf /usr/config/autostart.sh /storage/.config/autostart.sh" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+  
+# This should always be the last line
+  echo " " >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+  echo "fi" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+  echo 'check_reboot $1' >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+  IFS="$OIFS"  
 } 
