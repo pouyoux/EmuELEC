@@ -16,6 +16,7 @@ makeinstall_target() {
 mkdir -p $INSTALL/usr/bin
 cp $PKG_BUILD/.armv8a-libreelec-linux-gnueabi/src/stdbuf $INSTALL/usr/bin/
 cp $PKG_BUILD/.armv8a-libreelec-linux-gnueabi/src/timeout $INSTALL/usr/bin/
+cp $PKG_BUILD/.armv8a-libreelec-linux-gnueabi/src/sort $INSTALL/usr/bin/
 mkdir -p $INSTALL/usr/lib/coreutils
 cp $PKG_BUILD/.armv8a-libreelec-linux-gnueabi/src/libstdbuf.so $INSTALL/usr/lib/coreutils/
 }
