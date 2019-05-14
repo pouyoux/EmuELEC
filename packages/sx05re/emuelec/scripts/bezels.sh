@@ -29,8 +29,8 @@ BZLNAME=$(sed -n "/"$PLATFORM"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
 echo $ROMNAME
-OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
-[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
+OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME".cfg -maxdepth 1 | head -n 1)
+[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME".cfg -maxdepth 1 | head -n 1)
 
 echo $OVERLAYDIR1
 echo $OVERLAYDIR2
@@ -102,7 +102,7 @@ case $hdmimode in
    "GBA")
 		set_bezel "467" "316" "405" "190" "false"
 		;;
-	"GG")
+	"GAMEGEAR")
 		set_bezel "780" "580" "245" "70" "false"
 		;;
 	"GB")
@@ -134,9 +134,9 @@ case $hdmimode in
     check_overlay_dir "$PLATFORM"
 	case "$1" in
    "GBA")
-		set_bezel "960" "640" "0" "0" "true"
+		set_bezel "698" "472" "609" "288" "false"
 		;;
-	"GG")
+	"GAMEGEAR")
 		set_bezel "1160" "850" "380" "120" "false"
 		;;
 	"GB")
