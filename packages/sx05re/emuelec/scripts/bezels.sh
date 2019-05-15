@@ -28,18 +28,8 @@ BEZELMAP="/emuelec/bezels/arcademap.cfg"
 BZLNAME=$(sed -n "/"$PLATFORM"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
-echo $ROMNAME
-
-if [ "$PLATFORM" = "ARCADE" ]; then
-	OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME".cfg -maxdepth 1 | head -n 1)
-	[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME".cfg -maxdepth 1 | head -n 1)
-else 
-	OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
-	[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
-fi
-
-echo $OVERLAYDIR1
-echo $OVERLAYDIR2
+OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -maxdepth 1 -iname "$ROMNAME*.cfg" | sort -V | head -n 1)
+[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -maxdepth 1 -iname "$BZLNAME*.cfg" | sort -V | head -n 1)
 
 clear_bezel() { 
 		sed -i '/aspect_ratio_index = "/d' $RACONFIG
@@ -48,8 +38,9 @@ clear_bezel() {
 		sed -i '/custom_viewport_x = "/d' $RACONFIG
 		sed -i '/custom_viewport_y = "/d' $RACONFIG
 		sed -i '/video_scale_integer = "/d' $RACONFIG
+		sed -i '/input_overlay_opacity = "/d' $RACONFIG
 		echo 'video_scale_integer = "false"' >> $RACONFIG
-
+		echo 'input_overlay_opacity = "0.150000"' >> $RACONFIG
 		}
 
 set_bezel() {
@@ -63,6 +54,7 @@ set_bezel() {
 # $6: video_scale 
         
         clear_bezel
+        sed -i '/input_overlay_opacity = "/d' $RACONFIG
         sed -i "1i input_overlay_opacity = \"$OPACITY\"" $RACONFIG
 		sed -i "2i aspect_ratio_index = \"$AR_INDEX\"" $RACONFIG
 		sed -i "3i custom_viewport_width = \"$1\"" $RACONFIG
@@ -78,7 +70,7 @@ check_overlay_dir() {
 # 1.$OVERLAYDIR1 will be used, if it does not exist, then
 # 2.$OVERLAYDIR2 will be used, if it does not exist, then
 # 3.default bezel as "$BEZELDIR/$1/default.cfg\" will be used.
-
+	
 	if [ -f "$OVERLAYDIR1" ]; then
 		sed -i '/input_overlay = "/d' $RACONFIG
 		echo -e "input_overlay = \""$OVERLAYDIR1"\"\n" >> $RACONFIG
@@ -123,15 +115,17 @@ case $hdmimode in
     "NGPC")
 		set_bezel "460" "428" "407" "145" "false"
 		;;
-	"WS")
+	"WONDERSWAN")
 		set_bezel "645" "407" "325" "150" "false"
 		;;
-	"WSC")
+	"WONDERSWANCOLOR")
 		set_bezel "643" "405" "325" "150" "false"
 		;;
 	*)
 		# delete aspect_ratio_index to make sure video is expanded fullscreen. Only certain handheld platforms need custom_viewport.
 		clear_bezel
+		sed -i '/input_overlay_opacity = "/d' $RACONFIG
+        sed -i "1i input_overlay_opacity = \"$OPACITY\"" $RACONFIG
 		;;
 	esac
   ;;
@@ -157,14 +151,16 @@ case $hdmimode in
 	"NGPC")
 		set_bezel "700" "640" "610" "215" "false"
 		;;
-	"WS")
+	"WONDERSWAN")
 		set_bezel "950" "605" "490" "225" "false"
 		;;
-	"WSC")
+	"WONDERSWANCOLOR")
 		set_bezel "950" "605" "490" "225" "false"
 		;;
 	*)
 		clear_bezel
+		sed -i '/input_overlay_opacity = "/d' $RACONFIG
+		sed -i "1i input_overlay_opacity = \"$OPACITY\"" $RACONFIG
 		;;
 	esac
   ;;
