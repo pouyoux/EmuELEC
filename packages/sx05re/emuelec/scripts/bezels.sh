@@ -29,8 +29,14 @@ BZLNAME=$(sed -n "/"$PLATFORM"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
 echo $ROMNAME
-OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME".cfg -maxdepth 1 | head -n 1)
-[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME".cfg -maxdepth 1 | head -n 1)
+
+if [ "$PLATFORM" = "ARCADE" ]; then
+	OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME".cfg -maxdepth 1 | head -n 1)
+	[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME".cfg -maxdepth 1 | head -n 1)
+else 
+	OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
+	[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
+fi
 
 echo $OVERLAYDIR1
 echo $OVERLAYDIR2
@@ -117,10 +123,10 @@ case $hdmimode in
     "NGPC")
 		set_bezel "460" "428" "407" "145" "false"
 		;;
-	"WONDERSWAN")
+	"WS")
 		set_bezel "645" "407" "325" "150" "false"
 		;;
-	"WONDERSWANCOLOR")
+	"WSC")
 		set_bezel "643" "405" "325" "150" "false"
 		;;
 	*)
@@ -151,10 +157,10 @@ case $hdmimode in
 	"NGPC")
 		set_bezel "700" "640" "610" "215" "false"
 		;;
-	"WONDERSWAN")
+	"WS")
 		set_bezel "950" "605" "490" "225" "false"
 		;;
-	"WONDERSWANCOLOR")
+	"WSC")
 		set_bezel "950" "605" "490" "225" "false"
 		;;
 	*)
