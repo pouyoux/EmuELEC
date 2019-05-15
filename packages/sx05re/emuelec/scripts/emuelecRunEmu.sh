@@ -32,6 +32,9 @@ EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
 
+# remove Libretro_ from the core name
+EMU=$(echo "$EMU" | sed "s|Libretro_||")
+
 # if there wasn't a --NOLOG included in the arguments, enable the emulator log output. TODO: this should be handled in ES menu
 if [[ $arguments != *"--NOLOG"* ]]; then
 LOGEMU="Yes"
