@@ -127,7 +127,7 @@ echo " " >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
 		for f in $FILES 
 		do
 		FI=$(echo "$f" | sed "s|$INSTALL/usr/config/emulationstation/scripts/||")
-	echo "cp -rf \"/usr/config/emuelec/scripts/$FI\" \"/storage/.emulationstation/scripts/$FI\"" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+	echo "cp -rf \"/usr/config/emulationstation/scripts/$FI\" \"/storage/.emulationstation/scripts/$FI\"" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
   done
 
 echo "cp -rf /usr/config/EE_VERSION /storage/.config/EE_VERSION" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
