@@ -53,8 +53,8 @@ PAT="s|\s*<bool name=\"EmuELEC_SPLASH\" value=\"\(.*\)\" />|\1|p"
 SPL=$(sed -n "$PAT" "$CFG")
 [ "$SPL" == "true" ] && SHOW_SPLASH="Yes" || SHOW_SPLASH="No"
 
-[ "$SHOW_BEZELS" = "Yes" ] && /emuelec/scripts/bezels.sh "$PLATFORM" "$2"
-[ "$SHOW_SPLASH" = "Yes" ] && /emuelec/scripts/show_splash.sh "$PLATFORM" "$2"
+[ "$SHOW_BEZELS" = "Yes" ] && /emuelec/scripts/bezels.sh "$PLATFORM" "$2" || /emuelec/scripts/bezels.sh "default"
+[ "$SHOW_SPLASH" = "Yes" ] && /emuelec/scripts/show_splash.sh "$PLATFORM" "$2" || /emuelec/scripts/show_splash.sh "default" 
 
 # } very WIP 
 

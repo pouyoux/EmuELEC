@@ -18,6 +18,8 @@ esac
 
 if [ "$PLATFORM" == "intro" ]; then
 	SPLASH="/storage/.config/splash/splash-1080.png"
+elif [ "$PLATFORM" == "default" ]; then
+SPLASH="/storage/.config/splash/loading-game.png"
 else
 	SPLASHDIR="/storage/overlays/splash"
 	ROMNAME=$(basename "${2%.*}")
