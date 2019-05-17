@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="reicast"
-PKG_VERSION="b59b5f454034d66363e2e4f708bd2a6a7aff25e6"
-PKG_SHA256="285dcc60ac50cdbedf8176e31b7b4e96fc28495610e41bd77f668ac6c9122e80"
+PKG_VERSION="8c38fcedbe064f7fbda9c2213fd6987b7d4e4dbc"
+PKG_SHA256="b1e5fce1d8ac498c3da0ac8825f977eacae57a7902dead0a4e88618bdae502da"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/reicast-emulator"
 PKG_URL="https://github.com/libretro/reicast-emulator/archive/$PKG_VERSION.tar.gz"
@@ -32,7 +32,7 @@ PKG_BUILD_FLAGS="-gold"
 PKG_LIBNAME="reicast_libretro.so"
 PKG_LIBPATH="$PKG_LIBNAME"
 
-PKG_MAKE_OPTS_TARGET="HAVE_OPENMP=0 GIT_VERSION=${PKG_VERSION:0:7} WITH_DYNAREC=$ARCH"
+PKG_MAKE_OPTS_TARGET="HAVE_OPENMP=0 GIT_VERSION=${PKG_VERSION:0:7} WITH_DYNAREC=$ARCH ARCH=arm"
 
 pre_make_target() {
    export BUILD_SYSROOT=$SYSROOT_PREFIX
@@ -42,18 +42,12 @@ pre_make_target() {
   fi
 
   case $PROJECT in
-    Amlogic*)
-      PKG_MAKE_OPTS_TARGET+=" platform=rpi3"
+    Amlogic-ng)
+      PKG_MAKE_OPTS_TARGET+=" platform=odroid-n2"
       ;;
-    RPi)
+    Amlogic)
       PKG_MAKE_OPTS_TARGET+=" platform=rpi"
-      ;;
-    RPi2)
-      PKG_MAKE_OPTS_TARGET+=" platform=rpi2"
-      ;;
-    Generic)
-      PKG_MAKE_OPTS_TARGET+=" AS=${AS} CC_AS=${AS} HAVE_OIT=1"
-      ;;
+    ;;  
   esac
 }
 
