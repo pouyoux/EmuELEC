@@ -1,6 +1,27 @@
 EmuELEC CHANGELOG
 ==================
 
+2.5.3
+
+All platforms
+
+* New feature "Force Update" that will hopefully solve the update process, updating only the files that need to be updated and leaving the rest intact. (More info on the Wiki)
+* New feature custom_start.sh if you need anything to run at boot place it in this file /storage/.config/custom_start.sh
+* Enable/Disable custom bezels and splash screens from the ES menu.
+* Fix crash when disconnecting gamepad
+* Fix DS4/DS3 motion controls causing problems with ES
+* Fixed bug with some handheld platforms not showing bezels
+* Fixed bug where bezels/splash would show a different game
+* Added getcores_override.sh in case you add a new core and need it to appear as an option in ES.
+* To avoid confusion libretro cores now have Libretro_ in the name when selecting an emulator in Emulationstation
+* Change path to external fonts for ES
+* Bezels will now make a backup copy of retroarch.cfg from when you enabled them, when they are disabled again that backup copy is restored, so make sure you change all of your settings before enabling bezels
+* Replace Libretro Fbalpha with FbalphaFB
+* Added PCengineCD, Saturn, Naomi, Atomiswave and MSX2 to es_systems.cfg
+* Bumped several Libretro cores, PPSSPPSDL, REICASTSA, Retroarch, etc. to the newest version. 
+
+-------------------------------
+
 2.5.2
 
 All platforms
