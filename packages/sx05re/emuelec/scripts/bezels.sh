@@ -18,14 +18,11 @@ case $PLATFORM in
    PLATFORM="ARCADE"
   ;;
   "default")
-  #restore from original file if exists, else clear bezels
-  if [ -f "$RACONFIG.org" ]; then
-   rm "$RACONFIG"
-   mv "$RACONFIG.org" "$RACONFIG"
-   else
-   clear_bezel
-   sed -i '/input_overlay = "/d' $RACONFIG
-  fi 
+  if [ -f "/storage/.config/bezels_enabled" ]; then
+  clear_bezel
+  sed -i '/input_overlay = "/d' $RACONFIG
+  rm "/storage/.config/bezels_enabled"
+  fi
    exit 0
   ;;
   "RETROPIE")
@@ -34,10 +31,16 @@ case $PLATFORM in
   ;;
 esac
 
-# if a backup does not exists make a copy of retroarch.cfg so we can return to it when we disable bezels
- if [ ! -f "$RACONFIG.org" ]; then
-   cp "$RACONFIG" "$RACONFIG.org"
+ if [ ! -f "/storage/.config/bezels_enabled" ]; then
+   touch /storage/.config/bezels_enabled
  fi
+
+
+# if a backup does not exists make a copy of retroarch.cfg so we can return to it when we disable bezels
+ # for future use...maybe
+ #if [ ! -f "$RACONFIG.org" ]; then
+ #  cp "$RACONFIG" "$RACONFIG.org"
+ #fi
 
 # bezelmap.cfg in $BEZELDIR/ is to share bezels between arcade clones and parent. 
 BEZELMAP="/emuelec/bezels/arcademap.cfg"
