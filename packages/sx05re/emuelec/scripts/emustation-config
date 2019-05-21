@@ -23,8 +23,74 @@
 # Since the ROMS folder is not getting created at boot, we check if it exists, if it doesn't then we create it.
 if [ ! -d "/storage/roms" ] && [ ! -d "/storage/roms2" ]; then
   mkdir /storage/roms
-  all_roms="atari2600,atari5200,atari7800,atarilynx,BGM,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,tg16,tg16cd,videopac,zxspectrum,naomi,atomiswave,neocd"
-for romfolder in $(echo $all_roms | tr "," " "); do
+all_roms="downloads \
+BGM \
+3do \
+amstradcpc \
+arcade \
+atari2600 \
+atari5200 \
+atari7800 \
+atari800 \
+atarilynx \
+atarist \
+atomiswave \
+coleco \
+c64 \
+amiga \
+pc \
+famicom \
+fds \
+capcom \
+fba \
+gb \
+gba \
+gbc \
+gameandwatch \
+intellivision \
+mame \
+msx \
+msx2 \
+neogeo \
+ngp \
+ngpc \
+nes \
+n64 \
+openbor \
+psx \
+psp \
+scummvm \
+sega32x \
+segacd \
+dreamcast \
+gamegear \
+genesis \
+mastersystem \
+megadrive \
+naomi \
+neocd \
+saturn \
+sg-1000 \
+sfc \
+snes \
+tg16 \
+tg16cd \
+sc-3000 \
+sgfx \
+pcengine \
+pcenginecd \
+pcfx \
+vectrex \
+videopac \
+virtualboy \
+wonderswan \
+wonderswancolor \
+x68000 \
+zxspectrum \
+atarijaguar \
+odyssey \
+zx81"
+for romfolder in "$all_roms"; do
   mkdir -p /storage/roms/$romfolder
 done
 fi
