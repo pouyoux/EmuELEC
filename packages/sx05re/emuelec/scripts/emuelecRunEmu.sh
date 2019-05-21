@@ -108,8 +108,8 @@ case $1 in
       fi
         ;;
 "NEOCD")
-      if [ "$EMU" = "fbalpha" ]; then
-      RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/fbalpha_libretro.so --subsystem neocd "$2"'
+      if [ "$EMU" = "fbneo" ]; then
+      RUNTHIS='/usr/bin/retroarch $VERBOSE -L /tmp/cores/fbneo_libretro.so --subsystem neocd "$2"'
       fi
         ;;
 esac

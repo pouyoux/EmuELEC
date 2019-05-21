@@ -7,14 +7,14 @@
 # If you need to add/modify something on this file please use /storage/.emulationstation/scripts/getcores_override.sh
 
 case "$1" in
-"fba")
-	CORES="Libretro_fbalpha,Libretro_mame2003_plus"
+"fbn")
+	CORES="Libretro_fbneo,Libretro_mame2003_plus"
 	;;
 "arcade")
-	CORES="Libretro_mame2003_plus,AdvanceMame,Libretro_mame2010,Libretro_mame2015,Libretro_fbalpha"
+	CORES="Libretro_mame2003_plus,AdvanceMame,Libretro_mame2010,Libretro_mame2015,Libretro_fbneo"
 	;;
 "mame")
-	CORES="AdvanceMame,Libretro_mame2003_plus,Libretro_mame2010,Libretro_mame2015,Libretro_fbalpha"
+	CORES="AdvanceMame,Libretro_mame2003_plus,Libretro_mame2010,Libretro_mame2015,Libretro_fbneo"
 	;;
 "psp")
 	CORES="PPSSPPSA,Libretro_ppsspp"
@@ -47,7 +47,7 @@ case "$1" in
 	CORES="REICASTSA,Libretro_reicast"
 	;;
 "neocd")
-	CORES="Libretro_libneocd,Libretro_fbalpha"
+	CORES="Libretro_libneocd,Libretro_fbneo"
 	;;
 esac
 
