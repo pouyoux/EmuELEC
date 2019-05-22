@@ -47,7 +47,7 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +					remove("/var/lock/start.games");
 +            		runSystemCommand("touch /var/lock/start.retro");
 +			        runSystemCommand("systemctl start retroarch.service");
-+					Scripting::fireEvent("quit");
++					Scripting::fireEvent("quit", "retroarch");
 +					quitES("");
 +				}, "NO", nullptr));
 +			});
@@ -60,8 +60,8 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +		row.makeAcceptInputHandler([window] {
 +			window->pushGui(new GuiMsgBox(window, "REALLY RESTART?", "YES",
 +				[] {
-+    		   runSystemCommand("systemctl restart emustation.service");
-+    		   Scripting::fireEvent("quit");
++    		   /*runSystemCommand("systemctl restart emustation.service");*/
++    		   Scripting::fireEvent("quit", "restart");
 +			   quitES("");
 +			}, "NO", nullptr));
 +		});
