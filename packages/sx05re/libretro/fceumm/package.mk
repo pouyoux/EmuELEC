@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="fceumm"
-PKG_VERSION="e4de631ecd6daad11a40fd1b8ba95a6634444a58"
-PKG_SHA256="1230df1a947c156d3d442a8e052da015ba9bba6b7668d0b3da6140ce76586f50"
+PKG_VERSION="b4c8e40ef1b624cab178eca8f17e802760cb8884"
+PKG_SHA256="e1fe6cc20a172d0f59e02cc4d19bd8c0cb3807b4db9bdbe56d7d2f54c0f1da06"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

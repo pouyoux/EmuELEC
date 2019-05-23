@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="reicast"
-PKG_VERSION="8c38fcedbe064f7fbda9c2213fd6987b7d4e4dbc"
-PKG_SHA256="b1e5fce1d8ac498c3da0ac8825f977eacae57a7902dead0a4e88618bdae502da"
+PKG_VERSION="36099ac701f06774a77c86d0e7573d891c7ebe5c"
+PKG_SHA256="242752333c787f91ee882b4b262eb1cc88a7f212e1fca335308215d688730d8e"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/reicast-emulator"
 PKG_URL="https://github.com/libretro/reicast-emulator/archive/$PKG_VERSION.tar.gz"
