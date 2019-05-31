@@ -51,7 +51,7 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-sh
 
 PKG_EMUS="emulationstation advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
 PACKAGES_Sx05RE="$PKG_EMUS \
-				mpv \
+				fbida \
 				emuelec \
 				empty \
 				sixpair \
@@ -62,15 +62,14 @@ PACKAGES_Sx05RE="$PKG_EMUS \
 				freetype \
 				es-theme-ComicBook \
 				bash \
-				libretro-bash-launcher \
-				SDL_GameControllerDB
+				SDL_GameControllerDB \
 				libvorbisidec \
 				gl4es \
 				python-evdev \
 				libpng16 \
 				mpg123-compat"
 				
-LIBRETRO_CORES_LITE="fbalpha gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
+LIBRETRO_CORES_LITE="fbneo gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
 if [ "$1" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES_LITE"
@@ -79,7 +78,7 @@ if [ "$1" = "lite" ]; then
  fi 
 
 PACKAGES_ALL="$LIBRETRO_BASE $PACKAGES_ALL $PACKAGES_Sx05RE" 
-DISABLED_CORES="libretro-database reicast $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
+DISABLED_CORES="libretro-database $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
 
 if [ -n "$DISABLED_CORES" ] ; then
 	for core in $DISABLED_CORES ; do
@@ -107,7 +106,6 @@ PROJECT=${PROJECT}
 ARCH=${ARCH}
 VERSION=${VERSION}
 GIT_BRANCH=${GIT_BRANCH}
-
 
 Working in: ${SCRIPT_DIR}
 Temporary project folder: ${TARGET_DIR}
@@ -243,26 +241,17 @@ echo -ne "\tshaders "
 mv -v "${TARGET_DIR}/usr/share/common-shaders" "${ADDON_DIR}/resources/shaders" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tremoving unused assets "
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/branding"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/glui"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/nuklear"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/nxrgui"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/ozone"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/pkg"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/switch"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/wallpapers"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/zarch"
+  for i in branding glui nuklear nxrgui ozone pkg switch wallpapers zarch; do
+    rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/$i"
+  done
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tassets "
 mv -v "${TARGET_DIR}/usr/share/retroarch-assets" "${ADDON_DIR}/resources/assets" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\toverlays "
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/borders"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/effects"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/gamepads"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/ipad"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/keyboards"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/misc"
+  for i in borders effects gamepads ipad keyboards misc; do
+    rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/$i"
+  done
 mv -v "${TARGET_DIR}/usr/share/retroarch-overlays" "${ADDON_DIR}/resources/overlays" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tadvacemame Config "
@@ -274,19 +263,10 @@ rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tRemoving unneeded files "
-rm "${ADDON_DIR}/bin/startfe.sh"
-rm "${ADDON_DIR}/bin/killkodi.sh"
-rm "${ADDON_DIR}/bin/emulationstation.sh"
-rm "${ADDON_DIR}/bin/emustation-config"
-rm "${ADDON_DIR}/bin/clearconfig.sh"
-rm "${ADDON_DIR}/bin/reicast.sh"
-rm "${ADDON_DIR}/config/autostart.sh"
-rm "${ADDON_DIR}/config/smb.conf"
-rm -rf "${ADDON_DIR}/config/vlc"
-rm -rf "${ADDON_DIR}/config/out123"
-rm -rf ${ADDON_DIR}/bin/mpg123-*
-rm -rf ${ADDON_DIR}/bin/*png*
-rm -rf "${ADDON_DIR}/bin/cvlc"
+  for i in startfe.sh killkodi.sh emulationstation.sh emustation-config clearconfig.sh reicast.sh autostart.sh smb.conf vlc out123 cvlc mpg123-* *png* do
+    rm -rf "${ADDON_DIR}/bin/$i"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+  done
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
@@ -350,7 +330,7 @@ read -d '' content <<EOF
 /storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh
 
 #name of the file we need to put in the roms folder in your USB or SDCARD 
-ROMFILE="sx05reroms"
+ROMFILE="emuelecroms"
 
 # we look for the file in the rompath
 FULLPATHTOROMS="\$(find /media/*/roms/ -name \$ROMFILE -maxdepth 1)"
@@ -417,8 +397,8 @@ read -d '' content <<EOF
 EOF
 echo "$content" > config/emulationstation/es_input.cfg
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tPS3 Gamepad Workaround "
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/Sony PLAYSTATION(R)3 Controller.cfg"  resources/joypads/
+echo -ne "\tGamepad Workarounds "
+cp "${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/*.cfg"  resources/joypads/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsx05re.start "
 read -d '' content <<EOF
@@ -453,7 +433,75 @@ sh \$ADDON_DIR/bin/emustation-config
  if [ ! -d "\$ROMS_FOLDER" ] && [ ! -L "\$ROMS_FOLDER" ]; then
     mkdir -p "\$ROMS_FOLDER"
     
-     all_roms="downloads,amiga,atari2600,atari5200,atari7800,atarilynx,bios,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,videopac,zxspectrum" 
+     all_roms="downloads \
+BGM \
+3do \
+amstradcpc \
+arcade \
+atari2600 \
+atari5200 \
+atari7800 \
+atari800 \
+atarilynx \
+atarilynx \
+atarilynx \
+atarist \
+atomiswave \
+coleco \
+c64 \
+amiga \
+pc \
+famicom \
+fds \
+capcom \
+fbneo \
+gb \
+gba \
+gbc \
+gameandwatch \
+intellivision \
+mame \
+msx \
+msx2 \
+neogeo \
+ngp \
+ngpc \
+nes \
+n64 \
+openbor \
+psx \
+psp \
+scummvm \
+sega32x \
+segacd \
+dreamcast \
+gamegear \
+genesis \
+mastersystem \
+megadrive \
+naomi \
+neocd \
+saturn \
+sg-1000 \
+sfc \
+snes \
+tg16 \
+tg16cd \
+sc-3000 \
+sgfx \
+pcengine \
+pcenginecd \
+pcfx \
+vectrex \
+videopac \
+virtualboy \
+wonderswan \
+wonderswancolor \
+x68000 \
+zxspectrum \
+atarijaguar \
+odyssey \
+zx81" 
  
      for romfolder in \$(echo \$all_roms | tr "," " "); do
         mkdir -p "\$ROMS_FOLDER/\$romfolder"
@@ -479,7 +527,7 @@ fi
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
 ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
-ln -sf libSDL2-2.0.so.0.9.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
+ln -sf libSDL2-2.0.so.0.8.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
 ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
