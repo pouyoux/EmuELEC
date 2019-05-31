@@ -263,7 +263,7 @@ rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tRemoving unneeded files "
-  for i in startfe.sh killkodi.sh emulationstation.sh emustation-config clearconfig.sh reicast.sh autostart.sh smb.conf vlc out123 cvlc mpg123-* *png* do
+  for i in startfe.sh killkodi.sh emulationstation.sh emustation-config clearconfig.sh reicast.sh autostart.sh smb.conf vlc out123 cvlc mpg123-* *png*; do
     rm -rf "${ADDON_DIR}/bin/$i"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
   done
@@ -398,7 +398,7 @@ EOF
 echo "$content" > config/emulationstation/es_input.cfg
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tGamepad Workarounds "
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/*.cfg"  resources/joypads/
+cp ${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/*.cfg resources/joypads/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsx05re.start "
 read -d '' content <<EOF
