@@ -1,0 +1,23 @@
+From 8076d06c2484e080ef394186d9738fb3b082ccb1 Mon Sep 17 00:00:00 2001
+From: twinaphex <libretro@gmail.com>
+Date: Sun, 26 May 2019 09:16:58 +0200
+Subject: [PATCH] (EGL) Turn EGL off by default for now until we figure out how
+ to leave this to on without it breaking PC buildss
+
+---
+ qb/config.params.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/qb/config.params.sh b/qb/config.params.sh
+index 3660ebf4f6..bf6bf7e633 100644
+--- a/qb/config.params.sh
++++ b/qb/config.params.sh
+@@ -81,7 +81,7 @@ HAVE_SUNXI=no              # Sunxi video support
+ HAVE_WAYLAND=auto          # Wayland support
+ C89_WAYLAND=no
+ CXX_WAYLAND=no
+-HAVE_EGL=no                # EGL context support
++HAVE_EGL=auto                # EGL context support
+ HAVE_VG=auto               # OpenVG support
+ HAVE_CG=auto               # Cg shader support
+ HAVE_HLSL=no               # HLSL9 shader support (for Direct3D9)

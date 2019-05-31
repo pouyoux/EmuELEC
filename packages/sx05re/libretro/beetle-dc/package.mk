@@ -18,19 +18,17 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="reicast"
-PKG_VERSION="36099ac701f06774a77c86d0e7573d891c7ebe5c"
-PKG_SHA256="242752333c787f91ee882b4b262eb1cc88a7f212e1fca335308215d688730d8e"
+PKG_NAME="beetle-dc"
+PKG_VERSION="2af59a8717a6800ce2282a882e9409594c9e1af9"
+PKG_SHA256="a2fec63e8c6a54e2dc67380a4584e951d6f6bfe7f2b9666723e7708982b7ea77"
 PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/reicast-emulator"
-PKG_URL="https://github.com/libretro/reicast-emulator/archive/$PKG_VERSION.tar.gz"
+PKG_SITE="https://github.com/libretro/beetle-dc"
+PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain retroarch $OPENGLES"
-PKG_LONGDESC="Reicast is a multiplatform Sega Dreamcast emulator"
+PKG_LONGDESC="Beetle DC is a multiplatform Sega Dreamcast emulator"
 PKG_TOOLCHAIN="make"
 PKG_BUILD_FLAGS="-gold"
 
-PKG_LIBNAME="reicast_libretro.so"
-PKG_LIBPATH="$PKG_LIBNAME"
 
 PKG_MAKE_OPTS_TARGET="HAVE_OPENMP=0 GIT_VERSION=${PKG_VERSION:0:7} WITH_DYNAREC=$ARCH ARCH=arm"
 
@@ -53,5 +51,5 @@ pre_make_target() {
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp $PKG_LIBPATH $INSTALL/usr/lib/libretro/
+  cp beetledc_libretro.so $INSTALL/usr/lib/libretro/
 }
