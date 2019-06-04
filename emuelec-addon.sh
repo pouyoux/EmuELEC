@@ -226,6 +226,7 @@ mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
 rm -rf "${ADDON_DIR}/bin/assets"
 mv -v "${ADDON_DIR}/config/ppsspp/assets" "${ADDON_DIR}/bin" &>>"$LOG"
 cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/scripts/*.sh "${ADDON_DIR}/bin" &>>"$LOG"
+cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/bin/* "${ADDON_DIR}/bin" &>>"$LOG"
 rm -rf "${ADDON_DIR}/config/emuelec"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tlibraries and cores "
@@ -264,6 +265,7 @@ mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tRemoving unneeded files "
   for i in startfe.sh killkodi.sh emulationstation.sh emustation-config clearconfig.sh reicast.sh autostart.sh smb.conf vlc out123 cvlc mpg123-* *png*; do
+    echo -ne "\t$i"
     rm -rf "${ADDON_DIR}/bin/$i"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
   done
@@ -271,6 +273,17 @@ find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
 echo "Creating files..."
+echo -ne "\temuelecsound.conf "
+read -d '' content <<EOF
+pcm.!default {
+type plug
+slave {
+pcm "hw:0,0"
+}
+}
+EOF
+echo "$content" > config/emuelecsound.conf
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\treicast.sh "
 read -d '' content <<EOF
 #!/bin/sh
@@ -571,7 +584,7 @@ chmod +x /storage/.emulationstation/scripts/*.sh
 chmod +x \$ADDON_DIR/bin/*
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
-
+cp -rf \$ADDON_DIR/config/emuelecsound.conf /storage/.config/asound.conf
 if [ "\$ra_stop_kodi" -eq 1 ] ; then
 	systemctl stop kodi
 	if [ \$ra_log -eq 1 ] ; then
@@ -579,6 +592,7 @@ if [ "\$ra_stop_kodi" -eq 1 ] ; then
 	else
 		\$RA_EXE \$RA_PARAMS
 	fi
+    rm /storage/.config/asound.conf
 	systemctl start kodi
 else
 	pgrep kodi.bin | xargs kill -SIGSTOP
@@ -587,6 +601,7 @@ else
 	else
 		\$RA_EXE \$RA_PARAMS
 	fi
+	rm /storage/.config/asound.conf
 	pgrep kodi.bin | xargs kill -SIGCONT
 fi
 
@@ -708,7 +723,7 @@ RA_RES_DIR="\/storage\/\.kodi\/addons\/${ADDON_NAME}\/resources"
 echo -ne "Making modifications to es_systems.cfg..."
 CFG="config/emulationstation/es_systems.cfg"
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
-sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
+sed -i -e "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/bash /storage/.kodi/addons/${ADDON_NAME}/bin/|" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
 echo -ne "Making modifications to inputconfiguration.sh..."
@@ -716,11 +731,16 @@ CFG="config/emulationstation/scripts/inputconfiguration.sh"
 sed -i -e "s/\/usr\/bin\/bash/\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin\/bash/" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
+echo -ne "Making modifications to setres.sh..."
+CFG="bin/setres.sh"
+sed -i '9,12d;17,21d;28,31d' $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "Making modifications to emuelecRunEmu.sh..."
 CFG="bin/emuelecRunEmu.sh"
-sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
+sed -i -e "s|/tmp/cores/|${RA_CORES_DIR}/|" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
+sed -i -e "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" $CFG
 sed -i -e 's,\[\[ $arguments != \*"KEEPMUSIC"\* \]\],[ `echo $arguments | grep -c "KEEPMUSIC"` -eq 0 ],g' $CFG
 sed -i -e 's,\[\[ $arguments != \*"NOLOG"\* \]\],[ `echo $arguments | grep -c "NOLOG"` -eq 0 ],g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -791,6 +811,11 @@ sed -i "s/\/tmp\/joypads/${RA_RES_DIR}\/joypads/g" $CFG
 echo -ne "\tdatabase "
 sed -i "s/\/tmp\/database/${RA_RES_DIR}\/database/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo
+echo -n "Fixing paths..."
+find bin/ -name *.sh -exec sed -i "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" {} \;
+find bin/ -name *.sh -exec sed -i "s|/emuelec/bin/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" {} \;
+[ $? -eq 0 ] && echo "done." || { echo "failed!" ; exit 1 ; }
 echo
 echo -n "Creating archive..."
 cd ..
