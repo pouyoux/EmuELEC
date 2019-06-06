@@ -44,7 +44,7 @@ case "$1" in
 	CORES="Libretro_dosbox,DOSBOXSDL2"
 	;;
 "dreamcast")
-	CORES="REICASTSA,Libretro_beetledc"
+	CORES="REICASTSA,Libretro_flycast"
 	;;
 "neocd")
 	CORES="Libretro_libneocd,Libretro_fbneo"

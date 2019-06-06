@@ -18,14 +18,14 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="beetle-dc"
-PKG_VERSION="2af59a8717a6800ce2282a882e9409594c9e1af9"
-PKG_SHA256="a2fec63e8c6a54e2dc67380a4584e951d6f6bfe7f2b9666723e7708982b7ea77"
+PKG_NAME="flycast"
+PKG_VERSION="8f861517f57fab3d80a570ba7b7b58df24e9863e"
+PKG_SHA256="db75bd03d2daf55485abff5609ba97e6685b824a67757e371e6bfda28d889fa9"
 PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/beetle-dc"
+PKG_SITE="https://github.com/libretro/flycast"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain retroarch $OPENGLES"
-PKG_LONGDESC="Beetle DC is a multiplatform Sega Dreamcast emulator"
+PKG_LONGDESC="Flycast is a multiplatform Sega Dreamcast emulator "
 PKG_TOOLCHAIN="make"
 PKG_BUILD_FLAGS="-gold"
 
@@ -51,5 +51,5 @@ pre_make_target() {
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp beetledc_libretro.so $INSTALL/usr/lib/libretro/
+  cp flycast_libretro.so $INSTALL/usr/lib/libretro/
 }
