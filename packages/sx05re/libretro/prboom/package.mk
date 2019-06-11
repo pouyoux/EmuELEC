@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="prboom"
-PKG_VERSION="43716f784506aeeef80f054685c471f1508a46f9"
-PKG_SHA256="566375956eec705ebef5803cf07e3f15c4da7f1666fd4093943afc85a1d8f4ae"
+PKG_VERSION="ee78786f3f00c84fff94be25c4e232af289d6645"
+PKG_SHA256="32084cdab26b706b7e2e5687e018f13c7e8aeb54b48267012be74b5d9eb02531"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"

@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="beetle-psx"
-PKG_VERSION="53591985319edc34d83a0858ad9a935b934dcf5c"
-PKG_SHA256="5c9ae8e49622b95df6485dffe75f90e9282542a3b6d7b5331a8e48287b355302"
+PKG_VERSION="aae54be182bb07b097e6bbbea4e07d1aa4eaf666"
+PKG_SHA256="ce61cb0fdbe5337222ddf06c7a4c6a91388f4f3fa2ee0bc9fb0d7e34dfd26cbf"
 PKG_REV="1"
 PKG_ARCH="x86_64 i386"
 PKG_LICENSE="GPLv2"

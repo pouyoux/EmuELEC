@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="retroarch-overlays"
-PKG_VERSION="b44d6cfe378e2833436288af7a8b9b145265d648"
-PKG_SHA256="73a92b83564964b50d3883c6d04c8dd46b5da78f2c59eef111df8701af068a02"
+PKG_VERSION="ecccb45912d36ad0506f96783da03eda6afbb84d"
+PKG_SHA256="fc9a782022c5be825c4cd199a3dc5c6dc4b0358d1ac141d7628fafa774729d6a"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/libretro/common-overlays"
 PKG_URL="https://github.com/libretro/common-overlays/archive/$PKG_VERSION.tar.gz"
