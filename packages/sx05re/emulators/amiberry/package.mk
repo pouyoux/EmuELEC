@@ -46,7 +46,7 @@ makeinstall_target() {
   mkdir -p ${INSTALL}/usr/bin
   mkdir -p ${INSTALL}/usr/lib
   mkdir -p ${INSTALL}/usr/config/amiberry
-  mkdir -p ${INSTALL}/usr/config/amiberry/controller
+  # mkdir -p ${INSTALL}/usr/config/amiberry/controller
 
   # Copy ressources
   cp -a ${PKG_DIR}/config/*           ${INSTALL}/usr/config/amiberry/
@@ -58,7 +58,7 @@ makeinstall_target() {
 
   # Create links to Retroarch controller files
   # ln -s /usr/share/retroarch/autoconfig/udev/8Bitdo_Pro_SF30_BT_B.cfg "${INSTALL}/usr/config/amiberry/controller/8Bitdo SF30 Pro.cfg"
-  # ln -s "/usr/share/retroarch/autoconfig/udev/Pro Controller.cfg"     "${INSTALL}/usr/config/amiberry/controller/Pro Controller.cfg"
+  ln -s "/tmp/joypads" "${INSTALL}/usr/config/amiberry/controller"
 
   # Copy binary, scripts & link libcapsimg
   cp -a amiberry ${INSTALL}/usr/bin/amiberry
