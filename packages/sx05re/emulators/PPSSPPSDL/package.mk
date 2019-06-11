@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="f7a2fc963d6ddd514e5f9fec119c2a8120329ae2"
+PKG_VERSION="730fd0616ee358782e01fe9f00ff6ce46c86f8e8"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
@@ -14,15 +14,12 @@ PKG_LONGDESC="PPSSPP Standalone"
 GET_HANDLER_SUPPORT="git"
 PKG_TOOLCHAIN="cmake-make"
 
-pre_configure_target() {
-  PKG_CMAKE_OPTS_TARGET="-DUSE_SYSTEM_FFMPEG=ON"
-  PKG_CMAKE_OPTS_TARGET+=" -DARMV7=ON"
-  PKG_CMAKE_OPTS_TARGET+=" -DUSING_FBDEV=ON \
-                             -DUSING_EGL=ON \
-                             -DUSING_GLES2=ON"
-  PKG_CMAKE_OPTS_TARGET+=" -DUSING_X11_VULKAN=OFF"
-}
-
+PKG_CMAKE_OPTS_TARGET+="-DUSE_SYSTEM_FFMPEG=ON \
+                        -DARMV7=ON \
+                        -DUSING_FBDEV=ON \
+                        -DUSING_EGL=ON \
+                        -DUSING_GLES2=ON \
+                        -DUSING_X11_VULKAN=OFF"
 pre_make_target() {
   # fix cross compiling
   find $PKG_BUILD -name flags.make -exec sed -i "s:isystem :I:g" \{} \;
