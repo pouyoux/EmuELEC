@@ -41,7 +41,7 @@ makeinstall_target() {
 	fi
 
   mkdir -p $INSTALL/etc/samba
-   cp $PKG_DIR/config/smb.conf $INSTALL/etc/samba
+   cp $PKG_DIR/config/samba.conf $INSTALL/etc/samba/smb.conf
 
   mkdir -p $INSTALL/usr/config/
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/
