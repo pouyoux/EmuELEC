@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="fba4arm"
-PKG_VERSION="5412d49dcb2bec064e6f93c85d18fbcd3d9f3113"
-PKG_SHA256="d5cbaf13d25c76baad3076b974a7bf20732078518c5e82daf1a92a1da5a064c3"
+PKG_VERSION="a07e33f59657691561f7f488b16a94478b72df4d"
+PKG_SHA256="85d25963f6d59fdfa57a784d727206f676dd12af88c3a4a065429673724c1543"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="Non-commercial"
