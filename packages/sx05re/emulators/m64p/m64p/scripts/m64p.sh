@@ -9,7 +9,7 @@ M64P_TMP_DIR=/tmp/emulation/m64p
 M64P_LOG=/var/log/m64p.log
 M64P_GAME_NAME=$(basename -- "$1")
 M64P_VIDEO="/usr/lib/mupen64plus/mupen64plus-video-gliden64.so"
-M64P_PARAMS="--emumode 2 --resolution 1920x1080  --fullscreen"
+M64P_PARAMS="--emumode 2 --resolution 1280x720  --fullscreen"
 
 # Clean up log file
 if [ -f "${M64P_LOG}" ]; then
