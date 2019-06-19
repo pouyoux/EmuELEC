@@ -706,7 +706,9 @@ echo -ne "\ticon.png"
 cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/icon.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tdowloading dldrastic.sh"
-wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/ 
+wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/
+sed -i "s|script.sx05re.launcher|${ADDON_NAME}|" dldrastic.sh
+sed -i "s|sx05re.log|emuelec.log|" dldrastic.sh
 cp dldrastic.sh config/emulationstation/scripts/dldrastic.sh
 rm dldrastic.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
