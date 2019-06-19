@@ -11,7 +11,7 @@
                       msg_hash_to_str(MENU_ENUM_LABEL_UPDATE_LAKKA),
 --- a/menu/menu_setting.c	2017-03-12 17:52:42.000000000 -0600
 +++ b/menu/menu_setting.c	2017-03-13 19:05:16.526319525 -0600
-@@ -4023,23 +4023,6 @@
+@@ -6839,23 +6839,6 @@
                 &subgroup_info,
                 parent_group);
  #endif
@@ -35,7 +35,7 @@
  #endif
  
           CONFIG_ACTION(
-@@ -8551,36 +8534,6 @@
+@@ -11921,36 +11904,6 @@
                    general_write_handler,
                    general_read_handler,
                    SD_FLAG_NONE);
@@ -69,10 +69,10 @@
 -                  general_write_handler,
 -                  general_read_handler,
 -                  SD_FLAG_NONE);
- #endif
- 
- #if defined(HAVE_XMB) || defined(HAVE_OZONE)
-@@ -9195,7 +9148,6 @@
+ #else
+ #if !defined(IOS)
+             if (frontend_driver_has_fork())
+@@ -12747,7 +12700,6 @@
                 general_read_handler,
                 SD_FLAG_NONE);
  
@@ -80,11 +80,12 @@
           CONFIG_BOOL(
                 list, list_info,
                 &settings->bools.menu_show_core_updater,
-@@ -9210,7 +9162,6 @@
+@@ -12762,7 +12714,7 @@
                 general_write_handler,
                 general_read_handler,
                 SD_FLAG_NONE);
 -#endif
- #endif
- 
++
           CONFIG_BOOL(
+                list, list_info,
+                &settings->bools.menu_show_legacy_thumbnail_updater,
