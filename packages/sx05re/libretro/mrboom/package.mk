@@ -36,6 +36,10 @@ PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
+pre_configure_target() {
+ PKG_MAKE_OPTS_TARGET="HAVE_NEON=1"
+}
+
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
   cp mrboom_libretro.so $INSTALL/usr/lib/libretro/
