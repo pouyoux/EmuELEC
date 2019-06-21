@@ -145,7 +145,8 @@ if [ $BUMPS != "no" ]; then
   fi
   echo "URL $PKG_SITE"
 
-  [ -n "$PKG_GIT_BRANCH" ] && GIT_HEAD="heads/$PKG_GIT_BRANCH" || GIT_HEAD="HEAD"
+	[ -n "$PKG_GIT_BRANCH" ] && PKG_GIT_CLONE_BRANCH="$PKG_GIT_BRANCH"
+	[ -n "$PKG_GIT_CLONE_BRANCH" ] && GIT_HEAD="heads/$PKG_GIT_CLONE_BRANCH" || GIT_HEAD="HEAD"
    UPS_VERSION=`git ls-remote $PKG_SITE | grep ${GIT_HEAD}$ | awk '{ print substr($1,1,40) }'`
    if [ "$UPS_VERSION" == "$PKG_VERSION" ]; then
     echo "$PKG_NAME is up to date ($UPS_VERSION)"
