@@ -47,7 +47,7 @@
  	video_set_window_title(pakname);
 --- a/engine/Makefile	Fri Aug 10 10:15:18 2018
 +++ b/engine/Makefile	Thu Sep 27 17:16:22 2018
-@@ -139,21 +139,26 @@
+@@ -141,20 +141,25 @@
  TARGET_PLATFORM = PANDORA
  BUILD_LINUX     = 1
  BUILD_SDL       = 1
@@ -71,12 +71,11 @@
  BUILD_DEBUG     = 1
  endif
  endif
- 
 +
+ 
  ifdef BUILD_WII
  TARGET 	        = $(VERSION_NAME).elf
- TARGET_MAP      = $(TARGET).map
-@@ -199,7 +204,7 @@
+@@ -201,7 +206,7 @@
  STRIP           = $(PREFIX)strip $(TARGET) -o $(TARGET_FINAL)
  endif
  ifdef BUILD_PANDORA
@@ -85,7 +84,7 @@
  endif
  ifdef BUILD_WII
  STRIP           = elf2dol $< $@
-@@ -444,6 +449,7 @@
+@@ -447,6 +452,7 @@
  
  CFLAGS 	       += $(addprefix -I", $(addsuffix ", $(INCS))) $(ARCHFLAGS) -D$(TARGET_PLATFORM)
  CFLAGS 	       += -g -Wall -Werror -fsigned-char -std=gnu99
@@ -93,12 +92,12 @@
  
  
  ifndef BUILD_DARWIN
-@@ -566,7 +572,7 @@
- ifeq ($(findstring DGE, $(SDKPATH)), DGE)
- LIBS           += -lSDL -lts
+@@ -573,7 +579,7 @@
  else
--LIBS           += -Wl,-rpath,$(LIBRARIES) -lSDL2
-+LIBS           += -Wl,-rpath,$(LIBRARIES) -lSDL2 -lGL
- endif
- endif
+ COMMA		=,
+ RPATH_LIBS	= $(addprefix -Wl$(COMMA)-rpath$(COMMA),"$(LIBRARIES)")
+-LIBS	       += $(RPATH_LIBS) -lSDL2
++LIBS	       += $(RPATH_LIBS) -lSDL2 -lSDL2 -lGL
  
+ ifdef CROSSCOMPILE_LINUX_WIN
+ LIBS	       += -lsetupapi
