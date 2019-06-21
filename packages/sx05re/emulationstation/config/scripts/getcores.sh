@@ -11,10 +11,10 @@ case "$1" in
 	CORES="Libretro_fbneo,Libretro_mame2003_plus"
 	;;
 "arcade")
-	CORES="Libretro_mame2003_plus,AdvanceMame,Libretro_mame2010,Libretro_mame2015,Libretro_fbneo"
+	CORES="Libretro_mame2003_plus,AdvanceMame,Libretro_mame2010,Libretro_mame2015,Libretro_fbneo,Libretro_mba_mini"
 	;;
 "mame")
-	CORES="AdvanceMame,Libretro_mame2003_plus,Libretro_mame2010,Libretro_mame2015,Libretro_fbneo"
+	CORES="AdvanceMame,Libretro_mame2003_plus,Libretro_mame2010,Libretro_mame2015,Libretro_fbneo,Libretro_mba_mini"
 	;;
 "psp")
 	CORES="PPSSPPSA,Libretro_ppsspp"
@@ -41,7 +41,7 @@ case "$1" in
 	CORES="AMIBERRY,Libretro_puae"
 	;;
 "dosbox")
-	CORES="Libretro_dosbox,DOSBOXSDL2"
+	CORES="Libretro_dosbox,DOSBOXSDL2,Libretro_dosbox_svn"
 	;;
 "dreamcast")
 	CORES="REICASTSA,Libretro_flycast"
