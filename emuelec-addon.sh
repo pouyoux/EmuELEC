@@ -67,7 +67,9 @@ PACKAGES_Sx05RE="$PKG_EMUS \
 				gl4es \
 				python-evdev \
 				libpng16 \
-				mpg123-compat"
+				mpg123-compat \
+				SDL \
+				SDL_net"
 				
 LIBRETRO_CORES_LITE="fbneo gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
@@ -76,6 +78,8 @@ if [ "$1" = "lite" ]; then
  else
   PACKAGES_ALL="$LIBRETRO_CORES"
  fi 
+
+LIBRETRO_EXTRA_CORES="citra beetle-psx beetle-saturn beetle-bsnes bsnes-mercury bsnes dinothawr higan-sfc-balanced higan-sfc lutro mame2003-midway mrboom easyrpg dolphin mesen openlara pocketcdg virtualjaguar"
 
 PACKAGES_ALL="$LIBRETRO_BASE $PACKAGES_ALL $PACKAGES_Sx05RE" 
 DISABLED_CORES="libretro-database $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
@@ -541,6 +545,8 @@ fi
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
 ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
 ln -sf libSDL2-2.0.so.0.8.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
+ln -sf libSDL-1.2.so.0.11.4 \$ADDON_DIR/lib/libSDL-1.2.so.0
+ln -sf libSDL_net-1.2.so.0.8.0 \$ADDON_DIR/lib/libSDL_net-1.2.so.0
 ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
