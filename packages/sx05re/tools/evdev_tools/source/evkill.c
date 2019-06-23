@@ -104,8 +104,9 @@ int main(int argc, char* argv[])
 
 			if (memcmp(bitmap0, bitmap1, size) == 0) {
 				memset(bitmap1, 0x0, size);
-				printf("execute cmd: %s\n", cmd);
+				/* printf("execute cmd: %s\n", cmd);*/
 				system(cmd);
+				exit(0);
 			}
 		}
 
