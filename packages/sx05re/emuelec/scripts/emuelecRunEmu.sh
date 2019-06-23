@@ -31,6 +31,9 @@ VERBOSE=""
 EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
+KILLKEYS="316+315"
+KILLEVENT="/dev/input/event5"
+KILLTHIS="none"
 
 # remove Libretro_ from the core name
 EMU=$(echo "$EMU" | sed "s|Libretro_||")
@@ -64,6 +67,7 @@ echo "EmuELEC Run Log" > $EMUELECLOG
 # Read the first argument in order to set the right emulator
 case $1 in
 "OPENBOR")
+	KILLTHIS="OpenBOR"
 	RUNTHIS='/usr/bin/openbor.sh "$2"'
 		;;
 "RETROPIE")
@@ -74,29 +78,35 @@ case $1 in
 		;;
 "REICAST")
     if [ "$EMU" = "REICASTSA" ]; then
+    KILLTHIS="reicast"
 	RUNTHIS='/usr/bin/reicast.sh "$2"'
 	LOGEMU="No" # ReicastSA outputs a LOT of text, only enable for debugging.
 	fi	;;
 "MAME"|"ARCADE")
 	if [ "$EMU" = "AdvanceMame" ]; then
+	KILLTHIS="advmame"
 	RUNTHIS='/usr/bin/advmame.sh "$2"'
 	fi
 		;;
 "DRASTIC")
+	KILLTHIS="drastic"
 	RUNTHIS='/storage/.emulationstation/scripts/drastic.sh "$2"'
 		;;
 "N64")
     if [ "$EMU" = "M64P" ]; then
+    KILLTHIS="mupen64plus"
 	RUNTHIS='bash /usr/bin/m64p.sh "$2"'
 	fi
 		;;
 "AMIGA")
     if [ "$EMU" = "AMIBERRY" ]; then
+    KILLTHIS="amiberry"
 	RUNTHIS='bash /usr/bin/amiberry.start "$2"'
 	fi
 		;;
 "DOSBOX")
     if [ "$EMU" = "DOSBOXSDL2" ]; then
+    KILLTHIS="dosbox"
 	RUNTHIS='bash /usr/bin/dosbox.start "$2"'
 	fi
 		;;		
@@ -128,6 +138,10 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	killall -9 mpg123 
 fi
 
+if [[ "$KILLTHIS" != "none" ]]; then
+	/emuelec/bin/evkill -k${KILLKEYS} -d${KILLEVENT} ${KILLTHIS} &
+fi
+
 # Exceute the command and try to output the results to the log file if it was not dissabled.
 if [[ $LOGEMU == "Yes" ]]; then
    echo "Emulator Output is:" >> $EMUELECLOG
@@ -154,6 +168,9 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 	/storage/.emulationstation/scripts/bgm.sh
  fi 
 fi
+
+# Kill evkill 
+killall evkill
 
 # Return to default mode
 /emuelec/scripts/setres.sh
