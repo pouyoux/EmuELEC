@@ -31,9 +31,25 @@ VERBOSE=""
 EMUELECLOG="/storage/emuelec.log"
 PAT="s|\s*<string name=\"EmuELEC_$1_CORE\" value=\"\(.*\)\" />|\1|p"
 EMU=$(sed -n "$PAT" "$CFG")
+
+# Evkill setup
+
+# Set keys home+start in Xbox controller as quit combo, you can find the button numbers for your gamepad using "evtest /dev/input/eventX"
 KILLKEYS="316+315"
-KILLEVENT="/dev/input/event5"
+
+# Quit combo only works on joy0 but ifrst we need to find the ev number
+for D in `find /dev/input/by-id/ | grep -e event-joystick -e amepad`; do
+  str=$(ls -la $D)
+  i=$((${#str}-1))
+  DEVICE=$(echo "${str:$i:1}")
+  break
+done
+
+KILLEVENT="/dev/input/event$DEVICE"
+
+# We set this to none, and set the corresponding bin name at the launch line
 KILLTHIS="none"
+
 
 # remove Libretro_ from the core name
 EMU=$(echo "$EMU" | sed "s|Libretro_||")
