@@ -1,3 +1,6 @@
+/*
+ * Signed-off-by: Ning Bo <n.b@live.com>
+*/
 #include <linux/input.h>
 #include <unistd.h>
 #include <sys/types.h>

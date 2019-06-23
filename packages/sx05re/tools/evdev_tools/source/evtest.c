@@ -1,7 +1,11 @@
+/*
+evtest is used for show input event received.
+send is used for send BTN_A input event.
+
+Signed-off-by: Ning Bo <n.b@live.com>
+*/
 #include <stdint.h>
-
 #include <linux/input.h>
-
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>

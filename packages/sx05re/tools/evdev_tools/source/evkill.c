@@ -1,4 +1,8 @@
+/* Usage: evkill <-k, --keys keys> <-d, --device evdev> <programs>
+eg: evkill -k 304+305 -d /dev/input/event3 retroarch
 
+Signed-off-by: Ning Bo <n.b@live.com> 
+*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
