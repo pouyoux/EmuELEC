@@ -37,15 +37,8 @@ EMU=$(sed -n "$PAT" "$CFG")
 # Set keys home+start in Xbox controller as quit combo, you can find the button numbers for your gamepad using "evtest /dev/input/eventX"
 KILLKEYS="316+315"
 
-# Quit combo only works on joy0 but ifrst we need to find the ev number
-for D in `find /dev/input/by-id/ | grep -e event-joystick -e amepad`; do
-  str=$(ls -la $D)
-  i=$((${#str}-1))
-  DEVICE=$(echo "${str:$i:1}")
-  break
-done
-
-KILLEVENT="/dev/input/event$DEVICE"
+# By default use joystick0 (player 1?) 
+KILLDEV="js0"
 
 # We set this to none, and set the corresponding bin name at the launch line
 KILLTHIS="none"
@@ -155,7 +148,7 @@ if [[ $arguments != *"KEEPMUSIC"* ]]; then
 fi
 
 if [[ "$KILLTHIS" != "none" ]]; then
-	/emuelec/bin/evkill -k${KILLKEYS} -d${KILLEVENT} ${KILLTHIS} &
+	/emuelec/bin/evkill -k${KILLKEYS} -d${KILLDEV} ${KILLTHIS} &
 fi
 
 # Exceute the command and try to output the results to the log file if it was not dissabled.
