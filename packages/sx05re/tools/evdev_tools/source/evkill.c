@@ -3,6 +3,9 @@ eg: evkill -k 304+305 -d /dev/input/event3 retroarch
 
 Signed-off-by: Ning Bo <n.b@live.com> 
 */
+
+#define _GNU_SOURCE
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -10,6 +13,8 @@ Signed-off-by: Ning Bo <n.b@live.com>
 #include <getopt.h>
 #include <fcntl.h>
 #include <linux/input.h>
+#include <dirent.h>
+#include <libgen.h>
 
 void set_bit(char *mem, int key) {
 	int8_t *byte = (int8_t *)mem + key / 8;
@@ -27,12 +32,34 @@ static const struct option long_options[] = {
 	{0, 0, 0, 0}
 };
 
+char *js2evdev(char *joystick) {
+	char *evdev = NULL;
+	char *path = NULL;
+	DIR *dir;
+	struct dirent *ptr;
+
+	asprintf(&path, "/sys/class/input/%s/device", basename(joystick));
+	dir = opendir(path);
+	free(path);
+	if (dir == NULL) {
+		return NULL;
+	}
+
+	while((ptr = readdir(dir)) != NULL) {
+		if (ptr->d_type == DT_DIR && strncmp(ptr->d_name, "event", 5) == 0) {
+			asprintf(&evdev, "/dev/input/%s", ptr->d_name);
+		}
+	}
+
+	return evdev;
+}
+
 int main(int argc, char* argv[])
 {
 	int ret = 0;
 	int opt = 0;
 	struct input_event ev;
-	char *evdev = NULL, *keys = NULL;
+	char *dev = NULL, *keys = NULL;
 	char cmd[1024];
 
 	int size = (KEY_CNT - 1) / 8 + 1;
@@ -46,20 +73,20 @@ int main(int argc, char* argv[])
 		switch(opt)
 		{
 			case 'd':
-				evdev = strdup(optarg);
+				dev = strdup(optarg);
 				break;
 			case 'k':
 				keys = strdup(optarg);
 				break;
 			default:
-				printf("Usage: %s <-k, --keys keys> <-d, --device evdev> <programe...>\n", argv[0]);
+				printf("Usage: %s <-k, --keys keys> <-d, --device evdev or joystick> <programe...>\n", argv[0]);
 				exit(1);
 				break;
 		}
 	}
 
-	if (evdev == NULL || keys== NULL || optind == argc) {
-		printf("Usage: %s <-k, --keys keys> <-d, --device evdev> <programe...>\n", argv[0]);
+	if (dev == NULL || keys== NULL || optind == argc) {
+		printf("Usage: %s <-k, --keys keys> <-d, --device evdev or joystick> <programe...>\n", argv[0]);
 		exit(1);
 	}
 
@@ -75,13 +102,41 @@ int main(int argc, char* argv[])
 		if (key == NULL)
 			break;
 
+		if (atoi(key) > KEY_MAX)
+			continue;
+
 		set_bit(bitmap0, atoi(key));
 	}
 
 	while(1) {
-		int fd = open(evdev, O_RDONLY);
-		if (fd < 0) {
-			perror("open");
+		int fd, version, ready;
+
+		ready = 0;
+		do {
+			fd = open(dev, O_RDONLY);
+			if (fd > 0) {
+				if (ioctl(fd, EVIOCGVERSION, &version)) {
+					ready = 1;
+					break;
+				}
+			}
+
+			char *evdev = js2evdev(dev);
+			if (!evdev) {
+				break;
+			}
+
+			fd = open(evdev, O_RDONLY);
+			free(evdev);
+			if (fd > 0) {
+				if (ioctl(fd, EVIOCGVERSION, &version) == 0) {
+					ready = 1;
+					break;
+				}
+			}
+		} while(0);
+
+		if (!ready) {
 			sleep(1);
 			continue;
 		}
