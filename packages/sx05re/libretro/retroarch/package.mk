@@ -151,6 +151,8 @@ makeinstall_target() {
   sed -i -e "s/# menu_show_online_updater = true/menu_show_online_updater = true/" $INSTALL/etc/retroarch.cfg
   sed -i -e "s/# input_overlay_opacity = 1.0/input_overlay_opacity = 0.15/" $INSTALL/etc/retroarch.cfg
   echo "user_language = \"0\"" >> $INSTALL/etc/retroarch.cfg
+  echo "menu_show_shutdown = \"false\" >> $INSTALL/etc/retroarch.cfg
+  echo "menu_show_reboot = \"false\" >> $INSTALL/etc/retroarch.cfg
 
   mkdir -p $INSTALL/usr/config/retroarch/
   mv $INSTALL/etc/retroarch.cfg $INSTALL/usr/config/retroarch/
