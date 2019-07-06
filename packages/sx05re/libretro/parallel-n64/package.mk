@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="parallel-n64"
-PKG_VERSION="ab155da"
+PKG_VERSION="68d89c77c37cb6d3da05245f75ea6f949096da96"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -30,28 +30,30 @@ PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
 PKG_SHORTDESC="Optimized/rewritten Nintendo 64 emulator made specifically for Libretro. Originally based on Mupen64 Plus."
 PKG_LONGDESC="Optimized/rewritten Nintendo 64 emulator made specifically for Libretro. Originally based on Mupen64 Plus."
-
-PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
-PKG_AUTORECONF="no"
-PKG_BUILD_FLAGS="-lto"
+PKG_BUILD_FLAGS="+verbose"
+
+#pre_configure_target() { 
+#sed -i -e "s|uname -a|echo armv|" \
+#         -e "s|uname -m|echo armv|" \
+#         -e "s|LIBS =|LIBS = -lm|g" \
+#    Makefile
+#sed -i -e "s|void rglBlendFuncSeparate(GLenum sfactor, GLenum dfactor)|rglBlendFuncSeparate(GLenum sfactor, GLenum dfactor)|" $PKG_BUILD/libretro-common/glsm/glsm.c
+
+#sed -i -e "s|void rglBlendFuncSeparate(GLenum sfactor, GLenum dfactor)|rglBlendFuncSeparate(GLenum sfactor, GLenum dfactor)|" Makefile
+
+# echo "Default LDFAGS: $CXXFLAGS"
+#CFLAGS="-mabi=aapcs-linux -Wno-psabi -Wa,-mno-warn-deprecated -mfloat-abi=hard -fomit-frame-pointer -Wall -pipe -O2"
+#CXXFLAGS="-mabi=aapcs-linux -Wno-psabi -Wa,-mno-warn-deprecated -mfloat-abi=hard -fomit-frame-pointer -Wall -pipe -O2"
+#LDFLAGS=""
+#}
+
+#if [ ${PROJECT} = "Amlogic" ]; then
+#  PKG_PATCH_DIRS="${PROJECT}"
+#fi
 
 make_target() {
-  DYNAREC=$ARCH
-
-  if [ "$ARCH" == "i386" ]; then
-    DYNAREC=x86
-  fi
-
-  if [ "$PROJECT" == "RPi" -o "$PROJECT" == "Gamegirl" -o "$PROJECT" == "Slice" ]; then
-    make platform=rpi
-  elif [[ "$TARGET_FPU" =~ "neon" ]]; then
-    CFLAGS="$CFLAGS -DGL_BGRA_EXT=0x80E1" # Fix build for platforms where GL_BGRA_EXT is not defined
-    make platform=armv-gles-neon
-  else
-    LDFLAGS="$LDFLAGS -lpthread"
-    make WITH_DYNAREC=$DYNAREC HAVE_PARALLEL=0
-  fi
+  make platform=imx6 DYNAREC=$ARCH ARCH=$ARCH
 }
 
 makeinstall_target() {
