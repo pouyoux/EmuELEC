@@ -12,9 +12,15 @@ PKG_LONGDESC="Amiberry is an optimized Amiga emulator for ARM-based boards."
 GET_HANDLER_SUPPORT="git"
 PKG_TOOLCHAIN="make"
 
+PKG_PATCH_DIRS="${PROJECT}"
+
 PKG_MAKE_OPTS_TARGET="all"
 
 pre_configure_target() {
+
+# TEMP MAKE SURE TO REMOVE
+# sed -i "s|#DEBUG=1|DEBUG=1|" $PKG_BUILD/Makefile
+
   cd ${PKG_BUILD}
   export SYSROOT_PREFIX=${SYSROOT_PREFIX}
 
