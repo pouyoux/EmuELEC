@@ -19,8 +19,8 @@
 ################################################################################
 
 PKG_NAME="flycast"
-PKG_VERSION="4a020d4080221a32ca18b22045ff41d0364c5d5b"
-PKG_SHA256="46f69d1ed57f9675683775d97779245c9ef118b9cd33d564c63750abbb1433b7"
+PKG_VERSION="4d3a6e2b46868c119261041f913ee55c51bfc9d0"
+PKG_SHA256="c3f6718af68bac9ba791592c561e0ea36f92b565160db20a35fd981bd5e4f88a"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/flycast"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
@@ -29,6 +29,9 @@ PKG_LONGDESC="Flycast is a multiplatform Sega Dreamcast emulator "
 PKG_TOOLCHAIN="make"
 PKG_BUILD_FLAGS="-gold"
 
+if [ ${PROJECT} = "Amlogic-ng" ]; then
+  PKG_PATCH_DIRS="${PROJECT}"
+fi
 
 PKG_MAKE_OPTS_TARGET="HAVE_OPENMP=0 GIT_VERSION=${PKG_VERSION:0:7} WITH_DYNAREC=$ARCH ARCH=arm"
 
@@ -41,7 +44,7 @@ pre_make_target() {
 
   case $PROJECT in
     Amlogic-ng)
-      PKG_MAKE_OPTS_TARGET+=" platform=odroid-n2"
+      PKG_MAKE_OPTS_TARGET+=" platform=amlogicng"
       ;;
     Amlogic)
       PKG_MAKE_OPTS_TARGET+=" platform=rpi"
