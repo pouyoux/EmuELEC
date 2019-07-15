@@ -23,7 +23,8 @@ export CFLAGS=`echo $CFLAGS | sed -e "s|-O.|-O2|g"`
 }
 
 post_unpack() {
-cp -r $PKG_DIR/.version $PKG_BUILD
+VERSION="EmuELEC-v$(cat $ROOT/packages/sx05re/emuelec/config/EE_VERSION)-${PKG_VERSION:0:7}"
+echo $VERSION > $PKG_BUILD/.version
 cp -r $PKG_DIR/joverride/joverride.dat $PKG_BUILD/advance/linux/joverride.dat
 }
 

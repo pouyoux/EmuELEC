@@ -148,18 +148,6 @@ diff -Naur a/intl/msg_hash_fr.h b/intl/msg_hash_fr.h
  MSG_HASH(
           MENU_ENUM_SUBLABEL_QUIT_RETROARCH,
           "Redémarrer le programme."
-diff -Naur a/intl/msg_hash_ko.h b/intl/msg_hash_ko.h
---- a/intl/msg_hash_ko.h	2019-01-24 22:31:24.000000000 -0600
-+++ b/intl/msg_hash_ko.h	2019-01-28 22:00:41.392467736 -0600
-@@ -3147,7 +3147,7 @@
-       "도움말 표시")
- MSG_HASH(MENU_ENUM_SUBLABEL_MENU_SHOW_HELP,
-       "도움말을 표시/해제 합니다.")
--#ifdef HAVE_LAKKA
-+#ifndef HAVE_LAKKA
- MSG_HASH(MENU_ENUM_LABEL_VALUE_MENU_SHOW_QUIT_RETROARCH,
-       "RetroArch 재시작 표시")
- MSG_HASH(MENU_ENUM_SUBLABEL_MENU_SHOW_QUIT_RETROARCH,
 diff -Naur a/intl/msg_hash_pt_br.h b/intl/msg_hash_pt_br.h
 --- a/intl/msg_hash_pt_br.h	2019-01-24 22:20:20.000000000 -0600
 +++ b/intl/msg_hash_pt_br.h	2019-01-28 22:00:41.312469113 -0600

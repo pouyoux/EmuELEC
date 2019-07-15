@@ -1,59 +1,58 @@
-################################################################################
-#      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
-#
-#  This Program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2, or (at your option)
-#  any later version.
-#
-#  This Program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
-#  http://www.gnu.org/copyleft/gpl.html
-################################################################################
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019 Trond Haugland (trondah@gmail.com)
 
 PKG_NAME="mame"
-PKG_VERSION="47c241e4f528f663a36ae82a3bbaa789d929e282"
-PKG_SHA256="7a690637384c64bec5f0db26452edd083bc22619aaffe7ec049eafe78e78444c"
-PKG_REV="1"
+PKG_VERSION="0cd48a98a39e0641da517131be4bf07ad81b93e2"
+PKG_SHA256="a7cc1cd05b5e22c3ef16d36c4f16d50020515f938f1bb3037d3982a6144adafb"
 PKG_ARCH="any"
-PKG_LICENSE="MAME"
+PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/mame"
-PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain"
-PKG_PRIORITY="optional"
-PKG_SECTION="libretro"
+PKG_URL="https://github.com/libretro/mame/archive/$PKG_VERSION.tar.gz"
+PKG_DEPENDS_TARGET="toolchain zlib flac sqlite expat"
+PKG_SECTION="escalade"
 PKG_SHORTDESC="MAME - Multiple Arcade Machine Emulator"
-PKG_LONGDESC="MAME - Multiple Arcade Machine Emulator"
-
-PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"
-PKG_AUTORECONF="no"
-PKG_BUILD_FLAGS="-lto -gold"
+PKG_BUILD_FLAGS="-lto"
+
+PTR64="0"
+NOASM="0"
+
+if [ "$ARCH" == "arm" ]; then
+  NOASM="1"
+elif [ "$ARCH" == "x86_64" ]; then
+  PTR64="1"
+fi
+
+PKG_MAKE_OPTS_TARGET="VERBOSE=1 \
+		      NOWERROR=1 \
+		      OPENMP=1 \
+		      RETRO=1 \
+		      PTR64=$PTR64 \
+		      NOASM=$NOASM \
+		      CONFIG=libretro \
+		      LIBRETRO_OS=unix \
+		      LIBRETRO_CPU=$ARCH \
+		      PLATFORM=$ARCH \
+		      TARGET=mame \
+		      SUBTARGET=arcade \
+		      OSD=retro \
+		      USE_SYSTEM_LIB_EXPAT=1 \
+		      USE_SYSTEM_LIB_ZLIB=1 \
+		      USE_SYSTEM_LIB_FLAC=1 \
+		      USE_SYSTEM_LIB_SQLITE3=1"
 
 make_target() {
-  LCPU=$ARCH
-  PTR64=0
-  NOASM=0
-
-  if [ "$ARCH" == "arm" ]; then
-    NOASM=1
-  elif [ "$ARCH" == "i386" ]; then
-    LCPU=x86
-  elif [ "$ARCH" == "x86_64" ]; then
-    PTR64=1
-  fi
-
-  make REGENIE=1 VERBOSE=1 NOWERROR=1 PYTHON_EXECUTABLE=python2 CONFIG=libretro LIBRETRO_OS="unix" ARCH="" PROJECT="" LIBRETRO_CPU="$LCPU" DISTRO="debian-stable" CC="$CC" CXX="$CXX" LD="$LD" CROSS_BUILD="" PTR64="$PTR64" TARGET="mame" SUBTARGET="arcade" PLATFORM=$LCPU RETRO=1 OSD="retro"
+  unset ARCH
+  unset DISTRO
+  unset PROJECT
+  make CC=$HOST_CC CXX=$HOST_CXX LD=$HOST_LD AR=$AR $MAKEFLAGS verbose=1 -C 3rdparty/genie/build/gmake.linux -f genie.make
+  make CC=$HOST_CC CXX=$HOST_CXX $MAKEFLAGS -C src/devices/cpu/m68000
+  make CC=$CC CXX=$CXX LD=$LD AR=$AR $PKG_MAKE_OPTS_TARGET $MAKEFLAGS 
 }
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp *_libretro.so $INSTALL/usr/lib/libretro/mame_libretro.so
+  cp *.so $INSTALL/usr/lib/libretro/mame_libretro.so
+  mkdir -p $INSTALL/usr/config/retroarch/savefiles/mame/hi
+  cp plugins/hiscore/hiscore.dat $INSTALL/usr/config/retroarch/savefiles/mame/hi
 }

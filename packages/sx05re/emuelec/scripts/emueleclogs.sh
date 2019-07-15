@@ -61,6 +61,13 @@ mkdir -p $BASEDIR/$LOGDIR
 # es_log.txt
   EE_LOG_DIR=/storage
 
+  LOGFILE="01_EE_VERSION.log"
+  for i in EE_VERSION; do
+    [ -f ${EE_LOG_DIR}/${i} ] && getlog_cmd cat ${EE_LOG_DIR}/$i
+    getlog_cmd echo "usr:"
+    getlog_cmd cat /usr/config/EE_VERSION
+  done
+  
   LOGFILE="01_ES.LOG"
   for i in es_log.txt es_input.cfg es_settings.cfg es_log.txt.bak es_systems.cfg; do
     [ -f ${EE_LOG_DIR}/.emulationstation/${i} ] && getlog_cmd cat ${EE_LOG_DIR}/.emulationstation/$i
@@ -74,15 +81,15 @@ mkdir -p $BASEDIR/$LOGDIR
 EE_LOG_DIR=/storage/.config/retroarch
   
 LOGFILE="01_RETROARCH.log"
-  for i in retroarch*.cfg; do
+  for i in retroarch.cfg; do
      [ -f "$EE_LOG_DIR/$i" ] && getlog_cmd cat "$EE_LOG_DIR/$i"
   done
 
 EE_LOG_DIR=/tmp/joypads
   
 LOGFILE="01_JOYPADS.log"
-  for i in *.cfg; do
-     [ -f "$EE_LOG_DIR/$i" ] && getlog_cmd cat "$EE_LOG_DIR/$i"
+  for i in $EE_LOG_DIR/*.cfg; do
+     [ -f "$i" ] && getlog_cmd cat "$i"
   done
 
 # System.log

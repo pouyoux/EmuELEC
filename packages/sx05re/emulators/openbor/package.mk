@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="openbor"
-PKG_VERSION="21e153f55ce640ebe99b68007faf83fe29d56e09"
-PKG_SHA256="6153823e2ebf544c633bf164bc3277475e4ecf60ae9826d739add134d4443f0b"
+PKG_VERSION="db5f0836f74a90091037da456f0985c1b822f5bf"
+PKG_SHA256="42f20119cfa18105c9ae1c4109bf27ada9db9f36ee60808a0ba7ccdedb7bd828"
 PKG_ARCH="any"
 PKG_SITE="https://github.com/DCurrent/openbor"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
@@ -19,6 +19,7 @@ pre_configure_target() {
 
 make_target() {
 cd $PKG_BUILD/engine
+./version.sh
   make CC=$CC CXX=$CXX AS=$CC BUILD_PANDORA=1
 }
 

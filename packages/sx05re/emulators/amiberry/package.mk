@@ -12,9 +12,15 @@ PKG_LONGDESC="Amiberry is an optimized Amiga emulator for ARM-based boards."
 GET_HANDLER_SUPPORT="git"
 PKG_TOOLCHAIN="make"
 
+PKG_PATCH_DIRS="${PROJECT}"
+
 PKG_MAKE_OPTS_TARGET="all"
 
 pre_configure_target() {
+
+# TEMP MAKE SURE TO REMOVE
+# sed -i "s|#DEBUG=1|DEBUG=1|" $PKG_BUILD/Makefile
+
   cd ${PKG_BUILD}
   export SYSROOT_PREFIX=${SYSROOT_PREFIX}
 
@@ -46,7 +52,7 @@ makeinstall_target() {
   mkdir -p ${INSTALL}/usr/bin
   mkdir -p ${INSTALL}/usr/lib
   mkdir -p ${INSTALL}/usr/config/amiberry
-  mkdir -p ${INSTALL}/usr/config/amiberry/controller
+  # mkdir -p ${INSTALL}/usr/config/amiberry/controller
 
   # Copy ressources
   cp -a ${PKG_DIR}/config/*           ${INSTALL}/usr/config/amiberry/
@@ -58,7 +64,7 @@ makeinstall_target() {
 
   # Create links to Retroarch controller files
   # ln -s /usr/share/retroarch/autoconfig/udev/8Bitdo_Pro_SF30_BT_B.cfg "${INSTALL}/usr/config/amiberry/controller/8Bitdo SF30 Pro.cfg"
-  # ln -s "/usr/share/retroarch/autoconfig/udev/Pro Controller.cfg"     "${INSTALL}/usr/config/amiberry/controller/Pro Controller.cfg"
+  ln -s "/tmp/joypads" "${INSTALL}/usr/config/amiberry/controller"
 
   # Copy binary, scripts & link libcapsimg
   cp -a amiberry ${INSTALL}/usr/bin/amiberry

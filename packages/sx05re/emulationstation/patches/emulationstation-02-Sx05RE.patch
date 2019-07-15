@@ -341,17 +341,17 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	/* END CHOICE */
 +
 +	/* CHOICE */
-+	auto emuelec_fba_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "FBA/NEO-GEO CORE", false);
++	auto emuelec_fbn_def = std::make_shared< OptionListComponent<std::string> >(mWindow, "FBN/NEO-GEO CORE", false);
 +         emuchoices.clear(); 
-+    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh fba)")); getline(ss, a, ','); ) 
++    for(std::stringstream ss(getShOutput(R"(~/.emulationstation/scripts/getcores.sh fbn)")); getline(ss, a, ','); ) 
 +        emuchoices.push_back(a);
 +    
 +	    for (auto it = emuchoices.cbegin(); it != emuchoices.cend(); it++)
-+		emuelec_fba_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_FBA_CORE") == *it);
-+		s->addWithLabel("FBA/NEO-GEO CORE", emuelec_fba_def);
-+		s->addSaveFunc([emuelec_fba_def] {
-+			if (Settings::getInstance()->getString("EmuELEC_FBA_CORE") != emuelec_fba_def->getSelected())
-+				Settings::getInstance()->setString("EmuELEC_FBA_CORE", emuelec_fba_def->getSelected());
++		emuelec_fbn_def->add(*it, *it, Settings::getInstance()->getString("EmuELEC_FBN_CORE") == *it);
++		s->addWithLabel("FBN/NEO-GEO CORE", emuelec_fbn_def);
++		s->addSaveFunc([emuelec_fbn_def] {
++			if (Settings::getInstance()->getString("EmuELEC_FBN_CORE") != emuelec_fbn_def->getSelected())
++				Settings::getInstance()->setString("EmuELEC_FBN_CORE", emuelec_fbn_def->getSelected());
 +		});
 +	/* END CHOICE */
 +	/* CHOICE */		
@@ -587,20 +587,20 @@ diff U3 a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
 +	mBoolMap["BGM"] = false;
 +	mStringMap["EmuELEC_BGM_BOOT"] = "No";
 +	mStringMap["EmuELEC_BOOT"] = "Emulationstation";
-+	mStringMap["EmuELEC_FBA_CORE"] = "fbalpha";
-+	mStringMap["EmuELEC_GBA_CORE"] = "mgba";
-+	mStringMap["EmuELEC_GBC_CORE"] = "gambatte";
-+	mStringMap["EmuELEC_GEN_CORE"] = "genesis_plus_gx";
-+	mStringMap["EmuELEC_MAME_CORE"] = "mame2003_plus";
-+	mStringMap["EmuELEC_ARCADE_CORE"] = "mame2003_plus";
-+	mStringMap["EmuELEC_N64_CORE"] = "mupen64plus_next";
-+	mStringMap["EmuELEC_NES_CORE"] = "nestopia";
++	mStringMap["EmuELEC_FBN_CORE"] = "Libretro_fbneo";
++	mStringMap["EmuELEC_GBA_CORE"] = "Libretro_mgba";
++	mStringMap["EmuELEC_GBC_CORE"] = "Libretro_gambatte";
++	mStringMap["EmuELEC_GEN_CORE"] = "Libretro_genesis_plus_gx";
++	mStringMap["EmuELEC_MAME_CORE"] = "Libretro_mame2003_plus";
++	mStringMap["EmuELEC_ARCADE_CORE"] = "Libretro_mame2003_plus";
++	mStringMap["EmuELEC_N64_CORE"] = "Libretro_mupen64plus_next";
++	mStringMap["EmuELEC_NES_CORE"] = "Libretro_nestopia";
 +	mStringMap["EmuELEC_PSP_CORE"] = "PPSSPPSA";
-+	mStringMap["EmuELEC_SNES_CORE"] = "snes9x";
-+	mStringMap["EmuELEC_DOSBOX_CORE"] = "dosbox";
-+	mStringMap["EmuELEC_AMIGA_CORE"] = "puae";
++	mStringMap["EmuELEC_SNES_CORE"] = "Libretro_snes9x";
++	mStringMap["EmuELEC_DOSBOX_CORE"] = "Libretro_dosbox";
++	mStringMap["EmuELEC_AMIGA_CORE"] = "Libretro_puae";
 +	mStringMap["EmuELEC_REICAST_CORE"] = "REICASTSA";
-+   mStringMap["EmuELEC_NEOCD_CORE"] = "libneocd";
++   mStringMap["EmuELEC_NEOCD_CORE"] = "Libretro_libneocd";
 +	mBoolMap["EmuELEC_BEZELS"] = false;
 +	mBoolMap["EmuELEC_SPLASH"] = false;
 +/* space for other settings in the future 

@@ -2,13 +2,12 @@
 # Copyright (C) 2019-present Team CoreELEC (https://coreelec.org)
 
 PKG_NAME="neocd_libretro"
-PKG_VERSION="fd77de0d3f557f9d92a78c7bdda44c207f992ab5"
-PKG_SHA256="a8ebab13aff6781ce37780f21da59cb58ecca42915c8a0a25c3cc4790e469f2b"
+PKG_VERSION="f1e188f5409ae6296a511e173ee1990174327e02"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="LGPLv3.0"
 PKG_SITE="https://github.com/libretro/neocd_libretro"
-PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
+PKG_URL="$PKG_SITE.git"
 PKG_DEPENDS_TARGET="toolchain flac libogg libvorbis"
 PKG_PRIORITY="optional"
 PKG_SECTION="libretro"
@@ -17,6 +16,12 @@ PKG_LONGDESC="NeoCD-Libretro is a complete rewrite of NeoCD from scratch in mode
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="cmake-make"
 PKG_AUTORECONF="no"
+GET_HANDLER_SUPPORT="git"
+
+pre_configure_target() {
+  export CFLAGS="$CFLAGS -Ofast -fomit-frame-pointer -ffast-math -D_7ZIP_ST"
+  export CXXFLAGS="$CXXFLAGS -Ofast -fomit-frame-pointer -ffast-math -std=c++11 -fno-exceptions -fno-rtti"
+}
 
 make_target() {
   cmake -G "Unix Makefiles" .
@@ -25,5 +30,5 @@ make_target() {
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
-  cp $PKG_BUILD/cmake-build-MinSizeRel/output/libneocd_libretro.so $INSTALL/usr/lib/libretro/
+  cp $PKG_BUILD/.$TARGET_NAME/libneocd_libretro.so $INSTALL/usr/lib/libretro/
 }

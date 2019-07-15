@@ -18,6 +18,8 @@ esac
 
 if [ "$PLATFORM" == "intro" ]; then
 	SPLASH="/storage/.config/splash/splash-1080.png"
+elif [ "$PLATFORM" == "default" ]; then
+SPLASH="/storage/.config/splash/loading-game.png"
 else
 	SPLASHDIR="/storage/overlays/splash"
 	ROMNAME=$(basename "${2%.*}")
@@ -25,9 +27,9 @@ else
 	SPLNAME=$(sed -n "/`echo ""$PLATFORM"_"${ROMNAME}" = "`/p" "$SPLMAP")
 	REALSPL="${SPLNAME#*\"}"
 	REALSPL="${REALSPL%\"*}"
-[ ! -z "$REALSPL" ] && SPLASH1=$(find $SPLASHDIR/$PLATFORM -iname "$REALSPL".png -maxdepth 1 | head -n 1)
-[ ! -z "$ROMNAME" ] && SPLASH2=$(find $SPLASHDIR/$PLATFORM -iname "$ROMNAME"*.png -maxdepth 1 | head -n 1)
-	
+[ ! -z "$REALSPL" ] && SPLASH1=$(find $SPLASHDIR/$PLATFORM -iname "$REALSPL*.png" -maxdepth 1 | sort -V | head -n 1)
+[ ! -z "$ROMNAME" ] && SPLASH2=$(find $SPLASHDIR/$PLATFORM -iname "$ROMNAME*.png" -maxdepth 1 | sort -V | head -n 1)
+
 	SPLASH3="$SPLASHDIR/$PLATFORM/splash.png"
 	
 if [ -f "$SPLASH1" ]; then

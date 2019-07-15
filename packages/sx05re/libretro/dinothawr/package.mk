@@ -37,6 +37,10 @@ PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 PKG_BUILD_FLAGS="-gold"
 
+pre_configure_target() {
+ PKG_MAKE_OPTS_TARGET="HAVE_NEON=1"
+}
+
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
   cp dinothawr_libretro.so $INSTALL/usr/lib/libretro/

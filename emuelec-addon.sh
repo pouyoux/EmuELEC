@@ -51,7 +51,7 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-sh
 
 PKG_EMUS="emulationstation advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
 PACKAGES_Sx05RE="$PKG_EMUS \
-				mpv \
+				fbida \
 				emuelec \
 				empty \
 				sixpair \
@@ -62,15 +62,16 @@ PACKAGES_Sx05RE="$PKG_EMUS \
 				freetype \
 				es-theme-ComicBook \
 				bash \
-				libretro-bash-launcher \
-				SDL_GameControllerDB
+				SDL_GameControllerDB \
 				libvorbisidec \
 				gl4es \
 				python-evdev \
 				libpng16 \
-				mpg123-compat"
+				mpg123-compat \
+				SDL \
+				SDL_net"
 				
-LIBRETRO_CORES_LITE="fbalpha gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
+LIBRETRO_CORES_LITE="fbneo gambatte genesis-plus-gx mame2003-plus mgba mupen64plus nestopia pcsx_rearmed snes9x stella"
 
 if [ "$1" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES_LITE"
@@ -78,8 +79,10 @@ if [ "$1" = "lite" ]; then
   PACKAGES_ALL="$LIBRETRO_CORES"
  fi 
 
+LIBRETRO_EXTRA_CORES="citra beetle-psx beetle-saturn beetle-bsnes bsnes-mercury bsnes dinothawr higan-sfc-balanced higan-sfc lutro mame2003-midway mrboom easyrpg dolphin mesen openlara pocketcdg virtualjaguar"
+
 PACKAGES_ALL="$LIBRETRO_BASE $PACKAGES_ALL $PACKAGES_Sx05RE" 
-DISABLED_CORES="libretro-database reicast $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
+DISABLED_CORES="libretro-database $LIBRETRO_EXTRA_CORES openlara beetle-psx beetle-saturn"
 
 if [ -n "$DISABLED_CORES" ] ; then
 	for core in $DISABLED_CORES ; do
@@ -107,7 +110,6 @@ PROJECT=${PROJECT}
 ARCH=${ARCH}
 VERSION=${VERSION}
 GIT_BRANCH=${GIT_BRANCH}
-
 
 Working in: ${SCRIPT_DIR}
 Temporary project folder: ${TARGET_DIR}
@@ -228,6 +230,7 @@ mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
 rm -rf "${ADDON_DIR}/bin/assets"
 mv -v "${ADDON_DIR}/config/ppsspp/assets" "${ADDON_DIR}/bin" &>>"$LOG"
 cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/scripts/*.sh "${ADDON_DIR}/bin" &>>"$LOG"
+cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/bin/* "${ADDON_DIR}/bin" &>>"$LOG"
 rm -rf "${ADDON_DIR}/config/emuelec"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tlibraries and cores "
@@ -243,26 +246,17 @@ echo -ne "\tshaders "
 mv -v "${TARGET_DIR}/usr/share/common-shaders" "${ADDON_DIR}/resources/shaders" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tremoving unused assets "
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/branding"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/glui"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/nuklear"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/nxrgui"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/ozone"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/pkg"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/switch"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/wallpapers"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/zarch"
+  for i in branding glui nuklear nxrgui ozone pkg switch wallpapers zarch; do
+    rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/$i"
+  done
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tassets "
 mv -v "${TARGET_DIR}/usr/share/retroarch-assets" "${ADDON_DIR}/resources/assets" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\toverlays "
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/borders"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/effects"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/gamepads"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/ipad"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/keyboards"
-rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/misc"
+  for i in borders effects gamepads ipad keyboards misc; do
+    rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/$i"
+  done
 mv -v "${TARGET_DIR}/usr/share/retroarch-overlays" "${ADDON_DIR}/resources/overlays" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tadvacemame Config "
@@ -274,23 +268,26 @@ rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tRemoving unneeded files "
-rm "${ADDON_DIR}/bin/startfe.sh"
-rm "${ADDON_DIR}/bin/killkodi.sh"
-rm "${ADDON_DIR}/bin/emulationstation.sh"
-rm "${ADDON_DIR}/bin/emustation-config"
-rm "${ADDON_DIR}/bin/clearconfig.sh"
-rm "${ADDON_DIR}/bin/reicast.sh"
-rm "${ADDON_DIR}/config/autostart.sh"
-rm "${ADDON_DIR}/config/smb.conf"
-rm -rf "${ADDON_DIR}/config/vlc"
-rm -rf "${ADDON_DIR}/config/out123"
-rm -rf ${ADDON_DIR}/bin/mpg123-*
-rm -rf ${ADDON_DIR}/bin/*png*
-rm -rf "${ADDON_DIR}/bin/cvlc"
+  for i in startfe.sh killkodi.sh emulationstation.sh emustation-config clearconfig.sh reicast.sh autostart.sh smb.conf vlc out123 cvlc mpg123-* *png*; do
+    echo -ne "\t$i"
+    rm -rf "${ADDON_DIR}/bin/$i"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+  done
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
 echo "Creating files..."
+echo -ne "\temuelecsound.conf "
+read -d '' content <<EOF
+pcm.!default {
+type plug
+slave {
+pcm "hw:0,0"
+}
+}
+EOF
+echo "$content" > config/emuelecsound.conf
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\treicast.sh "
 read -d '' content <<EOF
 #!/bin/sh
@@ -350,7 +347,7 @@ read -d '' content <<EOF
 /storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh
 
 #name of the file we need to put in the roms folder in your USB or SDCARD 
-ROMFILE="sx05reroms"
+ROMFILE="emuelecroms"
 
 # we look for the file in the rompath
 FULLPATHTOROMS="\$(find /media/*/roms/ -name \$ROMFILE -maxdepth 1)"
@@ -417,8 +414,8 @@ read -d '' content <<EOF
 EOF
 echo "$content" > config/emulationstation/es_input.cfg
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tPS3 Gamepad Workaround "
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/Sony PLAYSTATION(R)3 Controller.cfg"  resources/joypads/
+echo -ne "\tGamepad Workarounds "
+cp ${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/*.cfg resources/joypads/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tsx05re.start "
 read -d '' content <<EOF
@@ -453,7 +450,75 @@ sh \$ADDON_DIR/bin/emustation-config
  if [ ! -d "\$ROMS_FOLDER" ] && [ ! -L "\$ROMS_FOLDER" ]; then
     mkdir -p "\$ROMS_FOLDER"
     
-     all_roms="downloads,amiga,atari2600,atari5200,atari7800,atarilynx,bios,c64,dreamcast,fba,fds,gamegear,gb,gba,gbc,mame,mame-advmame,mastersystem,megadrive,msx,n64,neogeo,nes,pc,pcengine,psp,psx,scummvm,sega32x,segacd,snes,videopac,zxspectrum" 
+     all_roms="downloads \
+BGM \
+3do \
+amstradcpc \
+arcade \
+atari2600 \
+atari5200 \
+atari7800 \
+atari800 \
+atarilynx \
+atarilynx \
+atarilynx \
+atarist \
+atomiswave \
+coleco \
+c64 \
+amiga \
+pc \
+famicom \
+fds \
+capcom \
+fbneo \
+gb \
+gba \
+gbc \
+gameandwatch \
+intellivision \
+mame \
+msx \
+msx2 \
+neogeo \
+ngp \
+ngpc \
+nes \
+n64 \
+openbor \
+psx \
+psp \
+scummvm \
+sega32x \
+segacd \
+dreamcast \
+gamegear \
+genesis \
+mastersystem \
+megadrive \
+naomi \
+neocd \
+saturn \
+sg-1000 \
+sfc \
+snes \
+tg16 \
+tg16cd \
+sc-3000 \
+sgfx \
+pcengine \
+pcenginecd \
+pcfx \
+vectrex \
+videopac \
+virtualboy \
+wonderswan \
+wonderswancolor \
+x68000 \
+zxspectrum \
+atarijaguar \
+odyssey \
+zx81" 
  
      for romfolder in \$(echo \$all_roms | tr "," " "); do
         mkdir -p "\$ROMS_FOLDER/\$romfolder"
@@ -479,7 +544,9 @@ fi
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so
 # ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
 ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
-ln -sf libSDL2-2.0.so.0.9.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
+ln -sf libSDL2-2.0.so.0.8.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
+ln -sf libSDL-1.2.so.0.11.4 \$ADDON_DIR/lib/libSDL-1.2.so.0
+ln -sf libSDL_net-1.2.so.0.8.0 \$ADDON_DIR/lib/libSDL_net-1.2.so.0
 ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
 ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
 ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
@@ -523,7 +590,7 @@ chmod +x /storage/.emulationstation/scripts/*.sh
 chmod +x \$ADDON_DIR/bin/*
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
-
+cp -rf \$ADDON_DIR/config/emuelecsound.conf /storage/.config/asound.conf
 if [ "\$ra_stop_kodi" -eq 1 ] ; then
 	systemctl stop kodi
 	if [ \$ra_log -eq 1 ] ; then
@@ -531,6 +598,7 @@ if [ "\$ra_stop_kodi" -eq 1 ] ; then
 	else
 		\$RA_EXE \$RA_PARAMS
 	fi
+    rm /storage/.config/asound.conf
 	systemctl start kodi
 else
 	pgrep kodi.bin | xargs kill -SIGSTOP
@@ -539,6 +607,7 @@ else
 	else
 		\$RA_EXE \$RA_PARAMS
 	fi
+	rm /storage/.config/asound.conf
 	pgrep kodi.bin | xargs kill -SIGCONT
 fi
 
@@ -643,7 +712,9 @@ echo -ne "\ticon.png"
 cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/icon.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "\tdowloading dldrastic.sh"
-wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/ 
+wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/
+sed -i "s|script.sx05re.launcher|${ADDON_NAME}|" dldrastic.sh
+sed -i "s|sx05re.log|emuelec.log|" dldrastic.sh
 cp dldrastic.sh config/emulationstation/scripts/dldrastic.sh
 rm dldrastic.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -660,7 +731,7 @@ RA_RES_DIR="\/storage\/\.kodi\/addons\/${ADDON_NAME}\/resources"
 echo -ne "Making modifications to es_systems.cfg..."
 CFG="config/emulationstation/es_systems.cfg"
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
-sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
+sed -i -e "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/bash /storage/.kodi/addons/${ADDON_NAME}/bin/|" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
 echo -ne "Making modifications to inputconfiguration.sh..."
@@ -668,11 +739,16 @@ CFG="config/emulationstation/scripts/inputconfiguration.sh"
 sed -i -e "s/\/usr\/bin\/bash/\/storage\/.kodi\/addons\/${ADDON_NAME}\/bin\/bash/" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 
+echo -ne "Making modifications to setres.sh..."
+CFG="bin/setres.sh"
+sed -i '9,12d;17,21d;28,31d' $CFG
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo -ne "Making modifications to emuelecRunEmu.sh..."
 CFG="bin/emuelecRunEmu.sh"
-sed -i -e "s/SPLASH=\"\/storage\/.config/SPLASH=\"\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
+sed -i -e "s|/tmp/cores/|${RA_CORES_DIR}/|" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
+sed -i -e "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" $CFG
 sed -i -e 's,\[\[ $arguments != \*"KEEPMUSIC"\* \]\],[ `echo $arguments | grep -c "KEEPMUSIC"` -eq 0 ],g' $CFG
 sed -i -e 's,\[\[ $arguments != \*"NOLOG"\* \]\],[ `echo $arguments | grep -c "NOLOG"` -eq 0 ],g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
@@ -743,6 +819,11 @@ sed -i "s/\/tmp\/joypads/${RA_RES_DIR}\/joypads/g" $CFG
 echo -ne "\tdatabase "
 sed -i "s/\/tmp\/database/${RA_RES_DIR}\/database/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+echo
+echo -n "Fixing paths..."
+find bin/ -name *.sh -exec sed -i "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" {} \;
+find bin/ -name *.sh -exec sed -i "s|/emuelec/bin/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" {} \;
+[ $? -eq 0 ] && echo "done." || { echo "failed!" ; exit 1 ; }
 echo
 echo -n "Creating archive..."
 cd ..

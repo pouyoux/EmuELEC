@@ -31,7 +31,7 @@ PKG_PRIORITY="optional"
 PKG_SECTION="emuelec"
 PKG_SHORTDESC="Manually converted libretro/common-shaders for arm devices treebranch pi"
 PKG_LONGDESC="Manually converted libretro/common-shaders for arm devices treebranch pi"
-PKG_GIT_BRANCH="rpi"
+PKG_GIT_CLONE_BRANCH="rpi"
 
 PKG_IS_ADDON="no"
 PKG_TOOLCHAIN="make"

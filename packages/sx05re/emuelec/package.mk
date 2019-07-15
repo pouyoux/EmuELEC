@@ -17,14 +17,11 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 
 # Thanks to magicseb  Reicast SA now WORKS :D
-PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2 m64p mupen64plus-nx fba4arm mame2010 mame2015"
+PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor dosbox-sdl2 m64p mupen64plus-nx fba4arm mame2010 mame2015 mba.mini.plus"
 PKG_RETROPIE_DEP="bash pyudev dialog six fbterm git dbus-python pygobject coreutils"
-PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher fbida mpv SDL_GameControllerDB linux-utils xmlstarlet CoreELEC-Debug-Scripts $PKG_RETROPIE_DEP sixaxis"
+PKG_TOOLS="common-shaders scraper Skyscraper MC libretro-bash-launcher fbida mpv SDL_GameControllerDB linux-utils xmlstarlet CoreELEC-Debug-Scripts $PKG_RETROPIE_DEP sixaxis evdev_tools"
 PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $PKG_EMUS $PKG_TOOLS"
  
-# You can build some less used Libretro cores by using $LIBRETRO_EXTRA_CORES but you might run into size problems.
-# PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $LIBRETRO_EXTRA_CORES"
-
 make_target() {
 if [ "$PROJECT" == "Amlogic-ng" ]; then
 	cd $PKG_DIR/fbfix
@@ -41,7 +38,7 @@ makeinstall_target() {
 	fi
 
   mkdir -p $INSTALL/etc/samba
-   cp $PKG_DIR/config/smb.conf $INSTALL/etc/samba
+   cp $PKG_DIR/config/samba.conf $INSTALL/etc/samba/smb.conf
 
   mkdir -p $INSTALL/usr/config/
     cp -rf $PKG_DIR/config/* $INSTALL/usr/config/
@@ -98,9 +95,10 @@ cp -r $PKG_DIR/gamepads/* $INSTALL/etc/retroarch-joypad-autoconfig
    enable_service emuelec-autostart.service
   
 # Thanks to vpeter we can now have bash :) 
-  rm -f $INSTALL/usr/bin/{sh,bash,busybox}
+  rm -f $INSTALL/usr/bin/{sh,bash,busybox,sort}
   cp $(get_build_dir busybox)/.install_pkg/usr/bin/busybox $INSTALL/usr/bin
   cp $(get_build_dir bash)/.install_pkg/usr/bin/bash $INSTALL/usr/bin
+  cp $(get_build_dir coreutils)/.install_pkg/usr/bin/sort $INSTALL/usr/bin
   ln -sf bash $INSTALL/usr/bin/sh
  
   echo "chmod 4755 $INSTALL/usr/bin/bash" >> $FAKEROOT_SCRIPT
@@ -126,7 +124,7 @@ echo " " >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
 		for f in $FILES 
 		do
 		FI=$(echo "$f" | sed "s|$INSTALL/usr/config/emulationstation/scripts/||")
-	echo "cp -rf \"/usr/config/emuelec/scripts/$FI\" \"/storage/.emulationstation/scripts/$FI\"" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
+	echo "cp -rf \"/usr/config/emulationstation/scripts/$FI\" \"/storage/.emulationstation/scripts/$FI\"" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh
   done
 
 echo "cp -rf /usr/config/EE_VERSION /storage/.config/EE_VERSION" >> $INSTALL/usr/config/emuelec/scripts/force_update.sh

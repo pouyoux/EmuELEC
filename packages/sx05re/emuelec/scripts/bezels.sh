@@ -6,16 +6,6 @@
 
 PLATFORM="$1"
 
-case $PLATFORM in
- "ARCADE"|"FBA"|"NEOGEO"|"MAME")
-   PLATFORM="ARCADE"
-  ;;
- "RETROPIE")
-   # fbterm does not need bezels 
-   exit 0
-  ;;
-esac
-
 ROMNAME=$(basename "${2%.*}")
 RACONFIG="/storage/.config/retroarch/retroarch.cfg"
 OPACITY="1.000000"
@@ -23,23 +13,42 @@ AR_INDEX="23"
 BEZELDIR="/storage/overlays/bezels"
 INIFILE="/emuelec/bezels/settings.ini"
 
+case $PLATFORM in
+ "ARCADE"|"FBA"|"NEOGEO"|"MAME")
+   PLATFORM="ARCADE"
+  ;;
+  "default")
+  if [ -f "/storage/.config/bezels_enabled" ]; then
+  clear_bezel
+  sed -i '/input_overlay = "/d' $RACONFIG
+  rm "/storage/.config/bezels_enabled"
+  fi
+   exit 0
+  ;;
+  "RETROPIE")
+  # fbterm does not need bezels
+  exit 0
+  ;;
+esac
+
+ if [ ! -f "/storage/.config/bezels_enabled" ]; then
+   touch /storage/.config/bezels_enabled
+ fi
+
+
+# if a backup does not exists make a copy of retroarch.cfg so we can return to it when we disable bezels
+ # for future use...maybe
+ #if [ ! -f "$RACONFIG.org" ]; then
+ #  cp "$RACONFIG" "$RACONFIG.org"
+ #fi
+
 # bezelmap.cfg in $BEZELDIR/ is to share bezels between arcade clones and parent. 
 BEZELMAP="/emuelec/bezels/arcademap.cfg"
 BZLNAME=$(sed -n "/"$PLATFORM"_"$ROMNAME" = /p" "$BEZELMAP")
 BZLNAME="${BZLNAME#*\"}"
 BZLNAME="${BZLNAME%\"*}"
-echo $ROMNAME
-
-if [ "$PLATFORM" = "ARCADE" ]; then
-	OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME".cfg -maxdepth 1 | head -n 1)
-	[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME".cfg -maxdepth 1 | head -n 1)
-else 
-	OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -iname "$ROMNAME"*.cfg -maxdepth 1 | head -n 1)
-	[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -iname "$BZLNAME"*.cfg -maxdepth 1 | head -n 1)
-fi
-
-echo $OVERLAYDIR1
-echo $OVERLAYDIR2
+OVERLAYDIR1=$(find $BEZELDIR/$PLATFORM -maxdepth 1 -iname "$ROMNAME*.cfg" | sort -V | head -n 1)
+[ ! -z "$BZLNAME" ] && OVERLAYDIR2=$(find $BEZELDIR/$PLATFORM -maxdepth 1 -iname "$BZLNAME*.cfg" | sort -V | head -n 1)
 
 clear_bezel() { 
 		sed -i '/aspect_ratio_index = "/d' $RACONFIG
@@ -48,8 +57,9 @@ clear_bezel() {
 		sed -i '/custom_viewport_x = "/d' $RACONFIG
 		sed -i '/custom_viewport_y = "/d' $RACONFIG
 		sed -i '/video_scale_integer = "/d' $RACONFIG
+		sed -i '/input_overlay_opacity = "/d' $RACONFIG
 		echo 'video_scale_integer = "false"' >> $RACONFIG
-
+		echo 'input_overlay_opacity = "0.150000"' >> $RACONFIG
 		}
 
 set_bezel() {
@@ -63,6 +73,7 @@ set_bezel() {
 # $6: video_scale 
         
         clear_bezel
+        sed -i '/input_overlay_opacity = "/d' $RACONFIG
         sed -i "1i input_overlay_opacity = \"$OPACITY\"" $RACONFIG
 		sed -i "2i aspect_ratio_index = \"$AR_INDEX\"" $RACONFIG
 		sed -i "3i custom_viewport_width = \"$1\"" $RACONFIG
@@ -78,7 +89,7 @@ check_overlay_dir() {
 # 1.$OVERLAYDIR1 will be used, if it does not exist, then
 # 2.$OVERLAYDIR2 will be used, if it does not exist, then
 # 3.default bezel as "$BEZELDIR/$1/default.cfg\" will be used.
-
+	
 	if [ -f "$OVERLAYDIR1" ]; then
 		sed -i '/input_overlay = "/d' $RACONFIG
 		echo -e "input_overlay = \""$OVERLAYDIR1"\"\n" >> $RACONFIG
@@ -132,6 +143,8 @@ case $hdmimode in
 	*)
 		# delete aspect_ratio_index to make sure video is expanded fullscreen. Only certain handheld platforms need custom_viewport.
 		clear_bezel
+		sed -i '/input_overlay_opacity = "/d' $RACONFIG
+        sed -i "1i input_overlay_opacity = \"$OPACITY\"" $RACONFIG
 		;;
 	esac
   ;;
@@ -165,6 +178,8 @@ case $hdmimode in
 		;;
 	*)
 		clear_bezel
+		sed -i '/input_overlay_opacity = "/d' $RACONFIG
+		sed -i "1i input_overlay_opacity = \"$OPACITY\"" $RACONFIG
 		;;
 	esac
   ;;
