@@ -13,6 +13,7 @@ PROJECT="$1"
 # make sure you change these lines to point to your EmuELEC git clone
 EMUELEC="${SCRIPT_DIR}"
 GIT_BRANCH="EmuELEC"
+EMUELEC_PATH="packages/sx05re/emuelec"
 
 LOG="${SCRIPT_DIR}/emuelec-kodi_`date +%Y%m%d_%H%M%S`.log"
 
@@ -31,9 +32,9 @@ fi
 [ -z "$DISTRO" ] && DISTRO=EmuELEC
 [ -z "$PROJECT" ] && PROJECT=Amlogic
 [ -z "$ARCH" ] && ARCH=arm
-[ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo"
 [ -z "$PROVIDER" ] && PROVIDER="CoreELEC"
 [ -z "$VERSION" ] && VERSION=$(cat $SCRIPT_DIR/distributions/$DISTRO/version | grep LIBREELEC_VERSION | grep -oP '"\K[^"\047]+(?=["\047])')
+[ -z "$REPO_DIR" ] && REPO_DIR="${SCRIPT_DIR}/repo/${VERSION}"
 
 BUILD_SUBDIR="build.${DISTRO}-${PROJECT}.${ARCH}-${VERSION}"
 SCRIPT="scripts/build"
@@ -49,7 +50,7 @@ LIBRETRO_BASE="retroarch retroarch-assets retroarch-overlays core-info common-sh
     [ -f "$OPTIONS_FILE" ] && source "$OPTIONS_FILE" || { echo "$OPTIONS_FILE: not found! Aborting." ; exit 1 ; }
     [ -z "$LIBRETRO_CORES" ] && { echo "LIBRETRO_CORES: empty. Aborting!" ; exit 1 ; }
 
-PKG_EMUS="emulationstation advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor"
+PKG_EMUS="emulationstation advancemame PPSSPPSDL reicastsa amiberry hatarisa openbor mupen64plus-nx"
 PACKAGES_Sx05RE="$PKG_EMUS \
 				fbida \
 				emuelec \
@@ -142,10 +143,13 @@ if [ -d "$EMUELEC" ] ; then
 	echo "Building packages:"
 	for package in $PACKAGES_ALL ; do
 		echo -ne "\t$package "
-			DISTRO=$DISTRO PROJECT=$PROJECT ARCH=$ARCH ./$SCRIPT $package &>>"$LOG"
+		if [ $package = "emulationstation" ]; then
+		mv ${SCRIPT_DIR}/packages/sx05re/emulationstation/patches/emulationstation-999-addon-options.patch.addon ${SCRIPT_DIR}/packages/sx05re/emulationstation/patches/emulationstation-999-addon-options.patch
+		fi
+			EMUELEC_ADDON=Yes DISTRO=$DISTRO PROJECT=$PROJECT ARCH=$ARCH ./$SCRIPT $package &>>"$LOG"
 		if [ $? -eq 0 ] ; then
 			echo "(ok)"
-		else
+	else
 			echo "(failed)"
 			echo "Error building package '$package'!"
 			exit 1
@@ -201,6 +205,7 @@ fi
 echo -n "Creating addon folder..."
 mkdir -p "${ADDON_DIR}" &>>"$LOG"
 [ $? -eq 0 ] && echo "done." || { echo "failed!" ; echo "Error creating folder '${ADDON_DIR}'!" ; exit 1 ; }
+
 echo
 cd "${ADDON_DIR}"
 echo "Creating folder structure..."
@@ -212,19 +217,24 @@ done
 echo
  if [ "$FORCEUPDATE" == "yes" ]; then
 	echo -ne "Creating forceupdate..."
-	echo
 	touch "${ADDON_DIR}/forceupdate"
 	[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
  fi
-echo -ne "Moving config files to addon..."
+
+echo -ne "Creating empty joypads dir"
+mkdir -p "${ADDON_DIR}/resources/joypads" &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo
+echo "Moving config files to addon..."
+echo -ne "\tconfig dir"
 cp -rf "${TARGET_DIR}/usr/config" "${ADDON_DIR}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tretroarch.cfg "
 mv -v "${ADDON_DIR}/config/retroarch/retroarch.cfg" "${ADDON_DIR}/config/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tcreating empty joypads dir"
-mkdir -p "${ADDON_DIR}/resources/joypads" &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tbinaries "
 mv -v "${TARGET_DIR}/usr/bin" "${ADDON_DIR}/" &>>"$LOG"
 rm -rf "${ADDON_DIR}/bin/assets"
@@ -233,49 +243,76 @@ cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/scripts/*.sh "${ADDON_
 cp -rf --remove-destination "${ADDON_DIR}"/config/emuelec/bin/* "${ADDON_DIR}/bin" &>>"$LOG"
 rm -rf "${ADDON_DIR}/config/emuelec"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tlibraries and cores "
 mv -v "${TARGET_DIR}/usr/lib" "${ADDON_DIR}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\taudio filters "
 mv -v "${TARGET_DIR}/usr/share/audio_filters" "${ADDON_DIR}/resources/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tvideo filters "
 mv -v "${TARGET_DIR}/usr/share/video_filters" "${ADDON_DIR}/resources/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tshaders "
 mv -v "${TARGET_DIR}/usr/share/common-shaders" "${ADDON_DIR}/resources/shaders" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tremoving unused assets "
-  for i in branding glui nuklear nxrgui ozone pkg switch wallpapers zarch; do
-    rm -rf "${TARGET_DIR}/usr/share/retroarch-assets/$i"
-  done
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tassets "
 mv -v "${TARGET_DIR}/usr/share/retroarch-assets" "${ADDON_DIR}/resources/assets" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\toverlays "
   for i in borders effects gamepads ipad keyboards misc; do
     rm -rf "${TARGET_DIR}/usr/share/retroarch-overlays/$i"
   done
 mv -v "${TARGET_DIR}/usr/share/retroarch-overlays" "${ADDON_DIR}/resources/overlays" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tadvacemame Config "
 rm -rf "${TARGET_DIR}/usr/share/advance/advmenu.rc"
 mv -v "${TARGET_DIR}/usr/share/advance" "${ADDON_DIR}/config" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tVLC libs "
 rm "${ADDON_DIR}/lib/vlc"
 mv -v "${TARGET_DIR}/usr/config/vlc" "${ADDON_DIR}/lib/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tRemoving unneeded files "
+
+echo
+echo "Removing unneeded files "
   for i in startfe.sh killkodi.sh emulationstation.sh emustation-config clearconfig.sh reicast.sh autostart.sh smb.conf vlc out123 cvlc mpg123-* *png*; do
     echo -ne "\t$i"
     rm -rf "${ADDON_DIR}/bin/$i"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
   done
+
+echo -ne "\tOrphan info files"
+for f in ${ADDON_DIR}/lib/libretro/*.info; do 
+name=${f%.*}
+if [ ! -f "$name.so" ]; then
+rm $f
+fi
+done
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo -ne "\tUnused assets "
+  for i in automatic dot-art flatui neoactive pixel retroactive retrosystem systematic; do
+  rm -rf "${ADDON_DIR}/resources/assets/xmb/$i"
+  done
+  
+  for i in branding glui nuklear nxrgui ozone pkg switch wallpapers zarch COPYING; do
+    rm -rf "${ADDON_DIR}/resources/assets/$i"
+  done
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo -ne "\tlib files "
 find ${ADDON_DIR}/lib -maxdepth 1 -type l -exec rm -f {} \;
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
+
 echo "Creating files..."
 echo -ne "\temuelecsound.conf "
 read -d '' content <<EOF
@@ -288,9 +325,12 @@ pcm "hw:0,0"
 EOF
 echo "$content" > config/emuelecsound.conf
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\treicast.sh "
 read -d '' content <<EOF
 #!/bin/sh
+
+. /storage/.kodi/addons/${ADDON_NAME}/config/ee_env.sh
 
 #set reicast BIOS dir to point to /storage/roms/bios/dc
 if [ ! -L /storage/.local/share/reicast/data ]; then
@@ -327,7 +367,7 @@ EOF
 echo "$content" > bin/reicast.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 chmod +x bin/reicast.sh
-echo -ne "\tsx05re.sh "
+echo -ne "\temuelec.sh "
 read -d '' content <<EOF
 #!/bin/sh
 
@@ -375,6 +415,7 @@ EOF
 echo "$content" > bin/emustation-config
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 chmod +x bin/emustation-config
+
 echo -ne "\tes_input.cfg "
 rm config/emulationstation/es_input.cfg
 read -d '' content <<EOF
@@ -414,10 +455,12 @@ read -d '' content <<EOF
 EOF
 echo "$content" > config/emulationstation/es_input.cfg
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tGamepad Workarounds "
-cp ${SCRIPT_DIR}/packages/sx05re/emuelec/gamepads/*.cfg resources/joypads/
+cp ${SCRIPT_DIR}/${EMUELEC_PATH}/gamepads/*.cfg resources/joypads/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo -ne "\tsx05re.start "
+
+echo -ne "\tee_env.sh "
 read -d '' content <<EOF
 #!/bin/sh
 
@@ -427,6 +470,38 @@ oe_setup_addon ${ADDON_NAME}
 
 PATH="\$ADDON_DIR/bin:\$PATH"
 LD_LIBRARY_PATH="\$ADDON_DIR/lib:\$LD_LIBRARY_PATH"
+
+# create symlinks to libraries
+# ln -sf libxkbcommon.so.0.0.0 \$ADDON_DIR/lib/libxkbcommon.so
+# ln -sf libxkbcommon.so.0.0.0 \$ADDON_DIR/lib/libxkbcommon.so.0
+# ln -sf libvdpau.so.1.0.0 \$ADDON_DIR/lib/libvdpau.so
+# ln -sf libvdpau.so.1.0.0 \$ADDON_DIR/lib/libvdpau.so.1
+# ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so
+# ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
+ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
+ln -sf libSDL2-2.0.so.0.8.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
+ln -sf libSDL-1.2.so.0.11.4 \$ADDON_DIR/lib/libSDL-1.2.so.0
+ln -sf libSDL_net-1.2.so.0.8.0 \$ADDON_DIR/lib/libSDL_net-1.2.so.0
+ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
+ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
+ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
+ln -sf libdrm.so.2.4.0 \$ADDON_DIR/lib/libdrm.so.2
+ln -sf libexif.so.12.3.3 \$ADDON_DIR/lib/libexif.so.12
+ln -sf libvorbisidec.so.1.0.3 \$ADDON_DIR/lib/libvorbisidec.so.1
+ln -sf libpng16.so.16.36.0 \$ADDON_DIR/lib/libpng16.so.16
+ln -sf libmpg123.so.0.44.8 \$ADDON_DIR/lib/libmpg123.so.0
+ln -sf libout123.so.0.2.2 \$ADDON_DIR/lib/libout123.so.0
+
+EOF
+echo "$content" > config/ee_env.sh
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo -ne "\tee_retroarch.sh "
+read -d '' content <<EOF
+#!/bin/sh
+
+. /storage/.kodi/addons/${ADDON_NAME}/config/ee_env.sh
+
 RA_CONFIG_DIR="/storage/.config/retroarch/"
 RA_CONFIG_FILE="\$RA_CONFIG_DIR/retroarch.cfg"
 RA_CONFIG_SUBDIRS="savestates savefiles remappings playlists system thumbnails"
@@ -435,6 +510,36 @@ ROMS_FOLDER="/storage/roms"
 DOWNLOADS="downloads"
 RA_PARAMS="--config=\$RA_CONFIG_FILE --menu"
 LOGFILE="/storage/retroarch.log"
+
+sed -i '/emuelec_exit_to_kodi = /d' \$RA_CONFIG_FILE
+echo 'emuelec_exit_to_kodi = "true"' >> \$RA_CONFIG_FILE
+
+	if [ \$ra_log -eq 1 ] ; then
+		\$RA_EXE \$RA_PARAMS >\$LOGFILE 2>&1
+	else
+		\$RA_EXE \$RA_PARAMS
+	fi
+	
+EOF
+echo "$content" > bin/ee_retroarch.sh
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
+echo -ne "\temuelec.start "
+read -d '' content <<EOF
+#!/bin/sh
+
+. /storage/.kodi/addons/${ADDON_NAME}/config/ee_env.sh
+
+RA_CONFIG_DIR="/storage/.config/retroarch/"
+RA_CONFIG_FILE="\$RA_CONFIG_DIR/retroarch.cfg"
+RA_CONFIG_SUBDIRS="savestates savefiles remappings playlists system thumbnails"
+RA_EXE="\$ADDON_DIR/bin/retroarch"
+ROMS_FOLDER="/storage/roms"
+DOWNLOADS="downloads"
+RA_PARAMS="--config=\$RA_CONFIG_FILE --menu"
+LOGFILE="/storage/retroarch.log"
+
+sed -i '/emuelec_exit_to_kodi = /d' \$RA_CONFIG_FILE
 
 # external/usb rom mounting
 sh \$ADDON_DIR/bin/emustation-config
@@ -536,27 +641,6 @@ if [ ! -f "\$RA_CONFIG_FILE" ]; then
 	fi
 fi
 
-# create symlinks to libraries
-# ln -sf libxkbcommon.so.0.0.0 \$ADDON_DIR/lib/libxkbcommon.so
-# ln -sf libxkbcommon.so.0.0.0 \$ADDON_DIR/lib/libxkbcommon.so.0
-# ln -sf libvdpau.so.1.0.0 \$ADDON_DIR/lib/libvdpau.so
-# ln -sf libvdpau.so.1.0.0 \$ADDON_DIR/lib/libvdpau.so.1
-# ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so
-# ln -sf libvdpau_trace.so.1.0.0 \$ADDON_DIR/lib/vdpau/libvdpau_trace.so.1
-ln -sf libopenal.so.1.18.2 \$ADDON_DIR/lib/libopenal.so.1
-ln -sf libSDL2-2.0.so.0.8.0 \$ADDON_DIR/lib/libSDL2-2.0.so.0
-ln -sf libSDL-1.2.so.0.11.4 \$ADDON_DIR/lib/libSDL-1.2.so.0
-ln -sf libSDL_net-1.2.so.0.8.0 \$ADDON_DIR/lib/libSDL_net-1.2.so.0
-ln -sf libfreeimage-3.18.0.so \$ADDON_DIR/lib/libfreeimage.so.3
-ln -sf libvlc.so.5.6.0 \$ADDON_DIR/lib/libvlc.so.5
-ln -sf libvlccore.so.9.0.0 \$ADDON_DIR/lib/libvlccore.so.9
-ln -sf libdrm.so.2.4.0 \$ADDON_DIR/lib/libdrm.so.2
-ln -sf libexif.so.12.3.3 \$ADDON_DIR/lib/libexif.so.12
-ln -sf libvorbisidec.so.1.0.3 \$ADDON_DIR/lib/libvorbisidec.so.1
-ln -sf libpng16.so.16.36.0 \$ADDON_DIR/lib/libpng16.so.16
-ln -sf libmpg123.so.0.44.8 \$ADDON_DIR/lib/libmpg123.so.0
-ln -sf libout123.so.0.2.2 \$ADDON_DIR/lib/libout123.so.0
-
 # delete symlinks to avoid doubles
 
 if [ -L /storage/.emulationstation ]; then
@@ -590,7 +674,14 @@ chmod +x /storage/.emulationstation/scripts/*.sh
 chmod +x \$ADDON_DIR/bin/*
 
 [ \$ra_verbose -eq 1 ] && RA_PARAMS="--verbose \$RA_PARAMS"
+
 cp -rf \$ADDON_DIR/config/emuelecsound.conf /storage/.config/asound.conf
+
+# Detect used device in Kodi and change asound.conf accordingly 0,0 is HDMI 0,1 is front output on the N2 (probably on others as well)
+if grep -Fxq '"audiooutput.audiodevice">ALSA:@"' /storage/.kodi/userdata/guisettings.xml; then
+sed -i "s|hw:0,0|hw:0,1|" /storage/.config/asound.conf
+fi
+
 if [ "\$ra_stop_kodi" -eq 1 ] ; then
 	systemctl stop kodi
 	if [ \$ra_log -eq 1 ] ; then
@@ -599,7 +690,14 @@ if [ "\$ra_stop_kodi" -eq 1 ] ; then
 		\$RA_EXE \$RA_PARAMS
 	fi
     rm /storage/.config/asound.conf
+
+   if grep -q 'emuelec_exit_to_kodi = "true"' \$RA_CONFIG_FILE; then
+	systemctl stop kodi
+	else
+	rm /storage/.config/asound.conf
 	systemctl start kodi
+  fi
+
 else
 	pgrep kodi.bin | xargs kill -SIGSTOP
 	if [ \$ra_log -eq 1 ] ; then
@@ -616,6 +714,7 @@ EOF
 echo "$content" > bin/emuelec.start
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 chmod +x bin/emuelec.start
+
 echo -ne "\taddon.xml "
 read -d '' addon <<EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -640,6 +739,7 @@ read -d '' addon <<EOF
 EOF
 echo "$addon" > addon.xml
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tdefault.py "
 read -d '' content <<EOF
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
@@ -662,6 +762,7 @@ util.runRetroarchMenu()
 EOF
 echo "$content" > default.py
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tutil.py "
 read -d '' content <<EOF
 import os, xbmc, xbmcaddon
@@ -680,6 +781,7 @@ def runRetroarchMenu():
 EOF
 echo "$content" > util.py
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tsettings.xml "
 read -d '' content <<EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -694,6 +796,7 @@ read -d '' content <<EOF
 EOF
 echo "$content" > resources/settings.xml
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tsettings-default.xml "
 read -d '' content <<EOF
 <settings>
@@ -705,25 +808,24 @@ read -d '' content <<EOF
 EOF
 echo "$content"  > settings-default.xml
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tfanart.png"
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/fanart.png" resources/
+cp "${SCRIPT_DIR}/${EMUELEC_PATH}/addon/fanart.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\ticon.png"
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/icon.png" resources/
+cp "${SCRIPT_DIR}/${EMUELEC_PATH}/addon/icon.png" resources/
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tdowloading dldrastic.sh"
-wget -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/
+wget -q -O dldrastic.sh https://gist.githubusercontent.com/shantigilbert/f95c44628321f0f4cce4f542a2577950/raw/
 sed -i "s|script.sx05re.launcher|${ADDON_NAME}|" dldrastic.sh
 sed -i "s|sx05re.log|emuelec.log|" dldrastic.sh
 cp dldrastic.sh config/emulationstation/scripts/dldrastic.sh
 rm dldrastic.sh
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 echo
-echo -ne "Setting permissions..."
-chmod +x ${ADDON_DIR}/bin/* &>>"$LOG"
-chmod +x ${ADDON_DIR}/config/emulationstation/scripts/*.sh &>>"$LOG"
-[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
-echo
+
 RA_CFG_DIR="\/storage\/\.config\/retroarch"
 RA_CORES_DIR="\/storage\/\.kodi\/addons\/${ADDON_NAME}\/lib\/libretro"
 RA_RES_DIR="\/storage\/\.kodi\/addons\/${ADDON_NAME}\/resources"
@@ -743,19 +845,23 @@ echo -ne "Making modifications to setres.sh..."
 CFG="bin/setres.sh"
 sed -i '9,12d;17,21d;28,31d' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "Making modifications to emuelecRunEmu.sh..."
 CFG="bin/emuelecRunEmu.sh"
 sed -i -e "s|/tmp/cores/|${RA_CORES_DIR}/|" $CFG
 sed -i -e "s/\/usr/\/storage\/.kodi\/addons\/${ADDON_NAME}/" $CFG
 sed -i -e "s/\/tmp\/cores/${RA_CORES_DIR}/" $CFG
 sed -i -e "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" $CFG
+sed -i -e "s|/emuelec/bin/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" $CFG
 sed -i -e 's,\[\[ $arguments != \*"KEEPMUSIC"\* \]\],[ `echo $arguments | grep -c "KEEPMUSIC"` -eq 0 ],g' $CFG
 sed -i -e 's,\[\[ $arguments != \*"NOLOG"\* \]\],[ `echo $arguments | grep -c "NOLOG"` -eq 0 ],g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "Making modifications to BGM.sh..."
 CFG="config/emulationstation/scripts/bgm.sh"
 sed -i -e 's,systemd-run $MUSICPLAYER -r 32000 -Z $BGMPATH,( MPG123_MODDIR="/storage/.kodi/addons/script.emuelec.launcher/lib/mpg123" $MUSICPLAYER -r 32000 -Z $BGMPATH ) \&,g' $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "Making modifications to advmame.sh..."
 CFG="bin/advmame.sh"
 sed -i -e "s/\/usr\/share/\/storage\/.kodi\/addons\/${ADDON_NAME}\/config/" $CFG
@@ -767,73 +873,100 @@ echo -ne "Making modifications to ppsspp.sh..."
 CFG="bin/ppsspp.sh"
 sed -i -e "s|/usr/bin/setres.sh|/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh|" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "Making modifications to openbor.sh..."
 CFG="bin/openbor.sh"
 sed -i -e "s|/usr/bin/setres.sh|/storage/.kodi/addons/${ADDON_NAME}/bin/setres.sh|" $CFG
 sed -i -e "s|/storage/.config/openbor/master.cfg|/storage/.kodi/addons/${ADDON_NAME}/config/openbor/master.cfg|" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo "Making modifications to retroarch.cfg..."
 CFG="config/retroarch.cfg"
+
 echo -ne "\toverlays "
 sed -i "s/\/tmp\/overlays/${RA_RES_DIR}\/overlays/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tsavefiles "
 sed -i "s/\/storage\/savefiles/${RA_CFG_DIR}\/savefiles/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tsavestates "
 sed -i "s/\/storage\/savestates/${RA_CFG_DIR}\/savestates/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tremappings "
 sed -i "s/\/storage\/remappings/${RA_CFG_DIR}\/remappings/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tplaylists "
 sed -i "s/\/storage\/playlists/${RA_CFG_DIR}\/playlists/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tcores "
 sed -i "s/\/tmp\/cores/${RA_CORES_DIR}/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tsystem "
 sed -i "s/\/storage\/system/${RA_CFG_DIR}\/system/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tassets "
 sed -i "s/\/tmp\/assets/${RA_RES_DIR}\/assets/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tthumbnails "
 sed -i "s/\/storage\/thumbnails/${RA_CFG_DIR}\/thumbnails/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tshaders "
 sed -i "s/\/tmp\/shaders/${RA_RES_DIR}\/shaders/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tvideo_filters "
 sed -i "s/\/usr\/share\/video_filters/${RA_RES_DIR}\/video_filters/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\taudio_filters "
 sed -i "s/\/usr\/share\/audio_filters/${RA_RES_DIR}\/audio_filters/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tretroarch-assets "
 sed -i "s/\/usr\/share\/retroarch-assets/${RA_RES_DIR}\/assets/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tjoypads "
 sed -i "s/\/tmp\/joypads/${RA_RES_DIR}\/joypads/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tdatabase "
 sed -i "s/\/tmp\/database/${RA_RES_DIR}\/database/g" $CFG
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo
 echo -n "Fixing paths..."
 find bin/ -name *.sh -exec sed -i "s|/emuelec/scripts/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" {} \;
 find bin/ -name *.sh -exec sed -i "s|/emuelec/bin/|/storage/.kodi/addons/${ADDON_NAME}/bin/|g" {} \;
 [ $? -eq 0 ] && echo "done." || { echo "failed!" ; exit 1 ; }
+
+echo -ne "Setting permissions..."
+chmod +x ${ADDON_DIR}/bin/* &>>"$LOG"
+chmod +x ${ADDON_DIR}/config/emulationstation/scripts/*.sh &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo
 echo -n "Creating archive..."
 cd ..
 zip -y -r "${ARCHIVE_NAME}" "${ADDON_NAME}" &>>"$LOG"
 [ $? -eq 0 ] && echo "done." || { echo "failed!" ; exit 1 ; }
+
 echo
 echo "Creating repository files..."
+
 echo -ne "\tzip "
 mv -vf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tsymlink "
 if [ "$1" = "lite" ] ; then
 ln -vsf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/${ADDON_NAME}-lite-LATEST.zip" &>>"$LOG"
@@ -842,24 +975,35 @@ else
 ln -vsf "${ARCHIVE_NAME}" "${REPO_DIR}/${ADDON_NAME}/${ADDON_NAME}-LATEST.zip" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
 fi
+
 echo -ne "\ticon.png "
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/icon.png" "${REPO_DIR}/${ADDON_NAME}/resources/icon.png"
+cp "${SCRIPT_DIR}/${EMUELEC_PATH}/addon/icon.png" "${REPO_DIR}/${ADDON_NAME}/resources/icon.png"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tfanart.png "
-cp "${SCRIPT_DIR}/packages/sx05re/emuelec/addon/fanart.png" "${REPO_DIR}/${ADDON_NAME}/resources/fanart.png"
+cp "${SCRIPT_DIR}/${EMUELEC_PATH}/addon/fanart.png" "${REPO_DIR}/${ADDON_NAME}/resources/fanart.png"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\taddon.xml "
 echo "$addon" > "${REPO_DIR}/${ADDON_NAME}/addon.xml"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo
 echo "Cleaning up..."
 cd "${SCRIPT_DIR}"
+
+echo -ne "\tEmulationstation"
+	EMUELEC_ADDON=Yes DISTRO=$DISTRO PROJECT=$PROJECT ARCH=$ARCH ./scripts/clean emulationstation &>>"$LOG"
+[ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tproject folder "
 rm -vrf "${PROJECT_DIR}" &>>"$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo -ne "\tlog file "
 rm -rf "$LOG"
 [ $? -eq 0 ] && echo "(ok)" || { echo "(failed)" ; exit 1 ; }
+
 echo
 echo "Finished."
 echo
